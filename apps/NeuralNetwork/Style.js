@@ -12,12 +12,12 @@ function draw(event){
     ctx.lineTo(event.offsetX, event.offsetY)
     ctx.stroke()
 }
-function drawstart(event){
+function drawstart(){
     isDrawing = true
     ctx.beginPath()
 }
 
-function drawend(event){
+function drawend(){
     isDrawing = false
     ctx.closePath()
 }
@@ -28,8 +28,13 @@ window.addEventListener("mouseup", drawend)
 button.addEventListener("click", guess)
 
 
-function guess(event){
-    ctx.getImageData(0,0,50,50);
-
+function guess(){
+    scannedImage = ctx.getImageData(0,0,50,50);
+    imageData = scannedImage.data;
+    let data = [];
+    for (let i= 0;i<2500;i+=4){
+        data[i] = imageData[i*4+3]
+    }
+    console.log(data)
     predicted.textContent= "predicted: ";
 }
