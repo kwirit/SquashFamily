@@ -32,8 +32,13 @@ function guess(){
     scannedImage = ctx.getImageData(0,0,50,50);
     imageData = scannedImage.data;
     let data = [];
-    for (let i= 0;i<2500;i+=4){
-        data[i] = imageData[i*4+3]
+    for (let i= 0;i<2500;i++){
+        if(imageData[i*4+3] === 0){
+            data[i] = 255;
+        }
+        else{
+            data[i] = 0;
+        }
     }
     console.log(data)
     predicted.textContent= "predicted: ";
