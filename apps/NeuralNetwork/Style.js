@@ -1,5 +1,6 @@
 let canvas = document.getElementById("c1")
-let button = document.getElementById("b1")
+let button1 = document.getElementById("b1")
+let button2 = document.getElementById("b2")
 let predicted = document.getElementById("p1")
 let ctx = canvas.getContext("2d")
 
@@ -12,25 +13,31 @@ function draw(event){
     ctx.lineTo(event.offsetX, event.offsetY)
     ctx.stroke()
 }
-function drawstart(){
+function drawStart(){
     isDrawing = true
     ctx.beginPath()
 }
 
-function drawend(){
+function drawEnd(){
     isDrawing = false
     ctx.closePath()
 }
+function clear(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 
 canvas.addEventListener("mousemove", draw)
-window.addEventListener("mousedown", drawstart)
-window.addEventListener("mouseup", drawend)
-button.addEventListener("click", guess)
+window.addEventListener("mousedown", drawStart)
+window.addEventListener("mouseup", drawEnd)
+button1.addEventListener("click", guess)
+button2.addEventListener("click", guess)
+button2.addEventListener("click", clear)
 
 
 function guess(){
-    scannedImage = ctx.getImageData(0,0,50,50);
-    imageData = scannedImage.data;
+    let scannedImage = ctx.getImageData(0,0,50,50);
+    let imageData = scannedImage.data;
     let data = [];
     for (let i= 0;i<2500;i++){
         if(imageData[i*4+3] === 0){
