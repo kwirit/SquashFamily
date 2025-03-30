@@ -44,3 +44,8 @@ canvas.addEventListener('mouseleave', () => {
 });
 
 anthillBtn.click();
+
+
+
+//Активируем функцию при нажатии на кнопку
+startBtn.addEventListener('click', () => antColonySimulator());
