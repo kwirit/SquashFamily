@@ -1,0 +1,41 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(175, 175, 175, 0.73);
+    margin: 20px;
+}
+
+.controls {
+    margin-bottom: 30px;
+}
+
+#container {
+    display: grid;
+    gap: 1px;
+    width: 300px;
+    height: 300px;
+}
+
+.square {
+    background-color: palevioletred;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.1s;
+}
+
+.square.wall {
+    background-color: #000000; /* Черный цвет для стен */
+}
+
+.square.passage {
+    background-color: whitesmoke; /* Красный цвет для пути */
+}
+
+.square.main {
+    background-color: darkgreen;
+}
+
+.square.path {
+    background-color: #ff0000;
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квадратное поле n x n</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="controls">
+    <label for="sizeField">Размер поля (n x n):</label>
+    <input type="number" id="sizeField" min="1" max="100" value="10">
+    <button onclick="generateField()">Создать поле</button>
+    <button onclick="findPath()">Найти путь</button>
+</div>
+<div id="container"></div>
+<script src="script.js"></script>
+</body>
+</html>
