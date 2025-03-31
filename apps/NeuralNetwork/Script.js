@@ -33,7 +33,6 @@ canvas.addEventListener("mousemove", draw)
 window.addEventListener("mousedown", drawStart)
 window.addEventListener("mouseup", drawEnd)
 button1.addEventListener("click", guess)
-button2.addEventListener("click", guess)
 button2.addEventListener("click", clear)
 
 
@@ -55,6 +54,6 @@ function guess(){
             data[i] = 1
         }
     }
-    console.log(data)
+    console.log(Neural(data))
     predicted.textContent= "predicted: "
 }
