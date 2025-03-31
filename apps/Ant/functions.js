@@ -34,74 +34,6 @@ function getColorPixel(pixel) {
     return "white";
 }
 
-
-// function getChunk(canvasData, canvasWidth, x, y, chunkWidth, chunkHeight) {
-//     const chunk = [];
-//     const bytesPerPixel = 4; // Каждый пиксель имеет 4 компонента: R, G, B, A
-
-//     for (let row = 0; row < chunkHeight; row++) {
-//         const chunkRow = [];
-//         const sourceY = y + row; // Вычисляем текущую строку в canvas
-        
-//         for (let col = 0; col < chunkWidth; col++) {
-//             const sourceX = x + col; // Вычисляем текущий столбец в canvas
-            
-//             // Вычисляем позицию в одномерном массиве
-//             const index = (sourceY * canvasWidth + sourceX) * bytesPerPixel;
-            
-//             // Создаём пиксель, передавая значения RGBA
-//             const pixel = createPixelRGBA(
-//                 canvasData[index],       // R
-//                 canvasData[index + 1],   // G
-//                 canvasData[index + 2],   // B
-//                 canvasData[index + 3]    // A
-//             );
-            
-//             chunkRow.push(pixel);
-//         }
-//         chunk.push(chunkRow);
-//     }
-
-//     return chunk;
-// }
-
-// function uploadChunk(destinationData, destinationWidth, sourceChunk, mouseX, mouseY) {
-//     const chunkHeight = sourceChunk.length;
-//     const chunkWidth = sourceChunk[0].length;
-    
-//     for (let row = 0; row < chunkHeight; row++) {
-//         for (let col = 0; col < chunkWidth; col++) {
-//             const destX = mouseX + col;
-//             const destY = mouseY + row;
-            
-//             // Пропускаем пиксели за границами canvas
-//             if (destX < 0 || destY < 0 || destX >= destinationWidth || destY >= (destinationData.length / (destinationWidth * 4))) {
-//                 continue;
-//             }
-            
-//             const destIndex = (destY * destinationWidth + destX) * 4;
-//             const pixel = sourceChunk[row][col];
-            
-//             // Копируем RGBA
-//             destinationData[destIndex]     = pixel[0]; // R
-//             destinationData[destIndex + 1] = pixel[1]; // G
-//             destinationData[destIndex + 2] = pixel[2]; // B
-//             destinationData[destIndex + 3] = pixel[3]; // A
-//         }
-//     }
-// }
-
-// const canvas = document.getElementById('mapCanvas');
-
-// canvas.addEventListener('mousemove', (event) => {
-//     const rect = canvas.getBoundingClientRect(); // Границы canvas на странице
-//     const x = Math.floor(event.clientX - rect.left); // Координата X внутри canvas
-//     const y = Math.floor(event.clientY - rect.top);  // Координата Y внутри canvas
-    
-//     console.log(`Координаты курсора на canvas: x=${x}, y=${y}`);
-// });
-
-
 function initWorld(matrix, height, width) {
     for(let i = 0; i < height; ++i) {
         let row = [];
@@ -116,11 +48,12 @@ function initWorld(matrix, height, width) {
 }
 
 function uploadChunk(main_matrix, pixel, chunk_height, chunk_width, mouse_x, mouse_y) {
-    for(let i = mouse_y; i < chunk_height; ++i) {
+    for(let i = mouse_y; i < mouse_y + chunk_height; ++i) {
         if(i < 0 || i > Math.min(main_matrix.length, mouse_y + chunk_height)) continue;
-        for(let j = mouse_x; j < chunk_width; ++j) {
+        for(let j = mouse_x; j < mouse_x + chunk_width; ++j) {
             if(j < 0 || j > main_matrix[i].length) continue;
             main_matrix[i][j] = pixel;
+            if(getColorPixel(pixel) == "brown") anthillPixels.push({i, j});
         }
     }
     return;
@@ -145,32 +78,8 @@ function drawPixel(e, matrix, size_pixel) {
         uploadChunk(matrix, createPixelColor(toolColors[currentTool]), size_pixel, size_pixel, x - size_pixel/2 - 3 , y - size_pixel / 2 - 3);
     }
 
-    // console.log(x, y)
-    // console.log(chunk);
-
     return;
 }
-
-// function getCanvasMatrix(canvas) {
-//     const cntx = canvas.getContext("2d");
-//     const imageData = cntx.getImageData(0, 0, canvas.width, canvas.height);
-//     const data = imageData.data;
-
-//     const width = canvas.width;
-//     const height = canvas.height;
-//     const result = [];
-
-//     for (let y = 0; y < height; y++) {
-//         const row = [];
-//         for (let x = 0; x < width; x++) {
-//             const index = (y * width + x) * 4; // Индекс пикселя в массиве
-//             const pixel = createPixelRGBA(data[index], data[index + 1], data[index + 2], data[index + 3]);
-//             row.push(pixel);
-//         }
-//         result.push(row);
-//     }
-//     return result;
-// }
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -225,7 +134,11 @@ function antMove(canvas, ant, lvlVisible, world) {
 }
 
 function antColonySimulator() {
-    
+    if(!anthillPixels.length) {
+        alert("The spawn point is not set");
+        return;
+    }
+
     createWorld(canvas, world, foodSet, anthillPixels);
 
     createColony(ants, 1000, anthillPixels);
