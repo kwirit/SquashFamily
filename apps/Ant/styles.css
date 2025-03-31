@@ -11,9 +11,8 @@ body {
 }
 
 canvas {
-    border: 1px solid #000;
-    background-color: #f0f0f0;
-    cursor: crosshair;
+    border: 3px solid #000;
+    background-color: white;
 }
 
 .buttons {
