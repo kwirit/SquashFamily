@@ -34,26 +34,32 @@ function getColorPixel(pixel) {
     return "white";
 }
 
-function initWorld(matrix, height, width) {
-    for(let i = 0; i < height; ++i) {
-        let row = [];
-        for(let j = 0; j < width; ++j) {
-            let pixel = createPixelRGBA(255, 255, 255, 255);
-            row.push(pixel);
-        }
-        matrix.push(row);
-    }
+// function initWorld(matrix, height, width) {
+//     for(let i = 0; i < height; ++i) {
+//         let row = [];
+//         for(let j = 0; j < width; ++j) {
+//             let pixel = createPixelRGBA(255, 255, 255, 255);
+//             row.push(pixel);
+//         }
+//         matrix.push(row);
+//     }
 
-    return;
-}
+//     return;
+// }
 
 function uploadChunk(main_matrix, pixel, chunk_height, chunk_width, mouse_x, mouse_y) {
+    // console.log(mouse_y, mouse_x);
     for(let i = mouse_y; i < mouse_y + chunk_height; ++i) {
-        if(i < 0 || i > Math.min(main_matrix.length, mouse_y + chunk_height)) continue;
+        if(i < 0) continue;
+        else if(i > main_matrix.length - 1) break;
+
         for(let j = mouse_x; j < mouse_x + chunk_width; ++j) {
-            if(j < 0 || j > main_matrix[i].length) continue;
+            if(j < 0) continue;
+            else if(j > main_matrix[i].length - 1) break;
+
             main_matrix[i][j] = pixel;
-            if(getColorPixel(pixel) == "brown") anthillPixels.push({i, j});
+            if(getColorPixel(pixel) == "brown") anthillPixels.push({y:i, x:j});
+            // console.log(getColorPixel(pixel));
         }
     }
     return;
@@ -70,90 +76,147 @@ function drawPixel(e, matrix, size_pixel) {
     ctx.fillStyle = toolColors[currentTool];
 
     if(currentTool == "anthill") {
-        ctx.fillRect(x - size_pixel - 3, y - size_pixel - 3, size_pixel * 2, size_pixel * 2);
-        uploadChunk(matrix, createPixelColor(toolColors[currentTool]), size_pixel, size_pixel, x - size_pixel - 3, y - size_pixel - 3);
+        ctx.fillRect(x, y, size_pixel * 2, size_pixel * 2);
+        uploadChunk(matrix, createPixelColor(toolColors[currentTool]), size_pixel * 2, size_pixel * 2, x, y);
     }
     else {
-        ctx.fillRect(x - size_pixel/2 - 3, y - size_pixel/2 - 3, size_pixel, size_pixel);
-        uploadChunk(matrix, createPixelColor(toolColors[currentTool]), size_pixel, size_pixel, x - size_pixel/2 - 3 , y - size_pixel / 2 - 3);
+        ctx.fillRect(x, y, size_pixel, size_pixel);
+        uploadChunk(matrix, createPixelColor(toolColors[currentTool]), size_pixel, size_pixel, x, y);
     }
 
     return;
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
-function createColony(ants, count_ants, anthillPixels) {
-    for(let i = 0; i < count_ants; ++i) {
-        let anthillPixel = anthillPixels[getRandomInt(0, anthillPixels.length - 1)];
-        ant = {
-            y: anthillPixel.y,
-            x: anthillPixel.x,
-            bufferPixel: "brown",
-            food: false,
-            visitedPixels: new Set()
-        }
-        ants.push(ant);
-    }
-    return;
-}
 
-function antMove(canvas, ant, lvlVisible, world) {
-    let jump = []; //массив с координатами, куда муравей может прыгнуть
 
-    for(let i = ant.y - lvlVisible; i < ant.y + lvlVisible + 1; ++i) {
-        for(let j = ant.x - lvlVisible; j < ant.x + lvlVisible + 1; ++j) {
-            if (i < 0 || i >= world.length || j < 0 || j >= world[i].length) continue;
-            else if((i == ant.y && j == ant.x) || (getColorPixel(world[i][j]) == "grey")) continue;
-            jump.push({y:i, x:j});
-        }
-    }
+// function getRandomInt(min, max) {
+//     return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
 
-    // Выбираем случайную позицию из возможных для прыжка
-    let nextPosition = jump[getRandomInt(0, jump.length - 1)];
+// function createColony(ants, count_ants, anthillPixels) {
+//     for(let i = 0; i < count_ants; ++i) {
+//         let anthillPixel = anthillPixels[getRandomInt(0, anthillPixels.length - 1)];
+//         ant = {
+//             y: anthillPixel.y,
+//             x: anthillPixel.x,
+//             visited: new Set(),
+//             // path: 0,
+//             food: false,
+//         }
+//         ants.push(ant);
+//     }
+//     return;
+// }
+
+// function getAvailablePixels(worldMatrix, ant, lvl_visible) {
+//     let result = [];
+//     for(let i = ant.y - lvl_visible; i < ant.y + lvl_visible; ++i) {
+//         if(i < 0) continue;
+//         else if(i > worldMatrix.length - 1) break;
+
+//         for(let j = ant.x - lvl_visible; j < ant.x + lvl_visible; ++j) {
+//             if(j < 0) continue;
+//             else if(j > worldMatrix[i].length - 1) break;
+
+//             let color_pixel = getColorPixel(worldMatrix[i][j]);
+//             if(color_pixel != "grey") {
+//                 if((!ant.food && color_pixel == "green") || (ant.food && color_pixel == "brown")) return new Array({i, j});
+//                 else if(!ant.visited.has({i, j})) result.push({i, j});
+//             }
+//         }
+//     }
     
-    let cntx = canvas.getContext("2d");
+//     return result;
+// }
 
-    // Убираем муравья
-    cntx.fillStyle = ant.bufferPixel;
-    // cntx.fillRect(ant.x, ant.y, 5, 5);
-    cntx.fillRect(ant.x * 1, ant.y * 1, 1, 1);
+// // Пропорциональный выбор по пригодности (Fitness proportionate selection)
+// function getPixelForJump(pheromonesMap, availeblePixels) {
+//     let sum = 0;
+//     for(let i = 0; i < availeblePixels.length; ++i) {
+//         if(pheromonesMap.has(availeblePixels[i])) {
+//             sum += pheromonesMap[availeblePixels[i]];
+//         }
+//         else sum += min_pheromon_lvl;
+//     }
 
+//     // Рулетка
+//     let normalizePheromonesLvlAvaileblePixels = [];
+//     for(let i = 0; i < availeblePixels.length; ++i) {
+//         if(pheromonesMap.has(availeblePixels[i])) normalizePheromonesLvlAvaileblePixels.push(pheromonesMap[availeblePixels[i]] / sum);
+//         else normalizePheromonesLvlAvaileblePixels.push(min_pheromon_lvl / sum);
+//     }
+
+//     // Выбираем случайное значение
+//     let ptr = Math.random();
+
+//     // Возвращаем выбранное значение
+//     sum = 0;
+//     for(let i = 0; i < normalizePheromonesLvlAvaileblePixels.length; ++i) {
+//         sum += normalizePheromonesLvlAvaileblePixels[i];
+//         if(ptr <= sum) return availeblePixels[i];
+//     }
+// }
+
+// function jump(ant, next_position, size_ant) {
+//     ant.visited.add({y:ant.y, x:ant.x});
+
+//     let ctx = canvas.getContext("2d")
+
+//     // Закрашиваем муравья
+//     ctx.fillStyle = getColorPixel(world[ant.y][ant.x]);
+//     ctx.fillRect(ant.x, ant.y, 1, 1);
     
-    // Рисуем нового муравья
-    ant.bufferPixel = getColorPixel(world[nextPosition.y][nextPosition.x]); // Сохраняем цвет пикселя, на котороый прыгнет мурывай
-    cntx.fillStyle = "black";
-    cntx.fillRect(nextPosition.x, nextPosition.y, 1, 1);
+//     // Рисуем муравья на новой позиции
+//     ctx.fillStyle = "black";
+//     ctx.fillRect(next_position.x * size_ant, next_position.y * size_ant, 1, 1);
+    
+//     return;
+// }
 
-    ant.y = nextPosition.y;
-    ant.x = nextPosition.x;
+// function killAnt(ant, size_ant) {
+//     ant.visited.clear();
 
-    return;
-}
+//     ctx.fillStyle = getColorPixel(world[ant.y][ant.x]);
+    
+//     let spawn = getRandomInt(0, anthillPixels.length);
+//     ant.y = spawn.y;
+//     ant.x = spawn.x;
+//     ctx.fillRect(ant.y, ant.x, size_ant, size_ant);
 
-function antColonySimulator() {
-    if(!anthillPixels.length) {
-        alert("The spawn point is not set");
-        return;
-    }
+//     return;
+// }
 
-    createWorld(canvas, world, foodSet, anthillPixels);
+// function moveAnt(worldMatrix, ant, size_ant, lvl_visible, limit_distance) {
+//     if(ant.visited.size > limit_distance) killAnt(ant, size_ant);
 
-    createColony(ants, 1000, anthillPixels);
+//     let availeblePixels = getAvailablePixels(worldMatrix, ant, lvl_visible);
+//     let next_pixel = getPixelForJump(pheromones, availeblePixels);
+//     jump(ant, next_pixel, size_ant);
+    
+//     return;
+// }
 
-    function simulate() {
-        for (let i = 0; i < ants.length; ++i) {
-            antMove(canvas, ants[i], 3, world);
-        }
+// function antColonySimulator() {
+//     if(!anthillPixels.length) {
+//         alert("The spawn point is not set");
+//         return;
+//     }
+
+//     createColony(ants, 1000, anthillPixels);
+    
+//     function simulate() {
+//         // Обновляем всех муравьев
+//         for (let i = 0; i < ants.length; ++i) {
+//             moveAnt(world, ants[i], 2, 2, 1000);
+//         }
         
-        // Рекурсивно вызываем simulate для следующего кадра
-        requestAnimationFrame(simulate);
-    }
+//         // Запуск анимации
+//         requestAnimationFrame(simulate);
+//     }
+    
+//     simulate();
 
-    // Начинаем симуляцию
-    simulate();
 
-    return;
-}
+//     return;
+// }
