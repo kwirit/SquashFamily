@@ -1,3 +1,4 @@
+
 function multi(matrix,neurons) {
     let c = []
     let tmp = 0
@@ -5,6 +6,19 @@ function multi(matrix,neurons) {
         let tmp = 0
         for(let j = 0;j < matrix[i].length;j++){
             tmp += matrix[i][j] * neurons[j]
+        }
+        c[i] = tmp;
+    }
+    return c;
+}
+
+function multiTransponent(matrix,neurons) {
+    let c = []
+    let tmp = 0
+    for(let i = 0; i<matrix.length;i++){
+        let tmp = 0
+        for(let j = 0;j < matrix[i].length;j++){
+            tmp += matrix[j][i] * neurons[j]
         }
         c[i] = tmp;
     }
@@ -42,13 +56,13 @@ function searchMax(values){
 
 function Neural(data){
     let neurons1 = data;
-    let bias1=  Array(2500).fill(1);
+    let bias1=  Array(784).fill(1);
     let bias2=  Array(200).fill(1);
     let weights1 = []
     let weights2 = []
     for(let i = 0;i<200;i++){
         weights1[i] = []
-        for(let j = 0;j<2500;j++){
+        for(let j = 0;j<784;j++){
             weights1[i][j] = (Math.floor(Math.random() * 100) * 0.03) / (data.length + 35);
         }
     }
@@ -62,11 +76,11 @@ function Neural(data){
     sum(neurons2,bias1)
     activateFunc(neurons2)
     let neurons3 = multi(weights2, neurons2)
-    console.log(neurons3)
     sum(neurons3,bias2)
-    console.log(neurons3)
     activateFunc(neurons3)
-    console.log(neurons3)
-    return searchMax(neurons3);
+    let set = mnist.set(1000,0)
+    set = set.training
+    console.log(set[0].input)
+
 
 }

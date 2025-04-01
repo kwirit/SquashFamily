@@ -1,0 +1,20 @@
+{
+  "name": "Parameters",
+  "homepage": "https://github.com/kwirit/Team608",
+  "authors": [
+    "Egor_Granin <epichescktdm@gmail.com>"
+  ],
+  "description": "-",
+  "main": "Main",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mnist": "^1.0.5"
+  }
+}
