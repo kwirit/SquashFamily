@@ -12,24 +12,23 @@ body {
 
 #container {
     display: grid;
-    gap: 1px;
     width: 300px;
     height: 300px;
 }
 
 .square {
-    background-color: palevioletred;
+    background-color: hotpink;
     width: 100%;
     height: 100%;
     transition: background-color 0.1s;
 }
 
 .square.wall {
-    background-color: #000000; /* Черный цвет для стен */
+    background-color: #000000;
 }
 
 .square.passage {
-    background-color: whitesmoke; /* Красный цвет для пути */
+    background-color: #ffffff;
 }
 
 .square.main {
@@ -39,3 +38,12 @@ body {
 .square.path {
     background-color: #ff0000;
 }
+
+.square.sidePath{
+    background-color: #ffc437;
+}
+
+.square.mainPath {
+    background-color: #80ff00;
+}
+.square.pointedPath {}
