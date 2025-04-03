@@ -39,28 +39,10 @@ button1.addEventListener("click", guess)
 button2.addEventListener("click", clear)
 button3.addEventListener("click", study)
 
-let weights1 = []
-let weights2 = []
-for(let i = 0;i<200;i++){
-    weights1[i] = []
-}
-for(let i = 0;i<10;i++){
-    weights2[i] = []
-}
-let bias1 = []
-let bias2 = []
-
 function study(){
-    console.log("начало обучения")
-    Neural(getData(), weights1, weights2,bias1,bias2)
-    console.log("Обучена")
-    // console.log(weigts1)
-    // console.log(weight2)
-    // console.log(bias1)
-    // console.log(bias2)
 }
 
-function getData(){
+function guess(){
     let scannedImage = ctx.getImageData(0,0,width,height)
     let imageData = scannedImage.data
     ctx2.drawImage(canvas, 0, 0, 50, 50, 0, 0, 28, 28);
@@ -81,10 +63,5 @@ function getData(){
             data[i] = 1
         }
     }
-    return data
-}
-
-function guess(){
-    console.log("угадываю")
-    console.log(feedForward(getData(),weights1,weights2,bias1,bias2,[],[],[]))
+    Neural(data)
 }
