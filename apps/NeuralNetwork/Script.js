@@ -63,5 +63,8 @@ function guess(){
             data[i] = 1
         }
     }
+    console.log(data)
     Neural(data)
+
+
 }
