@@ -14,7 +14,7 @@ function draw(event){
     if (!isDrawing){
         return
     }
-    ctx.lineWidth = 1
+    ctx.lineWidth = 2
     ctx.lineTo(event.offsetX, event.offsetY)
     ctx.stroke()
 }
@@ -45,23 +45,10 @@ function study(){
 function guess(){
     let scannedImage = ctx.getImageData(0,0,width,height)
     let imageData = scannedImage.data
-    ctx2.drawImage(canvas, 0, 0, 50, 50, 0, 0, 28, 28);
-    scannedImage = ctx2.getImageData(0,0,28,28)
-    imageData = scannedImage.data
-    let data = []
-    if(imageData[3] === 0) {
-        data[0] = 0
-    }
-    else{
-        data[0] = 1
-    }
-    for(let i = 1;i<28*28;i++){
-        if(imageData[i*4-1] === 0) {
-            data[i] = 0
-        }
-        else{
-            data[i] = 1
-        }
+    let data =[]
+    data[0] = (imageData[3] / 255)
+    for(let i = 1;i<width*height;i++){
+        data[i] = (imageData[i*4-1] / 255)
     }
     Neural(data)
 }
