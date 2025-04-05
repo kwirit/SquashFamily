@@ -14,7 +14,7 @@ function draw(event){
     if (!isDrawing){
         return
     }
-    ctx.lineWidth = 2
+    ctx.lineWidth = 1
     ctx.lineTo(event.offsetX, event.offsetY)
     ctx.stroke()
 }
@@ -63,8 +63,5 @@ function guess(){
             data[i] = 1
         }
     }
-    console.log(data)
     Neural(data)
-
-
 }
