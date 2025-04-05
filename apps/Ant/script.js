@@ -12,28 +12,9 @@ const wallBtn = document.getElementById('wallBtn');
 // Переменные состояния
 let currentTool = null;
 let canDraw = false;
-// let anthill = false;
 
 // Словарь цветов
 const toolColors = {anthill: "brown", food: "green", wall: "grey"};
-
-
-
-// // Инициализация объектов мира
-// let world = []; initWorld(world, canvas.height, canvas.width); //Матрица пикселей мира
-// let anthillPixels = []; // Координаты муравейника
-// let ants = []; // Муравьинная колония
-// let pheromones = new Map(); //Координаты - уровень феромоно. Храним феромоны, которые > min
-
-// // Параметры
-// let ALF = 1; // Параметр влияния феромонов
-// let P = 0.1; // Скорость испарения феромоно
-// let L = 400000000; // Длина оптимального путь
-// let A = 10; // Корректировка минимального порога феромонов
-
-// // Уровень феромонов
-// let max_pheromon_lvl = 1/(P * L);
-// let min_pheromon_lvl = max_pheromon_lvl / A;
 
 // Обработка нажатия на кнопки
 anthillBtn.addEventListener('click', () => {setActiveTool('anthill', anthillBtn);});
