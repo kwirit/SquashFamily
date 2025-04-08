@@ -4,23 +4,17 @@ class Point {
         this.y = y;
         this.radius = radius;
         this.color = color;
-        this.index = index;
-    }
-
-    deletePoint() {
-        drawPoints(this.x, this.y, this.radius * 2, "white");
-        if (this.index !== -1) {
-            allPoints.splice(this.index, 1);
-            for (let i = this.index; i < allPoints.length; i++) {
-                allPoints[i].index = i;
-            }
-        }
     }
 
     setNewColor(color) {
         drawPoints(this.x, this.y, this.radius, color);
         this.color = color;
     }
+}
+
+function getRandomElementSet(set){
+    let array = [...set];
+    return array[random(1, array.length - 1)];
 }
 
 function EuclideanDistance(pointFirst, pointSecond) {
@@ -67,10 +61,12 @@ const radius = 3;
 
 const buttonKMeans = document.getElementById('ButtonKMeans');
 const buttonKMeansPP = document.getElementById('ButtonKMeansPP');
+const buttonDBSCAN = document.getElementById('ButtonDBSCAN');
 const buttonClear = document.getElementById('ButtonClear');
 buttonKMeans.addEventListener('click', KMeans);
 buttonClear.addEventListener('click', clearGrid);
 buttonKMeansPP.addEventListener('click', KMeansPP);
+buttonDBSCAN.addEventListener('click', DBSCAN);
 canv.addEventListener('click', (e) => {
     const rect = canv.getBoundingClientRect();
     const x = e.clientX - rect.left - 3;
@@ -230,5 +226,60 @@ function KMeansPP() {
     do {
         createClusters(clusters);
     } while (reCalcCentroids(clusters, countCluster, 0.01));
+}
+
+
+
+function DBSCAN(m, epsilon){
+    function calcEpsilonLocality(currPoint) {
+        let arrayPointsEpsilon = new Array(0);
+        for (let point of allPoints) {
+            let distance = EuclideanDistance(point, currPoint);
+            if (distance < epsilon && point !== currPoint && notMarkedPoints.has(point))
+                arrayPointsEpsilon.push(point);
+        }
+        return arrayPointsEpsilon;
+    }
+
+    function recursionFindClusters(currPoint) {
+        let arrayPointsEpsilon = calcEpsilonLocality(currPoint);
+        console.log(notMarkedPoints);
+        if (notMarkedPoints.has(currPoint))
+            notMarkedPoints.delete(currPoint);
+        currPoint.setNewColor(colors[currColor]);
+
+        if (arrayPointsEpsilon.length >= m){
+            clusters[currColor].push(currPoint)
+            for (let neighbour of arrayPointsEpsilon) {
+                recursionFindClusters(neighbour);
+            }
+        }
+    }
+
+    m = 5;
+    epsilon = 100;
+    clearClusters();
+    if (allPoints.length === 0) return;
+    let currColor = 0;
+    let notMarkedPoints = new Set(allPoints);
+    let pointsForFind = new Set(allPoints);
+    let clusters = {};
+
+    while (notMarkedPoints.size > 0) {
+        let currPoint = getRandomElementSet(pointsForFind);
+        let arrayPointsEpsilon = calcEpsilonLocality(currPoint);
+        notMarkedPoints.delete(currPoint);
+
+        if (arrayPointsEpsilon.length >= m) {
+            pointsForFind.delete(currPoint);
+            clusters[currColor] = [];
+            clusters[currColor].push(currPoint)
+            currPoint.setNewColor(colors[currColor]);
+            for (let neighbour of arrayPointsEpsilon) {
+                recursionFindClusters(neighbour)
+            }
+            currColor++;
+        }
+    }
 }
 
