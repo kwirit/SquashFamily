@@ -4,12 +4,30 @@ let colony = []; // Массив с муравьями
 let phHome = new Map(); // JSON {y, x} - {lvl, direction}
 let phFood = new Map(); // JSON {y, x} - {lvl, direction}
 
+// Кисть
+let BRUSH_SIZE = 15; // Размер кисти
 
-let MAX_PH_LVL = 1;
-let MAX_PATH = 5000;
-let MIN_PH_LVL = MAX_PH_LVL / MAX_PATH;
-let P = 0.1;
-let ALF = 3;
+// Феромоны
+let MAX_PH_LVL = 1; // Максимальный порог феромона
+let STABILITY = 1000; // Устойчивость феромонов
+let MIN_PH_LVL = MAX_PH_LVL / STABILITY; // Минимальный порог феромонов
+
+// Испарение
+let EVAPARATION_RATE = 100; // Скорость испарения феромонов
+let P = 0.1; // Сила испарения феромонов
+
+// Решение муравья
+let ALF = 2; // Приоритет нового пути
+let PROBABILITY_OF_REJECTION = 0.1; // Вероятность отклонения
+let DEFLECTION_FORCE = 30; // Сила отклонения
+let PROBABILITY_OF_ERROR = 0.1; // Вероятность ошибки
+
+// Колония
+let MODEL_SIZE = 3; // Размер модельки
+let COUNT_ANTS = 500; // Кол-во муравьёв
+let MAX_PATH = 100000; // Максимально разрешённый пройденный путь муравья
+
+let SPEED_BOOST = 10; // Частота отрисовки
 
 
 // Муравей
@@ -103,7 +121,7 @@ function checkAvailableBlocks(world, ant) {
         for(let x = ant.x - 1; x <= ant.x + 1; ++x) {
             // Пропускаем не доступные клетки
             if((y < 0 || y > world.length - 1) || (x < 0 || x > world[y].length - 1) || 
-            (getColorPixel(world[y][x]) == "grey") ||(y == ant.y && x == ant.x)) {
+            (getColorPixel(world[y][x]) == "grey") || (y == ant.y && x == ant.x)) {
                 continue;
             }
 
@@ -124,6 +142,8 @@ function kill(canvas, world, anthillPixels, ant, size_ant) {
     ant.newDirection(new_direction);
     ant.forgetPath();
     
+    drawAnt(canvas, ant, size_ant, "black");
+
     return;
 }
 
@@ -144,15 +164,15 @@ function rotate(alf, bet) {
 function mutationDirection(ant, probability, degree) {
     let p = Math.random();
     if(p <= probability) {
-        ant.direction = (p <= probability/2 ? rotate(ant.direction, -degree) : rotate(ant.direction, degree));
+        ant.direction = (p < probability/2 ? rotate(ant.direction, -degree) : rotate(ant.direction, degree));
     }
     return;
 }
 
-function getNextPosition(ant, length_jump) {
+function getNextPosition(position, direction, length_jump) {
     // Получаем новые координаты в полярной системе координат
-    let x = ant.x + length_jump * Math.cos(degToRad(ant.direction));
-    let y = ant.y + length_jump * Math.sin(degToRad(ant.direction));
+    let x = position.x + length_jump * Math.cos(degToRad(direction));
+    let y = position.y + length_jump * Math.sin(degToRad(direction));
     
     // Округляем до целого исла
     x = Math.round(x);
@@ -174,7 +194,7 @@ function available(world, height, width, position) {
 function markPH(phMap, ant) {
     let position = JSON.stringify(ant.getPos());
     let lvl = (1 - P) * (1 / ant.path);
-    lvl = Math.max(MIN_PH_LVL, Math.min(MAX_PH_LVL, lvl));
+    lvl = Math.min(MAX_PH_LVL, lvl);
     let direction = convertDeg(ant.direction + 180);
 
     if((phMap.has(position)) && (lvl <= phMap.get(position).lvl)) return;
@@ -183,65 +203,45 @@ function markPH(phMap, ant) {
     return;
 }
 
+function bounceAnt(ant, spread = 60) {
+    
+    let opposite = convertDeg(ant.direction + 180);
+    
+    let lowerBound = Math.round(opposite - spread / 2);
+    let upperBound = Math.round(opposite + spread / 2);
+    
+    let newDir = getRandomInt(lowerBound, upperBound);
+    ant.newDirection(convertDeg(newDir));
+}
+
 function processAnt(canvas, world, anthillPixels, phHome, phFood, ant, size_ant) {
-    if(ant.path > MAX_PATH || !checkAvailableBlocks(world, ant)) {kill(canvas, world, anthillPixels, ant, size_ant); return;}
+    if(ant.path > MAX_PATH) {kill(canvas, world, anthillPixels, ant, size_ant); return;}
 
     let position = JSON.stringify(ant.getPos());
-    if(ant.hungry && phFood.has(position)) {
+    let error = Math.random();
+    if(ant.hungry && phFood.has(position) && error > PROBABILITY_OF_ERROR) {
         let new_direction = phFood.get(position).direction;
-        ant.newDirection(new_direction);
+        let new_position = getNextPosition(ant.getPos(), new_direction, 1);
+        if(available(world, canvas.height, canvas.width, new_position)) ant.newDirection(new_direction);
     }
-    else if(!ant.hungry && phHome.has(position)) {
+    else if(!ant.hungry && phHome.has(position) && error > PROBABILITY_OF_ERROR) {
         let new_direction = phHome.get(position).direction;
-        ant.newDirection(new_direction);
+        let new_position = getNextPosition(ant.getPos(), new_direction, 1);
+        if(available(world, canvas.height, canvas.width, new_position)) ant.newDirection(new_direction);
     }
 
-    // if (ant.hungry && phFood.has(position)) {
-    //     let d = phFood.get(position).direction;
-    //     let testPos = getNextPosition({ ...ant, direction: d }, 1);
-    //     if (available(world, canvas.height, canvas.width, testPos)) {
-    //         ant.newDirection(d);
-    //     } else {
-    //         phFood.delete(position); // тупик — удаляем феромон
-    //     }
-    // }
-    // else if (!ant.hungry && phHome.has(position)) {
-    //     let d = phHome.get(position).direction;
-    //     let testPos = getNextPosition({ ...ant, direction: d }, 1);
-    //     if (available(world, canvas.height, canvas.width, testPos)) {
-    //         ant.newDirection(d);
-    //     } else {
-    //         phHome.delete(position); // тупик — удаляем феромон
-    //     }
-    // }
+    mutationDirection(ant, PROBABILITY_OF_REJECTION, DEFLECTION_FORCE);
 
-    mutationDirection(ant, 0.1, 30);
-
-    let next_position = getNextPosition(ant, 1); // {y, x}
-
-    // for(let i = 0;!available(world, canvas.height, canvas.width, next_position); ++i) {
-    //     if(i > 3) {
-    //         kill(canvas, world, anthillPixels, ant, size_ant);
-    //         return;
-    //     }
-
-    //     let left = ant.direction - ant.direction % 180;
-    //     let right = left + 180;
-        
-    //     ant.newDirection(convertDeg(getRandomInt(left + 180, right + 180)));
-    //     next_position = getNextPosition(ant, 1);
-    // }
+    let next_position = getNextPosition(ant.getPos(), ant.direction, 1); // {y, x}
 
     while(!available(world, canvas.height, canvas.width, next_position)) {
-        // let left = ant.direction - ant.direction % 180;
-        // let right = left + 180;
-        
-        ant.newDirection(convertDeg(getRandomInt(0, 360)));
-        next_position = getNextPosition(ant, 1);
+        if(!checkAvailableBlocks(world, ant)) {kill(canvas, world, anthillPixels, ant, size_ant); return;}
+        bounceAnt(ant, 90);
+        next_position = getNextPosition(ant.getPos(), ant.direction, 1);
     }
 
     eraseAnt(canvas, world, ant, size_ant);
-    
+
     ant.newPosition(next_position.x, next_position.y);
     ++ant.path;
 
@@ -249,23 +249,25 @@ function processAnt(canvas, world, anthillPixels, phHome, phFood, ant, size_ant)
 
     let color_pixel = getColorPixel(world[ant.y][ant.x]);
     if((color_pixel == "brown" && !ant.hungry) || (color_pixel == "green" && ant.hungry)) {
-        ant.forgetPath();
         ant.hungry = (color_pixel == "green" ? false : true);
+        ant.forgetPath();
     }
 
-    drawAnt(canvas, ant, size_ant, (ant.hungry ? "black" : "green"));
+    drawAnt(canvas, ant, size_ant, (ant.hungry ? "brown" : "green"));
 
     return;
 }
 
-function vaporizePheromones(phMap) {
+function vaporizePheromones(phMap, P) {
     const keys = Array.from(phMap.keys());
     for(let i = 0; i < keys.length; ++i) {
         let lvl = phMap.get(keys[i]).lvl * (1 - P);
+        lvl = (lvl > MAX_PH_LVL ? MAX_PH_LVL : lvl);
+
         let direction = phMap.get(keys[i]).direction;
-        phMap.set(keys[i], {lvl:(lvl > MAX_PH_LVL ? MAX_PH_LVL : lvl), direction:direction});
-        if (lvl < MIN_PH_LVL) phMap.delete(keys[i]);
-        else phMap.set(keys[i], {lvl: Math.min(lvl, MAX_PH_LVL), direction});
+        
+        if(lvl > MIN_PH_LVL) phMap.set(keys[i], {lvl, direction});
+        else phMap.delete(keys[i]);
 
     }
 
@@ -279,24 +281,22 @@ function antColonySimulator(canvas) {
         return;
     }
 
-    initColony(colony, anthillPixels, 1000);
+    initColony(colony, anthillPixels, COUNT_ANTS);
     
-    let speedBoost = 5; // 1 = нормально, 10 = очень быстро
-
     let count = 0;
 
     function simulate() {
         // Обновляем логику несколько раз за кадр
-        for (let i = 0; i < speedBoost; i++) {
+        for (let i = 0; i < SPEED_BOOST; i++) {
             for (let ant of colony) {
-                processAnt(canvas, world, anthillPixels, phHome, phFood, ant, 3);
+                processAnt(canvas, world, anthillPixels, phHome, phFood, ant, MODEL_SIZE);
             }
+            ++count;
         }
-        
-        ++count;
-        if(count == 100) {
-            vaporizePheromones(phHome, P * count);
-            vaporizePheromones(phFood, P * count);
+
+        if(count == EVAPARATION_RATE) {
+            vaporizePheromones(phHome, P * 1/EVAPARATION_RATE);
+            vaporizePheromones(phFood, P * 1/EVAPARATION_RATE);
             count = 0;
         }
         
