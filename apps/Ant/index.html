@@ -10,22 +10,109 @@
 
 <body>
 
-    <h1>Ant Colony Simulator</h1>
-
     <div class = "interface">
+        <h1>Ant Colony Simulator</h1>
+        
         <canvas id="mapCanvas" width="1000" height="500" style = "cursor: crosshair"></canvas>
 
         <div class = "buttons">
             <button id="anthillBtn">Anthill</button>
             <button id="foodBtn">Food</button>
             <button id="wallBtn">Wall</button>
-            <button id="spawnBtn">Spawn ants</button>
+            <button id="eraserBtn">Eraser</button>
         </div>
+
+        <div>
+            <label for="numberInput">Brush size:</label>
+            <input type="number" id="brushSize" placeholder="Enter a number">
+        </div>
+
+        <h3>Settings</h3>
+        <div class = "settings">
+            <div pheromone>
+                <h4>Pheromone</h4>
+                <div>
+                    <label for="numberInput">Maximum pheromone levels</label>
+                    <input type="number" id="MAX_PH_LVL" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">Stability</label>
+                    <input type="number" id="PHEROMONE_DESTRUCTION" placeholder="Enter a number">
+                </div>
+            </div>
+
+            <div evaporation>
+                <h4>Evaporation</h4>
+                <div>
+                    <label for="numberInput">Evaparation rate</label>
+                    <input type="number" id="EVAPARATION_RATE" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">P</label>
+                    <input type="number" id="P" placeholder="Enter a number">
+                </div>
+            </div>
+
+            <div ant_solution>
+                <h4>The Ant's Solution</h4>
+                <div>
+                    <label for="numberInput">ALF</label>
+                    <input type="number" id="ALF" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">Probability of rejection</label>
+                    <input type="number" id="PROBABILITY_OF_REJECTION" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">Deflection force</label>
+                    <input type="number" id="DEFLECTION_FORCE" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">Probability of error</label>
+                    <input type="number" id="PROBABILITY_OF_ERROR" placeholder="Enter a number">
+                </div>
+            </div>
+
+            <div colony>
+                <h4>A colony</h4>
+                <div>
+                    <label for="numberInput">Model size</label>
+                    <input type="number" id="MODEL_SIZE" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">Count ants</label>
+                    <input type="number" id="COUNT_ANTS" placeholder="Enter a number">
+                </div>
+                <div>
+                    <label for="numberInput">Max path</label>
+                    <input type="number" id="MAX_PATH" placeholder="Enter a number">
+                </div>
+            </div>
+
+            <div food>
+                <h4>Food</h4>
+                <div>
+                    <label for="numberInput">Satiety</label>
+                    <input type="number" id="SATIETY" placeholder="Enter a number">
+                </div>
+            </div>
+            <div>
+                <h4>
+                <div>
+                    <label for="numberInput">Speed boost</label>
+                    <input type="number" id="SPEED_BOOST" placeholder="Enter a number">
+                </div>
+                </h4>
+            </div>
+        </div>
+
+        <button id="spawnBtn">Create a colony</button>
     </div>
 
     <script src = "functions.js"></script>
     <script src="script.js"></script>
     <script src = "ant_colony_optimization.js"></script>
+
 </body>
 
 </html>
