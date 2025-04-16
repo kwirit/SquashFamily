@@ -7,12 +7,12 @@ let phFood = new Map(); // JSON {y, x} - {lvl, direction}
 
 // Феромоны
 let MAX_PH_LVL = 1; // Максимальный порог феромона
-let STABILITY = 50; // Устойчивость феромонов
-let MIN_PH_LVL = MAX_PH_LVL / STABILITY; // Минимальный порог феромонов
+let SUSTAINABILITY = 10; // Устойчивость феромонов        Sustainability
+let MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY; // Минимальный порог феромонов
 
 // Испарение
 let EVAPARATION_RATE = 100; // Скорость испарения феромонов
-let P = 0.5; // Сила испарения феромонов
+let P = 0.01; // Сила испарения феромонов
 
 // Решение муравья
 let ALF = 2; // Приоритет нового пути
@@ -35,7 +35,7 @@ let SPEED_BOOST = 1; // Частота отрисовки
 
 // Обработчики событий
 document.getElementById('MAX_PH_LVL').addEventListener('change', function() {MAX_PH_LVL = parseInt(this.value);})
-document.getElementById('STABILITY').addEventListener('change', function() { STABILITY= parseInt(this.value);})
+document.getElementById('SUSTAINABILITY').addEventListener('change', function() { SUSTAINABILITY= parseInt(this.value);})
 document.getElementById('EVAPARATION_RATE').addEventListener('change', function() {EVAPARATION_RATE = parseInt(this.value);})
 document.getElementById('P').addEventListener('change', function() {P = parseFloat(this.value);})
 document.getElementById('ALF').addEventListener('change', function() {ALF = parseInt(this.value);})
