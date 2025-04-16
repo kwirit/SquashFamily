@@ -38,8 +38,6 @@ canvas.addEventListener('mousedown', (e) => {
 
 canvas.addEventListener('mousemove', (e) => {
     if(canDraw && (currentTool == "wall" || currentTool == "eraser")) drawPixel(e, world, BRUSH_SIZE);
-    // if (!canDraw || currentTool != "wall") return;
-    // drawPixel(e, world, BRUSH_SIZE);
 });
 
 canvas.addEventListener('mouseup', () => {

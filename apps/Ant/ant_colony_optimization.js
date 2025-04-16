@@ -7,42 +7,49 @@ let phFood = new Map(); // JSON {y, x} - {lvl, direction}
 
 // Феромоны
 let MAX_PH_LVL = 1; // Максимальный порог феромона
-let SUSTAINABILITY = 10; // Устойчивость феромонов        Sustainability
+let SUSTAINABILITY = 100; // Устойчивость феромонов
 let MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY; // Минимальный порог феромонов
 
 // Испарение
 let EVAPARATION_RATE = 100; // Скорость испарения феромонов
-let P = 0.01; // Сила испарения феромонов
+let P = 0.1; // Сила испарения феромонов
 
 // Решение муравья
-let ALF = 2; // Приоритет нового пути
+let ALF = 3; // Приоритет нового пути
 let PROBABILITY_OF_REJECTION = 0.1; // Вероятность отклонения
 let DEFLECTION_FORCE = 30; // Сила отклонения
-let PROBABILITY_OF_ERROR = 0.2; // Вероятность ошибки
+let PROBABILITY_OF_ERROR = 0.1; // Вероятность ошибки
 
 // Колония
 let MODEL_SIZE = 1; // Размер модельки
-let COUNT_ANTS = 10000; // Кол-во муравьёв
-let MAX_PATH = 100000; // Максимально разрешённый пройденный путь муравья
+let COUNT_ANTS = 2000; // Кол-во муравьёв
+let MAX_PATH = 2000; // Максимально разрешённый пройденный путь муравья
 
 // Еда
 let SATIETY = 0; // Сытноссть еды, 0 - бесконечная еда
 
 // Анимация
-let SPEED_BOOST = 1; // Частота отрисовки
+let SPEED_BOOST = 10; // Частота отрисовки
 
 
 
 // Обработчики событий
-document.getElementById('MAX_PH_LVL').addEventListener('change', function() {MAX_PH_LVL = parseInt(this.value);})
-document.getElementById('SUSTAINABILITY').addEventListener('change', function() { SUSTAINABILITY= parseInt(this.value);})
+document.getElementById('MAX_PH_LVL').addEventListener('change', function() {
+    MAX_PH_LVL = parseInt(this.value);
+    MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY;
+});
+
+document.getElementById('SUSTAINABILITY').addEventListener('change', function() {
+    SUSTAINABILITY = parseInt(this.value);
+    MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY;
+});
 document.getElementById('EVAPARATION_RATE').addEventListener('change', function() {EVAPARATION_RATE = parseInt(this.value);})
 document.getElementById('P').addEventListener('change', function() {P = parseFloat(this.value);})
 document.getElementById('ALF').addEventListener('change', function() {ALF = parseInt(this.value);})
 document.getElementById('PROBABILITY_OF_REJECTION').addEventListener('change', function() {PROBABILITY_OF_REJECTION = parseFloat(this.value);})
 document.getElementById('DEFLECTION_FORCE').addEventListener('change', function() {DEFLECTION_FORCE = parseInt(this.value);})
 document.getElementById('PROBABILITY_OF_ERROR').addEventListener('change', function() {PROBABILITY_OF_ERROR = parseFloat(this.value);})
-document.getElementById('MODEL_SIZE').addEventListener('change', function() {MODEL_SIZE = parseInt(this.value);})
+document.getElementById('MODEL_SIZE').addEventListener('change', function() {MODEL_SIZE = parseFloat(this.value);})
 document.getElementById('COUNT_ANTS').addEventListener('change', function() {COUNT_ANTS = parseInt(this.value);})
 document.getElementById('MAX_PATH').addEventListener('change', function() {MAX_PATH = parseInt(this.value);})
 document.getElementById('SATIETY').addEventListener('change', function() {SATIETY = parseInt(this.value);})
@@ -118,12 +125,7 @@ function initColony(colony, anthillPixels, count_ants) {
         let ant = new Ant(ant_position.x, ant_position.y, ant_direction, true);
         colony.push(ant);
     }
-    // for(let i = 0; i < count_ants; ++i) {
-    //     let ant_position = anthillPixels[getRandomInt(0, anthillPixels.length - 1)];
-    //     let ant_direction = getRandomInt(0, 360);
-    //     let ant = new Ant(ant_position.x, ant_position.y, ant_direction, true);
-    //     colony.push(ant);
-    // }
+
     return;
 }
 
@@ -298,7 +300,7 @@ function processAnt(canvas, world, anthillPixels, food, phHome, phFood, ant, siz
     return;
 }
 
-function vaporizePheromones(phMap, P) {
+function vaporizePheromones(phMap) {
     const keys = Array.from(phMap.keys());
     for(let i = 0; i < keys.length; ++i) {
         let lvl = phMap.get(keys[i]).lvl * (1 - P);
@@ -308,7 +310,6 @@ function vaporizePheromones(phMap, P) {
         
         if(lvl > MIN_PH_LVL) phMap.set(keys[i], {lvl, direction});
         else phMap.delete(keys[i]);
-
     }
 
     return;
@@ -340,8 +341,8 @@ function antColonySimulator(canvas) {
         }
 
         if(count == EVAPARATION_RATE) {
-            vaporizePheromones(phHome, P * 1/EVAPARATION_RATE);
-            vaporizePheromones(phFood, P * 1/EVAPARATION_RATE);
+            vaporizePheromones(phHome);
+            vaporizePheromones(phFood);
             count = 0;
         }
         
