@@ -1,5 +1,10 @@
+import {
+    loadTemplate, EuclideanDistance,
+    random, drawPoints, getRandomElementSet
+} from "./utilites.js";
+
 class Point {
-    constructor(x, y, radius, color, index) {
+    constructor(x, y, radius, color) {
         this.x = x;
         this.y = y;
         this.radius = radius;
@@ -7,45 +12,13 @@ class Point {
     }
 
     setNewColor(color) {
-        drawPoints(this.x, this.y, this.radius, color);
+        drawPoints(this.x, this.y, this.radius, color, ctx);
         this.color = color;
     }
 }
 
-function getRandomElementSet(set){
-    let array = [...set];
-    return array[random(1, array.length - 1)];
-}
-
-function EuclideanDistance(pointFirst, pointSecond) {
-    return Math.sqrt(
-        Math.pow(pointFirst.x - pointSecond.x, 2) +
-        Math.pow(pointFirst.y - pointSecond.y, 2)
-    );
-}
-
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function drawPoints(x, y, radius, color) {
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fill();
-}
-
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function min(numberFirst, numberSecond) {
-    return numberFirst > numberSecond ? numberSecond : numberFirst;
-}
-
-function max(numberFirst, numberSecond) {
-    return numberFirst < numberSecond ? numberSecond : numberFirst;
-}
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
 
 let canv = document.querySelector('canvas');
 let ctx = canv.getContext('2d');
@@ -57,23 +30,34 @@ let allPoints = [];
 let allCentroids = [];
 const colors = ['red', 'green', 'yellow', 'blue', 'purple', 'pink', 'orange'];
 const neutralColor = "rgba(65, 137, 255, 0.87)";
-const radius = 3;
+let radius = 3;
+let m = 4;
+let epsilon = 10;
 
-const buttonKMeans = document.getElementById('ButtonKMeans');
-const buttonKMeansPP = document.getElementById('ButtonKMeansPP');
-const buttonDBSCAN = document.getElementById('ButtonDBSCAN');
 const buttonClear = document.getElementById('ButtonClear');
-buttonKMeans.addEventListener('click', KMeans);
+const buttonStartClustering = document.getElementById('button-start-clustering');
+
+buttonStartClustering.addEventListener('click', clustering);
 buttonClear.addEventListener('click', clearGrid);
-buttonKMeansPP.addEventListener('click', KMeansPP);
-buttonDBSCAN.addEventListener('click', DBSCAN);
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('radius-rangeButton');
+    const rangeValue = document.getElementById('radius-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        radius = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    radius = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
 canv.addEventListener('click', (e) => {
     const rect = canv.getBoundingClientRect();
-    const x = e.clientX - rect.left - 3;
-    const y = e.clientY - rect.top - 3;
+    const x = e.clientX - rect.left - radius;
+    const y = e.clientY - rect.top - radius;
     createPoint(x, y, radius, neutralColor);
 });
-
 function clearGrid() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canv.width, canv.height);
@@ -91,20 +75,20 @@ function clearClusters() {
     ctx.fillStyle = 'black';
     allCentroids = [];
     for (let point of allPoints) {
-        drawPoints(point.x, point.y, point.radius, neutralColor);
+        drawPoints(point.x, point.y, point.radius, neutralColor, ctx);
         point.setNewColor(neutralColor);
     }
 }
 
 function createPoint(x, y, radius, color) {
-    drawPoints(x, y, radius, color);
-    let newPoint = new Point(x, y, radius, color, allPoints.length);
+    drawPoints(x, y, radius, color, ctx);
+    let newPoint = new Point(x, y, radius, color);
     allPoints.push(newPoint);
     return newPoint;
 }
 
 function createCentroids(x, y, radius, color) {
-    drawPoints(x, y, radius * 2, color);
+    drawPoints(x, y, radius * 2, color, ctx);
     let newCentroid = new Point(x, y, radius * 2, color, -1);
     allCentroids.push(newCentroid);
     return newCentroid;
@@ -155,9 +139,9 @@ function reCalcCentroids(clusters, countCluster, controlValue) {
         let diff = EuclideanDistance(newCentroid, oldCentroid);
         if (diff > controlValue) {
             flag = true;
-            drawPoints(oldCentroid.x, oldCentroid.y, oldCentroid.radius + 1, "white");
+            drawPoints(oldCentroid.x, oldCentroid.y, oldCentroid.radius + 1, "white", ctx);
             allCentroids[allCentroids.indexOf(oldCentroid)] = newCentroid;
-            drawPoints(newCentroid.x, newCentroid.y, newCentroid.radius, newCentroid.color);
+            drawPoints(newCentroid.x, newCentroid.y, newCentroid.radius, newCentroid.color, ctx);
         }
     }
     return flag;
@@ -211,7 +195,7 @@ function KMeansPP() {
                 if (distance < minDistance)
                     minDistance = distance;
             }
-            if (minDistance > maxDistance){
+            if (minDistance > maxDistance) {
                 aspCentroid = point;
                 maxDistance = minDistance;
             }
@@ -228,9 +212,7 @@ function KMeansPP() {
     } while (reCalcCentroids(clusters, countCluster, 0.01));
 }
 
-
-
-function DBSCAN(m, epsilon){
+function DBSCAN(m, epsilon) {
     function calcEpsilonLocality(currPoint) {
         let arrayPointsEpsilon = new Array(0);
         for (let point of allPoints) {
@@ -248,11 +230,10 @@ function DBSCAN(m, epsilon){
             notMarkedPoints.delete(currPoint);
         currPoint.setNewColor(colors[currColor]);
 
-        if (arrayPointsEpsilon.length >= m){
+        if (arrayPointsEpsilon.length >= m) {
             clusters[currColor].push(currPoint)
-            for (let neighbour of arrayPointsEpsilon) {
+            for (let neighbour of arrayPointsEpsilon)
                 recursionFindClusters(neighbour);
-            }
         }
     }
 
@@ -275,11 +256,34 @@ function DBSCAN(m, epsilon){
             clusters[currColor] = [];
             clusters[currColor].push(currPoint)
             currPoint.setNewColor(colors[currColor]);
-            for (let neighbour of arrayPointsEpsilon) {
+            for (let neighbour of arrayPointsEpsilon)
                 recursionFindClusters(neighbour)
-            }
             currColor++;
         }
     }
 }
 
+function clustering() {
+    const radioButtons = document.querySelectorAll('input[name="vbtn-radio"]');
+
+    let selectedAlgorithm = null;
+    radioButtons.forEach(radio => {
+        if (radio.checked) {
+            selectedAlgorithm = radio.id;
+        }
+    });
+
+    switch (selectedAlgorithm) {
+        case 'radio-DBSCAN':
+            DBSCAN(m, epsilon);
+            break;
+        case 'radio-KMeansPP':
+            KMeansPP();
+            break;
+        case 'radio-KMeans':
+            KMeans();
+            break;
+        default:
+            alert('Не выбран алгоритм кластеризации');
+    }
+}

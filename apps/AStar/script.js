@@ -1,18 +1,68 @@
-import { Queue, UnionFind } from "./structures.js";
+import {Queue, UnionFind} from "./structures.js";
+import {delay, random, loadTemplate} from "./utilites.js";
 
 let queueMain = new Queue();
+let stopVisualization = true;
 let grid;
 let gridSize;
-let path = new Array(0);
+let path = [];
+let state = "Main";
 const directions = [[0, 1], [0, -1], [-1, 0], [1, 0]];
 
+let buttonCreateGrid = document.getElementById("buttonCreateGrid");
+let buttonSettingsWalls = document.getElementById("buttonSettingsWalls");
+let buttonFindPath = document.getElementById("buttonFindPath");
+let buttonVisualizationPath = document.getElementById("buttonVisualisationPath");
+let buttonClearPath = document.getElementById("buttonClearPath");
 
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
 
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+
+buttonCreateGrid.addEventListener("click", function (event) {
+    if (!stopVisualization) stopVisualization = true;
+    clear();
+    createGrid();
+})
+buttonSettingsWalls.addEventListener("click", () => {
+    if (!stopVisualization) stopVisualization = true;
+    clear();
+    changeStateEditWalls();
+});
+buttonFindPath.addEventListener("click", () => {
+    if (!stopVisualization) stopVisualization = true;
+    if (state === "Main")
+        findPathWrapper();
+});
+buttonVisualizationPath.addEventListener("click", () => {
+    if (state === "Main") {
+        stopVisualization = false;
+        visualizationPath();
+    }
+});
+buttonClearPath.addEventListener('click', async () => {
+    if (!stopVisualization) stopVisualization = true;
+    await delay(250);
+    clear();
+});
+
+function changeStateEditWalls() {
+    if (state === "Main") {
+        state = "EditWalls";
+        document.getElementById("container").classList.add("editMode");
+        buttonSettingsWalls.classList.add("editModeButton");
+        buttonClearPath.classList.add("disabled");
+        buttonFindPath.classList.add("disabled");
+        buttonVisualizationPath.classList.add("disabled");
+    } else {
+        state = "Main";
+        document.getElementById("container").classList.remove("editMode");
+        buttonSettingsWalls.classList.remove("editModeButton");
+        buttonClearPath.classList.remove("disabled");
+        buttonFindPath.classList.remove("disabled");
+        buttonVisualizationPath.classList.remove("disabled");
+    }
+
 }
 
 function createGrid() {
@@ -29,7 +79,7 @@ function createGrid() {
 
     if (checkGridSize(gridSize)) return;
 
-    grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(null));
+    grid = Array.from({length: gridSize}, () => Array(gridSize).fill(null));
 
     const container = document.getElementById("container");
     container.innerHTML = "";
@@ -44,10 +94,13 @@ function createGrid() {
             square.dataset.col = col;
             square.classList.add('square');
             square.classList.add("wall");
-            square.addEventListener("click", editPassage);
-            square.addEventListener("contextmenu", function (event) {
-                event.preventDefault();
-                setMain(event);
+            square.addEventListener("click", (event) => {
+                if (state === "EditWalls")
+                    editPassage(event);
+            });
+            square.addEventListener("click", function (event) {
+                if (state === "Main")
+                    setMain(event);
             });
             container.appendChild(square);
             grid[row][col] = square;
@@ -55,6 +108,7 @@ function createGrid() {
     }
     generateMazeKruskal();
 }
+
 
 function generateMazeKruskal() {
     let walls = [];
@@ -69,17 +123,17 @@ function generateMazeKruskal() {
             if (col + 2 < gridSize)
                 walls.push([[row, col], [row, col + 2]]);
         }
-        if (gridSize % 2 === 0 && random(0, 1) === 0){
+        if (gridSize % 2 === 0 && random(0, 1) === 0) {
             grid[row][gridSize - 1].classList.remove('wall');
             grid[row][gridSize - 1].classList.add('passage');
         }
     }
     for (let idx = 0; idx < gridSize; idx++) {
-        if (gridSize % 2 === 0 && random(0, 100) <= 30){
+        if (gridSize % 2 === 0 && random(0, 100) <= 30) {
             grid[idx][gridSize - 1].classList.remove('wall');
             grid[idx][gridSize - 1].classList.add('passage');
         }
-        if (gridSize % 2 === 0 && random(0, 100) <= 30){
+        if (gridSize % 2 === 0 && random(0, 100) <= 30) {
             grid[gridSize - 1][idx].classList.remove('wall');
             grid[gridSize - 1][idx].classList.add('passage');
         }
@@ -107,6 +161,7 @@ function generateMazeKruskal() {
         }
     }
 }
+
 
 function editPassage(event) {
     const square = event.target;
@@ -140,24 +195,25 @@ function setMain(event) {
     queueMain.append(newSquare);
 }
 
+function clear(exceptions = new Set([])) {
+    let clearsType = new Set(['main', 'path', 'sidePath', 'mainPath', 'pointedPath', 'currentPath']);
+    clearsType = clearsType.difference(exceptions);
 
-function clear() {
     for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
-            if (grid[row][col].classList.contains('main'))
-                grid[row][col].classList.remove('main');
-            if (grid[row][col].classList.contains('path'))
-                grid[row][col].classList.remove('path');
-            if (grid[row][col].classList.contains('sidePath'))
-                grid[row][col].classList.remove('sidePath');
-            if (grid[row][col].classList.contains('mainPath'))
-                grid[row][col].classList.remove('mainPath');
+
+            for (let type of clearsType)
+                if (grid[row][col].classList.contains(type))
+                    grid[row][col].classList.remove(type);
+
         }
     }
+    if (clearsType.has('main'))
+        queueMain.clear();
     path.length = 0;
 }
 
-function bottonFindPath(){
+function findPathWrapper() {
     if (queueMain.size() !== 2) {
         alert("Выберите две точки начала и конца.");
         return;
@@ -166,11 +222,12 @@ function bottonFindPath(){
     printPath();
 }
 
-function printPath(){
+function printPath() {
     for (let square of path)
         square.classList.add('path');
 
 }
+
 function getPassageNeighbors(square) {
     const neighbors = [];
     let row = parseInt(square.dataset.row, 10);
@@ -189,6 +246,7 @@ function getPassageNeighbors(square) {
 }
 
 function findPath() {
+    clear(new Set(['main']));
     path.length = 0;
 
     let frontier = new Queue();
@@ -227,55 +285,48 @@ function findPath() {
     path = path.reverse();
 }
 
-function getPath(){
-    async function DFS(current){
-        await delay(100)
-        if (current === end && currPath !== path.length - 1)
-            return;
-        visited.add(current);
-        if (visited.has(end))
-            return;
-        if (current.classList.contains('pointedPath')) {
-            current.classList.add("mainPath");
-            currPath++;
-        }
-        else
-            current.classList.add("sidePath");
-
-        for (let neighbor of getPassageNeighbors(current)) {
-            if (neighbor.classList.contains('pointedPath') && !visited.has(neighbor))
-                await DFS(neighbor);
-            if (!visited.has(neighbor))
-                await DFS(neighbor);
-        }
-
-    }
-    if (path.length === 0 && queueMain.size() === 0) {
+async function visualizationPath() {
+    if (path.length === 0 && queueMain.size() < 2) {
         alert("Выберите две точки, для нахождения пути между ними");
         return;
     }
-    if (path.length === 0 && queueMain.size() === 2) {}
+    if (path.length === 0 && queueMain.size() === 2)
         findPath();
 
     let visited = new Set();
+    let frontier = new Queue();
 
     let start = queueMain.peekLeft();
     let end = queueMain.peekRight();
-    let currPath = 0;
-    visited.add(start);
 
-    DFS(start);
+    visited.add(start);
+    frontier.append(start);
+
+    while (!frontier.isEmpty() && !stopVisualization) {
+        if (visited.has(end))
+            break;
+        let current = frontier.popLeft();
+        current.classList.add('currentPath');
+        if (current.classList.contains('pointedPath'))
+            current.classList.add("mainPath");
+        else
+            current.classList.add('sidePath')
+
+        await delay(300);
+        for (let neighbor of getPassageNeighbors(current))
+            if (!visited.has(neighbor)) {
+                frontier.append(neighbor);
+                visited.add(neighbor);
+            }
+        current.classList.remove('currentPath');
+    }
+
     if (visited.has(end))
         end.classList.add("mainPath");
 
 }
 
-window.createGrid = createGrid;
-window.findPath = bottonFindPath;
-window.getPath = getPath;
-window.deletePath = clear;
 
-
-window.onload = function() {
+window.onload = function () {
     createGrid();
 };

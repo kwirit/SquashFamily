@@ -1,6 +1,6 @@
 export class UnionFind {
     constructor(size) {
-        this.parent = Array.from({ length: size }, (_, i) => i);
+        this.parent = Array.from({length: size}, (_, i) => i);
         this.rank = Array(size).fill(0);
     }
 
@@ -73,5 +73,11 @@ export class Queue {
 
     size() {
         return this.rear - this.front;
+    }
+
+    clear() {
+        this.items = {};
+        this.rear = 0;
+        this.front = 0;
     }
 }
