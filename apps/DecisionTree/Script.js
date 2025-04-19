@@ -24,7 +24,14 @@ function getTree(){
 }
 
 function predict(){
-
+    let data = ta2.value
+    data = data.split(";")
+    let obj = {}
+    for(let i = 0;i<tree.header.length-1;i++){
+        obj[tree.header[i]] = data[i]
+    }
+    console.log(tree)
+    passTree(tree,tree.root,obj)
 }
 
 

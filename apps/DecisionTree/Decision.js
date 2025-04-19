@@ -50,14 +50,19 @@ class DecisionTree{
     constructor(data,header,amountOfClasses) {
         this.root = new Node()
         this.root.data = data
-        this.buildTree(this.root, header,amountOfClasses)
+        this.header = header
+        this.root.entropy = ent(data,this.header,amountOfClasses)
+        this.buildTree(this.root,amountOfClasses)
     }
-    buildTree(node,header,amountOfClasses){
-        let parentEntropy = ent(node.data,header,amountOfClasses)
+    buildTree(node,amountOfClasses){
+        let parentEntropy = ent(node.data,this.header,amountOfClasses)
         if(parentEntropy === 0){
-            console.log(node.data)
-            console.log(node.entropy)
-            return 1
+            let div = document.createElement('div');
+            div.innerHTML = '<div style="border: solid; width: 300px; height: 150px"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
+            document.body.append(div);
+            node.firstChild = null
+            node.secondChild = null
+            return
         }
         let predicates = []
         let informationGain = -1
@@ -66,7 +71,7 @@ class DecisionTree{
         let firstResultEntropy
         let secondResultEntropy
         let resultPredicate
-        for(let key of header.slice(0,-1)) {
+        for(let key of this.header.slice(0,-1)) {
             let colms = new Set()
             for (let i = 0; i < node.data.length; i++) {
                 colms.add(node.data[i][key])
@@ -80,7 +85,7 @@ class DecisionTree{
                 let secondSet = []
                 let predicate = parseInt(predicates[i][j])
                 for(let object of node.data){
-                    if(parseInt(object[header[i]]) <= predicate){
+                    if(parseInt(object[this.header[i]]) <= predicate){
                         firstSet.push(object)
                     }
                     else{
@@ -88,8 +93,8 @@ class DecisionTree{
                     }
                 }
                 if(firstSet.length !== 0 && secondSet.length !==0){
-                    let firstSetEntropy = ent(firstSet,header,amountOfClasses)
-                    let secondSetEntropy = ent(secondSet,header,amountOfClasses)
+                    let firstSetEntropy = ent(firstSet,this.header,amountOfClasses)
+                    let secondSetEntropy = ent(secondSet,this.header,amountOfClasses)
                     let tempInformationGain = parentEntropy - (firstSet.length / node.data.length)*firstSetEntropy - (secondSet.length / node.data.length)*secondSetEntropy
                     if(tempInformationGain > informationGain){
                         informationGain = tempInformationGain
@@ -97,7 +102,7 @@ class DecisionTree{
                         secondResultSet = secondSet
                         firstResultEntropy = firstSetEntropy
                         secondResultEntropy = secondSetEntropy
-                        resultPredicate = predicates[i][j]
+                        resultPredicate = [this.header[i],predicates[i][j]]
                     }
                 }
             }
@@ -109,11 +114,13 @@ class DecisionTree{
         secondNode.data = secondResultSet
         secondNode.entropy = secondResultEntropy
         node.predicate = resultPredicate
-        console.log(resultPredicate)
         node.firstChild = firstNode
         node.secondChild = secondNode
-        this.buildTree(firstNode,header,amountOfClasses)
-        this.buildTree(secondNode,header,amountOfClasses)
+        let div = document.createElement('div');
+        div.innerHTML = '<div style="border: solid; width: 300px; height: 150px; left: 600px; position: relative;"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
+        document.body.append(div);
+        this.buildTree(firstNode,amountOfClasses)
+        this.buildTree(secondNode,amountOfClasses)
     }
 }
 
@@ -126,6 +133,22 @@ function makeTree(data,header){
     return tree
 }
 
-function passTree(node, object, header){
-
+function passTree(tree, node, object){
+    let div = document.createElement('div');
+    if(node.firstChild === null && node.secondChild === null){
+        div.innerHTML = '<div style="border: solid"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
+        document.body.append(div);
+        console.log(node.data[0][tree.header[tree.header.length-1]])
+        return
+    }
+    if(parseInt(object[node.predicate[0]]) <= parseInt(node.predicate[1])){
+        div.innerHTML = '<div style="border: solid"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
+        document.body.append(div);
+        passTree(tree,node.firstChild,object)
+    }
+    else{
+        div.innerHTML = '<div style="border: solid"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
+        document.body.append(div);
+        passTree(tree,node.secondChild,object)
+    }
 }
