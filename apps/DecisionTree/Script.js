@@ -1,8 +1,8 @@
 ta1 = document.getElementById("ta1")
 b1 = document.getElementById("b1")
-b1.addEventListener("click", getTree)
 ta2 = document.getElementById("ta2")
 b2 = document.getElementById("b2")
+b1.addEventListener("click", getTree)
 b2.addEventListener("click", predict)
 
 let tree

@@ -1,5 +1,4 @@
 class Node{
-    value
     entropy
     predicate
     data
