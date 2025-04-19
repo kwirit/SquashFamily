@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="styles.css">
+    <title>Лабиринт</title>
+</head>
+<body class="text-wrapper">
+<div class="wrapper">
+    <div id="header-templates"></div>
+    <div class="text-wrapper">
+        <div class="hero container">
+            <div class="hero-text">
+                <h2>A-Star find path</h2>
+                <p>Вы можете сгенерировать карту-лабиринт размером NxN. Вы сможете модернизировать лабиринт, добавляя
+                    или удаляя непроходимые клетки, а также устанавливая
+                    начальную и конечную точки маршрута. При запуске будет демонстрироваться анимация поиска пути
+                    алгоритмом A*, где будут видны рассматриваемые, выбранные и анализируемые клетки в режиме реального
+                    времени.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="algorithms container">
+        <div id=blockGrid" class="block">
+            <div id="container"></div>
+        </div>
+        <div class="buttons d-grid gap-2">
+            <div id="settingsGrid" class="settingsGrid">
+                <label for="sizeGrid" class="form-lable">Размер поля:</label>
+                <input type="number" class="form-control" id="sizeGrid" value="10">
+                <button id="buttonCreateGrid" type="button" class="btn btn-dark">Создать сетку</button>
+                <button id="buttonSettingsWalls" type="button" class="btn btn-dark">Настроить стены</button>
+            </div>
+            <button id="buttonFindPath" type="button" class="btn btn-dark btn-lg">Найти путь</button>
+            <button id="buttonVisualisationPath" type="button" class="btn btn-dark btn-lg">Показать нахождение пути
+            </button>
+            <button id="buttonClearPath" type="button" class="btn btn-dark btn-lg">Сбросить</button>
+        </div>
+    </div>
+</div>
+<div class="text-wrapper">
+    <div id="footer-templates"></div>
+</div>
+<script type="module" src="./script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
