@@ -1,6 +1,11 @@
 ta1 = document.getElementById("ta1")
 b1 = document.getElementById("b1")
 b1.addEventListener("click", getTree)
+ta2 = document.getElementById("ta2")
+b2 = document.getElementById("b2")
+b2.addEventListener("click", predict)
+
+let tree
 
 function getTree(){
     let data = ta1.value
@@ -15,6 +20,11 @@ function getTree(){
         }
         objects.push(user)
     }
-    makeTree(objects,header)
+    tree = makeTree(objects,header)
 }
+
+function predict(){
+
+}
+
 

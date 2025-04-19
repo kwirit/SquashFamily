@@ -53,8 +53,10 @@ class DecisionTree{
         this.buildTree(this.root, header,amountOfClasses)
     }
     buildTree(node,header,amountOfClasses){
-        let parentEntropy = ent(node.data,header,amountOfClasses);
+        let parentEntropy = ent(node.data,header,amountOfClasses)
         if(parentEntropy === 0){
+            console.log(node.data)
+            console.log(node.entropy)
             return 1
         }
         let predicates = []
@@ -73,9 +75,9 @@ class DecisionTree{
             predicates.push(colms)
         }
         for(let i = 0;i<predicates.length;i++){
-            let firstSet = []
-            let secondSet = []
             for(let j = 0;j<predicates[i].length;j++){
+                let firstSet = []
+                let secondSet = []
                 let predicate = parseInt(predicates[i][j])
                 for(let object of node.data){
                     if(parseInt(object[header[i]]) <= predicate){
@@ -85,17 +87,18 @@ class DecisionTree{
                         secondSet.push(object)
                     }
                 }
-                let firstSetEntropy = ent(firstSet,header,amountOfClasses)
-                let secondSetEntropy = ent(secondSet,header,amountOfClasses)
-                let tempInformationGain = parentEntropy - (firstSet.length / node.data.length)*firstSetEntropy - (secondSet.length / node.data.length)*secondSetEntropy
-                console.log(tempInformationGain)
-                if(tempInformationGain > informationGain){
-                    informationGain = tempInformationGain
-                    firstResultSet = firstSet
-                    secondResultSet = secondSet
-                    firstResultEntropy = firstSetEntropy
-                    secondResultEntropy = secondSetEntropy
-                    resultPredicate = predicates[i][j]
+                if(firstSet.length !== 0 && secondSet.length !==0){
+                    let firstSetEntropy = ent(firstSet,header,amountOfClasses)
+                    let secondSetEntropy = ent(secondSet,header,amountOfClasses)
+                    let tempInformationGain = parentEntropy - (firstSet.length / node.data.length)*firstSetEntropy - (secondSet.length / node.data.length)*secondSetEntropy
+                    if(tempInformationGain > informationGain){
+                        informationGain = tempInformationGain
+                        firstResultSet = firstSet
+                        secondResultSet = secondSet
+                        firstResultEntropy = firstSetEntropy
+                        secondResultEntropy = secondSetEntropy
+                        resultPredicate = predicates[i][j]
+                    }
                 }
             }
         }
@@ -106,6 +109,7 @@ class DecisionTree{
         secondNode.data = secondResultSet
         secondNode.entropy = secondResultEntropy
         node.predicate = resultPredicate
+        console.log(resultPredicate)
         node.firstChild = firstNode
         node.secondChild = secondNode
         this.buildTree(firstNode,header,amountOfClasses)
@@ -119,4 +123,9 @@ function makeTree(data,header){
         amountOfClasses.add(data[i][header[header.length-1]])
     }
     let tree = new DecisionTree(data,header,amountOfClasses.size)
+    return tree
+}
+
+function passTree(node, object, header){
+
 }
