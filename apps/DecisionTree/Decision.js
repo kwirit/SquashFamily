@@ -57,8 +57,6 @@ class DecisionTree{
         let parentEntropy = ent(node.data,this.header,amountOfClasses)
         if(parentEntropy === 0){
             let div = document.createElement('div');
-            div.innerHTML = '<div style="border: solid; width: 300px; height: 150px"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
-            document.body.append(div);
             node.firstChild = null
             node.secondChild = null
             return
@@ -116,8 +114,6 @@ class DecisionTree{
         node.firstChild = firstNode
         node.secondChild = secondNode
         let div = document.createElement('div');
-        div.innerHTML = '<div style="border: solid; width: 300px; height: 150px; left: 600px; position: relative;"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
-        document.body.append(div);
         this.buildTree(firstNode,amountOfClasses)
         this.buildTree(secondNode,amountOfClasses)
     }
@@ -135,19 +131,13 @@ function makeTree(data,header){
 function passTree(tree, node, object){
     let div = document.createElement('div');
     if(node.firstChild === null && node.secondChild === null){
-        div.innerHTML = '<div style="border: solid"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
-        document.body.append(div);
         console.log(node.data[0][tree.header[tree.header.length-1]])
         return
     }
     if(parseInt(object[node.predicate[0]]) <= parseInt(node.predicate[1])){
-        div.innerHTML = '<div style="border: solid"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
-        document.body.append(div);
         passTree(tree,node.firstChild,object)
     }
     else{
-        div.innerHTML = '<div style="border: solid"><p> entropy: '+ node.entropy +'</p><p>samples: ' + node.data.length + '</p><p>blabla</p></div>'
-        document.body.append(div);
         passTree(tree,node.secondChild,object)
     }
 }

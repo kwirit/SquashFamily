@@ -20,7 +20,7 @@ function draw(event){
     if (!isDrawing){
         return
     }
-    ctx.lineWidth = 2
+    ctx.lineWidth = 4
     ctx.lineTo(event.offsetX*width/canvas.clientWidth, event.offsetY*width/canvas.clientHeight)
     ctx.stroke()
 }

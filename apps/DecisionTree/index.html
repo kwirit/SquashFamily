@@ -3,6 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+
+        .node text {
+            font: 12px sans-serif;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+
+        #tree-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
     <textarea id="ta1" style="width: 300px; height: 150px">age;ap_hi;cardio
@@ -14,6 +45,8 @@
     <textarea id="ta2" style="width: 300px; height: 50px">70;150</textarea>
     <button id="b1">SUBMIT</button>
     <button id="b2">PREDICT</button>
+    <div id="tree-container"></div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="Decision.js "></script>
     <script src="Script.js" ></script>
 </body>
