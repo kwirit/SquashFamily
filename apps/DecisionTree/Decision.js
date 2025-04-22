@@ -128,16 +128,16 @@ function makeTree(data,header){
     return tree
 }
 
-function passTree(tree, node, object){
-    let div = document.createElement('div');
-    if(node.firstChild === null && node.secondChild === null){
-        console.log(node.data[0][tree.header[tree.header.length-1]])
-        return
-    }
-    if(parseInt(object[node.predicate[0]]) <= parseInt(node.predicate[1])){
-        passTree(tree,node.firstChild,object)
-    }
-    else{
-        passTree(tree,node.secondChild,object)
-    }
-}
+// function passTree(tree, node, object){
+//     let div = document.createElement('div');
+//     if(node.firstChild === null && node.secondChild === null){
+//         console.log(node.data[0][tree.header[tree.header.length-1]])
+//         return
+//     }
+//     if(parseInt(object[node.predicate[0]]) <= parseInt(node.predicate[1])){
+//         passTree(tree,node.firstChild,object)
+//     }
+//     else{
+//         passTree(tree,node.secondChild,object)
+//     }
+// }
