@@ -263,6 +263,7 @@ header nav ul li.myBtn-nav:not(.active) a:hover {
     padding: 50px;
 }
 
+
 #settings {
     font-size: 24px;
     flex-direction: column;
@@ -272,39 +273,66 @@ header nav ul li.myBtn-nav:not(.active) a:hover {
 
 #settings p {
     justify-content: center;
+    padding-top: 0;
     display: flex;
+}
+
+.block-settings {
+    padding: 10px;
+    background: #232323;
+    border-radius: 15px;
+}
+
+#settings .block-settings p,
+#settings label {
+    font-size: 18px;
+}
+
+.name-category {
+    margin-top: 5px;
+}
+
+.name-category:first-child {
+    margin-top: 0;
+}
+
+.additional-text {
+    font-size: 12px !important;
+
 }
 
 #settings-KMeans {
     display: flex;
-    flex-direction: column;
-    padding-bottom: 20px;
-    border-bottom: 3px #F5F5F5 solid;
+    gap: 10px;
+    align-items: center;
 }
 
-#settings-DBSCAN {
-    padding-top: 25px;
+.range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-#settings-radius label {
-    margin-bottom: 10px;
+#settings input {
+    display: block;
+    flex: 1;
 }
-
-#settings-radius input {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-#settings-radius p {
-    text-align: center;
-}
-
 
 .custom-range::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     background-color: #a3a3a3;
     border-radius: 3px;
+}
+
+.custom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #1E1E1E;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: -4px;
 }
 
 

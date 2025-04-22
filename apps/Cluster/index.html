@@ -15,7 +15,7 @@
     <div class="text-wrapper">
         <div class="hero container">
             <div class="hero-text">
-                <h2>Clustering algorithms</h2>
+                <h2>Clustering algorithm</h2>
             </div>
         </div>
     </div>
@@ -60,24 +60,40 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                    <p class="name-category" id="label-settings-general">DBSCAN</p>
-                    <div id="general-settings">
-                        <div id="settings-radius">
+                    <p class="name-category" id="label-settings-general">General</p>
+                    <div id="general-settings" class="block-settings">
+                        <div id="settings-radius" class="range-container">
                             <label for="radius-rangeButton" class="form-label">Radius:</label>
                             <input type="range" class="form-control custom-range" value="3" min="3" max="20"
                                    id="radius-rangeButton">
-                            <p>Current value: <span id="radius-rangeValue">3</span></p>
                         </div>
+                        <p>Current value: <span id="radius-rangeValue">3</span></p>
+
                     </div>
+
                     <p class="name-category" id="label-settings-KMeans">KMeans (KMeans++)</p>
-                    <div id="settings-KMeans">
+                    <div id="settings-KMeans" class="block-settings">
                         <label for="CountCluster">Number of clusters:</label>
                         <input type="number" class="form-control" value="10" id="CountCluster">
                     </div>
+
                     <p class="name-category" id="label-settings-DBSCAN">DBSCAN</p>
-                    <div id="settings-DBSCAN">
-                        <label for="m-range" class="form-label">m</label>
-                        <input type="range" class="form-control custom-range" value="3" min="3" max="20" id="m-range">
+                    <div id="settings-DBSCAN" class="block-settings">
+                        <div class="range-container">
+                            <label for="m-rangeButton" class="form-label">m</label>
+                            <input type="range" class="form-control custom-range" value="3" min="3" max="10"
+                                   id="m-rangeButton">
+                        </div>
+                        <p>Current value: <span id="m-rangeValue">3</span></p>
+                        <p class="additional-text">m - number of points in the vicinity of epsilon</p>
+
+                        <div class="range-container">
+                            <label for="epsilon-rangeButton" class="form-label">epsilon</label>
+                            <input type="range" class="form-control custom-range" value="20" min="1" max="200"
+                                   id="epsilon-rangeButton">
+                        </div>
+                        <p>Current value: <span id="epsilon-rangeValue">20</span> px</p>
+                        <p class="additional-text">epsilon - neighborhood of one cluster</p>
                     </div>
                 </div>
             </div>
