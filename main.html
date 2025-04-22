@@ -2,9 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="static/icons/favicon.svg" />
+    <title>Домашняя страница</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="css/fonts.css" rel="stylesheet">
 </head>
-<body>
-
+<body class="text-wrapper">
+    <div class="wrapper">
+        <div id="header-templates"></div>
+        <div class="text-wrapper">
+            <div class="hero container">
+                <div class="hero-text">
+                    <h2>Algorithms</h2>
+                </div>
+            </div>
+            <script type="module" src="./main.js"></script>
+        </div>
+        <div class="algorithms container">
+            <div class="block">
+                <div class="algorithm-item">
+                    <a href="apps\AStar\index.html">
+                        <span>A Algorithm *</span>
+                        <img src="static/image/maze" alt="">
+                    </a>
+                </div>
+                <div class="algorithm-item">
+                    <a href="apps\Cluster\index.html">
+                        <span>Clustering Algorithm</span>
+                        <img src="static/image/clusteringAI.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+            <div class="block">
+                <div class="algorithm-item">
+                    <a href="apps\Genetic\index.html">
+                        <span>Genetic Algorithm</span>
+                        <img src="static/image/genetic.jpg" alt="">
+                    </a>
+                </div>
+                <div class="algorithm-item">
+                    <a href="apps\Ant\index.html">
+                        <span>Ant Colony Algorithm</span>
+                        <img src="static/image/ants.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+            <div class="block">
+                <div class="algorithm-item">
+                    <a href="apps\DecisionTree\index.html">
+                        <span>Decision Tree Algorithm</span>
+                        <img src="static/image/decision%20tree.jpg" alt="">
+                    </a>
+                </div>
+                <div class="algorithm-item">
+                    <a href="apps\NeuralNetwork\Index.html">
+                        <span>Neural Network</span>
+                        <img src="static/image/neuralNetwork.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="text-wrapper">
+            <div id="footer-templates"></div>
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="../../css/fonts.css" rel="stylesheet">
+    <title>Clustering</title>
+</head>
+<body class="text-wrapper">
+<div class="wrapper">
+    <div id="header-templates">
+    </div>
+    <div class="text-wrapper">
+        <div class="hero container">
+            <div class="hero-text">
+                <h2>Clustering algorithms</h2>
+            </div>
+        </div>
+    </div>
+    <div class="algorithms container">
+        <div id="blockGrid" class="block">
+            <canvas id="MyCanvas" width="500" height="500"></canvas>
+        </div>
+        <div class="right-menu">
+            <ul class="nav nav-tabs menu" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="cluster-tab" data-bs-toggle="tab" data-bs-target="#start-menu"
+                            type="button" role="tab" aria-controls="cluster" aria-selected="true">Menu
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
+                            type="button" role="tab" aria-controls="settings" aria-selected="false">Settings
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="start-menu" role="tabpanel"
+                     aria-labelledby="cluster-tab">
+                    <p id="label-methods">Clustering Algorithm</p>
+                    <div id="methods-clustering" class="btn-group-vertical" role="group"
+                         aria-label="Вертикальная группа кнопок-переключателей">
+                        <input type="radio" class="btn-check" name="vbtn-radio" id="radio-DBSCAN" autocomplete="off"
+                               checked>
+                        <label class="btn btn-outline-danger" for="radio-DBSCAN">DBSCAN</label>
+                        <input type="radio" class="btn-check" name="vbtn-radio" id="radio-KMeansPP"
+                               autocomplete="off">
+                        <label class="btn btn-outline-danger" for="radio-KMeansPP">KMeans++</label>
+                        <input type="radio" class="btn-check" name="vbtn-radio" id="radio-KMeans"
+                               autocomplete="off">
+                        <label class="btn btn-outline-danger" for="radio-KMeans">KMeans</label>
+                        <div id="start-buttons">
+                            <button id="button-start-clustering" type="button" class="btn btn-dark btn-lg">
+                                Clustering
+                            </button>
+                            <button id="ButtonClear" type="button" class="btn btn-dark btn-lg">Clean</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <p class="name-category" id="label-settings-general">DBSCAN</p>
+                    <div id="general-settings">
+                        <div id="settings-radius">
+                            <label for="radius-rangeButton" class="form-label">Radius:</label>
+                            <input type="range" class="form-control custom-range" value="3" min="3" max="20"
+                                   id="radius-rangeButton">
+                            <p>Current value: <span id="radius-rangeValue">3</span></p>
+                        </div>
+                    </div>
+                    <p class="name-category" id="label-settings-KMeans">KMeans (KMeans++)</p>
+                    <div id="settings-KMeans">
+                        <label for="CountCluster">Number of clusters:</label>
+                        <input type="number" class="form-control" value="10" id="CountCluster">
+                    </div>
+                    <p class="name-category" id="label-settings-DBSCAN">DBSCAN</p>
+                    <div id="settings-DBSCAN">
+                        <label for="m-range" class="form-label">m</label>
+                        <input type="range" class="form-control custom-range" value="3" min="3" max="20" id="m-range">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-wrapper">
+    <div id="footer-templates">
+    </div>
+</div>
+<script type="module" src="./script.js"></script>
+<script src="../../js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

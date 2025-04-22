@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="../../css/fonts.css" rel="stylesheet">
+    <title>Maze</title>
+</head>
+<body class="text-wrapper">
+<div class="wrapper">
+    <div id="header-templates"></div>
+    <div class="text-wrapper">
+        <div class="hero container">
+            <div class="hero-text">
+                <h2>A-Star find path</h2>
+                <p>
+                    You can generate a NxN maze map. You can customize the maze by adding or removing impassable cells,
+                    and by setting the start and end points of the route. When running, an animation of the A-Star
+                    pathfinding algorithm will be shown, showing the cells being considered, selected, and analyzed in
+                    real time.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="algorithms container">
+        <div id=blockGrid" class="block">
+            <div id="container"></div>
+        </div>
+        <div class="buttons d-grid gap-2">
+            <div id="settingsGrid" class="settingsGrid">
+                <label for="sizeGrid" class="form-lable">Size field:</label>
+                <input type="number" class="form-control" id="sizeGrid" value="10">
+                <button id="buttonCreateGrid" type="button" class="btn btn-dark">Create field</button>
+                <button id="buttonSettingsWalls" type="button" class="btn btn-dark">Setting walls</button>
+            </div>
+            <button id="buttonFindPath" type="button" class="btn btn-dark btn-lg">Find path</button>
+            <button id="buttonVisualisationPath" type="button" class="btn btn-dark btn-lg">
+                Show pathfinding
+            </button>
+            <button id="buttonClearPath" type="button" class="btn btn-dark btn-lg">Reset</button>
+        </div>
+    </div>
+</div>
+<div class="text-wrapper">
+    <div id="footer-templates"></div>
+</div>
+<script type="module" src="./script.js"></script>
+<script src="../../js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
