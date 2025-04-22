@@ -6,7 +6,7 @@
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link href="../../css/fonts.css" rel="stylesheet">
-    <title>Лабиринт</title>
+    <title>Maze</title>
 </head>
 <body class="text-wrapper">
 <div class="wrapper">
@@ -16,11 +16,10 @@
             <div class="hero-text">
                 <h2>A-Star find path</h2>
                 <p>
-                    Вы можете сгенерировать карту-лабиринт размером NxN. Вы сможете модернизировать лабиринт, добавляя
-                    или удаляя непроходимые клетки, а также устанавливая
-                    начальную и конечную точки маршрута. При запуске будет демонстрироваться анимация поиска пути
-                    алгоритмом A*, где будут видны рассматриваемые, выбранные и анализируемые клетки в режиме реального
-                    времени.
+                    You can generate a NxN maze map. You can customize the maze by adding or removing impassable cells,
+                    and by setting the start and end points of the route. When running, an animation of the A-Star
+                    pathfinding algorithm will be shown, showing the cells being considered, selected, and analyzed in
+                    real time.
                 </p>
             </div>
         </div>
@@ -31,15 +30,16 @@
         </div>
         <div class="buttons d-grid gap-2">
             <div id="settingsGrid" class="settingsGrid">
-                <label for="sizeGrid" class="form-lable">Размер поля:</label>
+                <label for="sizeGrid" class="form-lable">Size field:</label>
                 <input type="number" class="form-control" id="sizeGrid" value="10">
-                <button id="buttonCreateGrid" type="button" class="btn btn-dark">Создать сетку</button>
-                <button id="buttonSettingsWalls" type="button" class="btn btn-dark">Настроить стены</button>
+                <button id="buttonCreateGrid" type="button" class="btn btn-dark">Create field</button>
+                <button id="buttonSettingsWalls" type="button" class="btn btn-dark">Setting walls</button>
             </div>
-            <button id="buttonFindPath" type="button" class="btn btn-dark btn-lg">Найти путь</button>
-            <button id="buttonVisualisationPath" type="button" class="btn btn-dark btn-lg">Показать нахождение пути
+            <button id="buttonFindPath" type="button" class="btn btn-dark btn-lg">Find path</button>
+            <button id="buttonVisualisationPath" type="button" class="btn btn-dark btn-lg">
+                Show pathfinding
             </button>
-            <button id="buttonClearPath" type="button" class="btn btn-dark btn-lg">Сбросить</button>
+            <button id="buttonClearPath" type="button" class="btn btn-dark btn-lg">Reset</button>
         </div>
     </div>
 </div>
