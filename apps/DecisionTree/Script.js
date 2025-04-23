@@ -1,13 +1,32 @@
-ta1 = document.getElementById("ta1")
-b1 = document.getElementById("b1")
-ta2 = document.getElementById("ta2")
-b2 = document.getElementById("b2")
+let ta1 = document.getElementById("ta1")
+let b1 = document.getElementById("b1")
+let ta2 = document.getElementById("ta2")
+let b2 = document.getElementById("b2")
+let maxDepthValue = document.getElementById("maxDepth")
+let maxSamplesValue = document.getElementById("maxSamples")
 b1.addEventListener("click", getTree)
 b2.addEventListener("click", predict)
+let c = document.getElementById("c")
+let r = document.getElementById("r")
+c.addEventListener("click", switchesC)
+r.addEventListener("click", switchesR)
+
+function switchesC(){
+    r.checked = false
+}
+function switchesR(){
+    c.checked = false
+}
 
 let tree
 
 function getTree(){
+    let maxDepth = parseInt(maxDepthValue.value)
+    let maxSamples = parseInt(maxSamplesValue.value)
+    if(c.checked ===false && r.checked === false){
+        alert("тип дерева выбери");
+        return;
+    }
     let data = ta1.value
     let rows = data.split("\n")
     let header = rows[0].split(",")
@@ -20,14 +39,13 @@ function getTree(){
         }
         objects.push(user)
     }
-    console.log(objects,header)
-    if(false){
-        tree = makeClassificatonTree(objects,header)
+    console.log(parseInt(maxDepth))
+    if(c.checked){
+        tree = makeClassificationTree(objects,header, maxDepth, maxSamples)
     }
     else{
-        tree = makeRegressionTree(objects,header)
+        tree = makeRegressionTree(objects,header, maxDepth, maxSamples)
     }
-    console.log(tree)
     visualizeTree(tree)
 }
 
@@ -36,12 +54,12 @@ function convertToD3Format(tree) {
 }
 
 function visualizeTree(tree) {
-    const root = convertToD3Format(tree);
+    const root = convertToD3Format(tree)
 
-    d3.select("#tree-container").html("");
+    d3.select("#tree-container").html("")
 
-    const width = document.getElementById("tree-container").clientWidth;
-    const height = document.getElementById("tree-container").clientHeight;
+    const width = document.getElementById("tree-container").clientWidth
+    const height = document.getElementById("tree-container").clientHeight
 
     const svg = d3.select("#tree-container").append("svg")
         .attr("width", width)
@@ -50,13 +68,13 @@ function visualizeTree(tree) {
             g.attr("transform", event.transform);
         }))
 
-    const g = svg.append("g");
+    const g = svg.append("g")
 
-    const treeLayout = d3.tree().size([width, height]);
+    const treeLayout = d3.tree().size([width, height])
 
-    const hierarchy = d3.hierarchy(root);
+    const hierarchy = d3.hierarchy(root)
 
-    const treeData = treeLayout(hierarchy);
+    const treeData = treeLayout(hierarchy)
 
     g.selectAll(".link")
         .data(treeData.links())
@@ -85,7 +103,7 @@ function visualizeTree(tree) {
     nodes.append("text")
         .attr("dy", "1.5em")
         .style("text-anchor", "middle")
-        .text(d => `Entropy: ${d.data.entropy.toFixed(2)}`);
+        .text(d => c.checked ? `Entropy: ${d.data.entropy.toFixed(2)}`:`MSE: ${d.data.entropy.toFixed(2)}`);
 
     nodes.append("text")
         .attr("dy", "2.5em")
@@ -112,49 +130,48 @@ function transformNode(node) {
 
 function getNodeLabel(node) {
     if (node.firstChild === null && node.secondChild === null) {
-        return "Class: " + node.data[0][Object.keys(node.data[0]).pop()];
+        return c.checked ? "Class: " + node.data[0][Object.keys(node.data[0]).pop()] : "Value: " + node.data[0][Object.keys(node.data[0]).pop()];
     }
     return node.predicate[0] + "<=" + node.predicate[1]
 }
 
 function predict() {
-    let data = ta2.value;
-    data = data.split(",");
-    let obj = {};
+    let data = ta2.value
+    data = data.split(",")
+    let obj = {}
 
     for (let i = 0; i < tree.header.length - 1; i++) {
-        obj[tree.header[i]] = data[i];
+        obj[tree.header[i]] = data[i]
     }
-    console.log(obj)
-    passTree(tree, tree.root, obj);
+    passTree(tree, tree.root, obj)
 }
 
 function passTree(tree, node, object) {
     d3.selectAll(".node").classed("highlighted", false);
 
-    const nodeMap = new Map();
+    const nodeMap = new Map()
 
     d3.selectAll(".node").each(function(d) {
-        const key = `${d.data.name}_${d.data.entropy}_${d.data.samples}`;
-        nodeMap.set(key, this);
+        const key = `${d.data.name}_${d.data.entropy}_${d.data.samples}`
+        nodeMap.set(key, this)
     });
 
     function traverseAndHighlight(node) {
-        const key = `${getNodeLabel(node)}_${node.entropy}_${node.data.length}`;
+        const key = `${getNodeLabel(node)}_${node.entropy}_${node.data.length}`
 
-        const d3Node = nodeMap.get(key);
+        const d3Node = nodeMap.get(key)
         if (d3Node) {
-            d3.select(d3Node).classed("highlighted", true);
+            d3.select(d3Node).classed("highlighted", true)
         }
 
         if (node.firstChild && node.secondChild) {
-            const value = parseInt(object[node.predicate[0]]);
-            const threshold = parseInt(node.predicate[1]);
+            const value = parseInt(object[node.predicate[0]])
+            const threshold = parseInt(node.predicate[1])
 
             if (value <= threshold) {
-                traverseAndHighlight(node.firstChild);
+                traverseAndHighlight(node.firstChild)
             } else {
-                traverseAndHighlight(node.secondChild);
+                traverseAndHighlight(node.secondChild)
             }
         }
     }

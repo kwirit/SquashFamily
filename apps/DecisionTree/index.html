@@ -36,7 +36,16 @@
 52.0,558.0,3.413
 52.0,565.0,3.422</textarea>
     <textarea id="ta2" style="width: 300px; height: 50px">70,150</textarea>
-    <button id="b1">SUBMIT</button>
+    <p>Classification Tree</p>
+    <input type="checkbox" id="c">
+    <p>Regression Tree</p>
+    <input type="checkbox" id="r">
+    <p>Настройки</p>
+    <p>Количество уровней</p>
+    <input type="text" id="maxDepth">
+    <p>количество экхемпляров в листе</p>
+    <input type="text" id="maxSamples">
+    <button id="b1">BUILD</button>
     <button id="b2">PREDICT</button>
     <div id="tree-container"></div>
     <script src="https://d3js.org/d3.v7.min.js"></script>

@@ -60,17 +60,19 @@ function ent(data,header, amountOfClasses){
 }
 
 class classificationDecisionTree{
-    constructor(data,header,amountOfClasses) {
+    constructor(data,header,amountOfClasses, maxDepth, maxSamples) {
         this.root = new Node()
         this.root.data = data
         this.header = header
+        this.maxDepth = maxDepth
+        this.maxSamples = maxSamples
         this.root.entropy = ent(data,this.header,amountOfClasses)
-        this.buildTree(this.root,amountOfClasses)
+        this.buildTree(this.root,amountOfClasses, 0)
     }
 
-    buildTree(node,amountOfClasses){
+    buildTree(node,amountOfClasses, level){
         let parentEntropy = ent(node.data,this.header,amountOfClasses)
-        if(parentEntropy === 0){
+        if(parentEntropy === 0 || level === maxDepth || node.data.length === maxSamples){
             node.firstChild = null
             node.secondChild = null
             return
@@ -127,23 +129,25 @@ class classificationDecisionTree{
         node.predicate = resultPredicate
         node.firstChild = firstNode
         node.secondChild = secondNode
-        this.buildTree(firstNode,amountOfClasses)
-        this.buildTree(secondNode,amountOfClasses)
+        this.buildTree(firstNode,amountOfClasses, level + 1)
+        this.buildTree(secondNode,amountOfClasses, level + 1)
     }
 }
 
 class regressionDecisionTree{
-    constructor(data,header,amountOfClasses, typeOfTree) {
+    constructor(data,header, maxDepth, maxSamples) {
         this.root = new Node()
         this.root.data = data
         this.header = header
-        this.root.entropy = mse(data,this.header,amountOfClasses)
-        this.buildTree(this.root)
+        this.maxDepth = maxDepth
+        this.maxSamples = maxSamples
+        this.root.entropy = mse(data,this.header)
+        this.buildTree(this.root, 0)
     }
 
-    buildTree(node){
+    buildTree(node, level){
         let parentEntropy = mse(node.data,this.header)
-        if(parentEntropy === 0){
+        if(parentEntropy === 0 || level === maxDepth || node.data.length === maxSamples){
             node.firstChild = null
             node.secondChild = null
             return
@@ -200,22 +204,22 @@ class regressionDecisionTree{
         node.predicate = resultPredicate
         node.firstChild = firstNode
         node.secondChild = secondNode
-        this.buildTree(firstNode)
-        this.buildTree(secondNode)
+        this.buildTree(firstNode,level + 1)
+        this.buildTree(secondNode, level + 1)
     }
 }
 
-function makeClassificatonTree(data,header){
+function makeClassificationTree(data,header, maxDepth, maxSamples){
     let amountOfClasses = new Set()
     for(let i = 0;i<data.length;i++) {
         amountOfClasses.add(data[i][header[header.length-1]])
     }
-    let tree = new classificationDecisionTree(data,header,amountOfClasses.size)
+    let tree = new classificationDecisionTree(data,header,amountOfClasses.size, maxDepth, maxSamples)
     return tree
 }
 
-function makeRegressionTree(data,header){
-    let tree = new regressionDecisionTree(data,header)
+function makeRegressionTree(data,header, maxDepth, maxSamples){
+    let tree = new regressionDecisionTree(data,header, maxDepth, maxSamples)
     return tree
 }
 
