@@ -6,12 +6,8 @@
     <style>
         .node circle {
             fill: #fff;
-            stroke: steelblue;
+            stroke: black;
             stroke-width: 2px;
-        }
-
-        .node text {
-            font: 12px sans-serif;
         }
 
         .link {
@@ -27,25 +23,19 @@
             overflow: hidden;
         }
 
-        .zoom-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-        }
         .node.highlighted circle {
             fill: green;
         }
     </style>
 </head>
 <body>
-    <textarea id="ta1" style="width: 300px; height: 150px">age;ap_hi;cardio
-50;110;0
-55;140;1
-52;130;1
-58;150;0
-48;100;0</textarea>
-    <textarea id="ta2" style="width: 300px; height: 50px">70;150</textarea>
+    <textarea id="ta1" style="width: 300px; height: 150px">HouseAge,Population,target
+41.0,322.0,4.526
+21.0,2401.0,3.585
+52.0,496.0,3.521
+52.0,558.0,3.413
+52.0,565.0,3.422</textarea>
+    <textarea id="ta2" style="width: 300px; height: 50px">70,150</textarea>
     <button id="b1">SUBMIT</button>
     <button id="b2">PREDICT</button>
     <div id="tree-container"></div>

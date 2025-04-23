@@ -10,17 +10,23 @@ let tree
 function getTree(){
     let data = ta1.value
     let rows = data.split("\n")
-    let header = rows[0].split(";")
+    let header = rows[0].split(",")
     let objects = []
     for(let row of rows.slice(1,rows.length)){
-        row = row.split(";")
+        row = row.split(",")
         let user = {}
         for(let i = 0;i<header.length;i++){
             user[header[i]] = row[i]
         }
         objects.push(user)
     }
-    tree = makeTree(objects,header)
+    console.log(objects,header)
+    if(false){
+        tree = makeClassificatonTree(objects,header)
+    }
+    else{
+        tree = makeRegressionTree(objects,header)
+    }
     console.log(tree)
     visualizeTree(tree)
 }
@@ -72,7 +78,7 @@ function visualizeTree(tree) {
 
     nodes.append("text")
         .attr("dy", ".35em")
-        .attr("y", d => d.children ? -20 : 20)
+        .attr("y", -20)
         .style("text-anchor", "middle")
         .text(d => d.data.name);
 
@@ -112,44 +118,35 @@ function getNodeLabel(node) {
 }
 
 function predict() {
-    let data = ta2.value; // Получаем данные из текстового поля
-    data = data.split(";"); // Разбиваем по разделителю
-    let obj = {}; // Создаем объект для классификации
+    let data = ta2.value;
+    data = data.split(",");
+    let obj = {};
 
-    // Заполняем объект данными (исключаем последний заголовок, так как это целевая переменная)
     for (let i = 0; i < tree.header.length - 1; i++) {
         obj[tree.header[i]] = data[i];
     }
-
-    // Вызываем passTree, передавая дерево, корневой узел и объект для классификации
+    console.log(obj)
     passTree(tree, tree.root, obj);
 }
 
 function passTree(tree, node, object) {
-    // Сбрасываем подсветку
     d3.selectAll(".node").classed("highlighted", false);
 
-    // Создаем карту для быстрого доступа к D3 узлам
     const nodeMap = new Map();
 
-    // Заполняем карту соответствия
     d3.selectAll(".node").each(function(d) {
         const key = `${d.data.name}_${d.data.entropy}_${d.data.samples}`;
         nodeMap.set(key, this);
     });
 
-    // Функция обхода с подсветкой
     function traverseAndHighlight(node) {
-        // Генерируем уникальный ключ для узла
         const key = `${getNodeLabel(node)}_${node.entropy}_${node.data.length}`;
 
-        // Находим соответствующий D3 узел и подсвечиваем
         const d3Node = nodeMap.get(key);
         if (d3Node) {
             d3.select(d3Node).classed("highlighted", true);
         }
 
-        // Проверяем условие предиката
         if (node.firstChild && node.secondChild) {
             const value = parseInt(object[node.predicate[0]]);
             const threshold = parseInt(node.predicate[1]);
@@ -162,6 +159,5 @@ function passTree(tree, node, object) {
         }
     }
 
-    // Начинаем обход
     traverseAndHighlight(node);
 }

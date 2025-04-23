@@ -18,6 +18,20 @@ function searchMax(values){
     return index
 }
 
+function mse(data,header){
+    let pred = 0
+    let mse = 0
+    for(let object of data){
+        pred += parseFloat(object[header[header.length-1]])
+    }
+    pred = pred / data.length
+    for(let object of data){
+        mse += Math.pow(parseFloat(object[header[header.length-1]]) - pred, 2)
+    }
+    mse = mse / data.length
+    return mse
+}
+
 function ent(data,header, amountOfClasses){
     let probabilitiesForEntropy = []
     let p
@@ -45,7 +59,7 @@ function ent(data,header, amountOfClasses){
     return s
 }
 
-class DecisionTree{
+class classificationDecisionTree{
     constructor(data,header,amountOfClasses) {
         this.root = new Node()
         this.root.data = data
@@ -53,10 +67,10 @@ class DecisionTree{
         this.root.entropy = ent(data,this.header,amountOfClasses)
         this.buildTree(this.root,amountOfClasses)
     }
+
     buildTree(node,amountOfClasses){
         let parentEntropy = ent(node.data,this.header,amountOfClasses)
         if(parentEntropy === 0){
-            let div = document.createElement('div');
             node.firstChild = null
             node.secondChild = null
             return
@@ -113,31 +127,95 @@ class DecisionTree{
         node.predicate = resultPredicate
         node.firstChild = firstNode
         node.secondChild = secondNode
-        let div = document.createElement('div');
         this.buildTree(firstNode,amountOfClasses)
         this.buildTree(secondNode,amountOfClasses)
     }
 }
 
-function makeTree(data,header){
+class regressionDecisionTree{
+    constructor(data,header,amountOfClasses, typeOfTree) {
+        this.root = new Node()
+        this.root.data = data
+        this.header = header
+        this.root.entropy = mse(data,this.header,amountOfClasses)
+        this.buildTree(this.root)
+    }
+
+    buildTree(node){
+        let parentEntropy = mse(node.data,this.header)
+        if(parentEntropy === 0){
+            node.firstChild = null
+            node.secondChild = null
+            return
+        }
+        let predicates = []
+        let informationGain = -1
+        let firstResultSet
+        let secondResultSet
+        let firstResultEntropy
+        let secondResultEntropy
+        let resultPredicate
+        for(let key of this.header.slice(0,-1)) {
+            let colms = new Set()
+            for (let i = 0; i < node.data.length; i++) {
+                colms.add(node.data[i][key])
+            }
+            colms = Array.from(colms)
+            predicates.push(colms)
+        }
+        for(let i = 0;i<predicates.length;i++){
+            for(let j = 0;j<predicates[i].length;j++){
+                let firstSet = []
+                let secondSet = []
+                let predicate = parseInt(predicates[i][j])
+                for(let object of node.data){
+                    if(parseInt(object[this.header[i]]) <= predicate){
+                        firstSet.push(object)
+                    }
+                    else{
+                        secondSet.push(object)
+                    }
+                }
+                if(firstSet.length !== 0 && secondSet.length !==0){
+                    let firstSetEntropy = mse(firstSet,this.header)
+                    let secondSetEntropy = mse(secondSet,this.header)
+                    let tempInformationGain = parentEntropy - (firstSet.length / node.data.length)*firstSetEntropy - (secondSet.length / node.data.length)*secondSetEntropy
+                    if(tempInformationGain > informationGain){
+                        informationGain = tempInformationGain
+                        firstResultSet = firstSet
+                        secondResultSet = secondSet
+                        firstResultEntropy = firstSetEntropy
+                        secondResultEntropy = secondSetEntropy
+                        resultPredicate = [this.header[i],predicates[i][j]]
+                    }
+                }
+            }
+        }
+        let firstNode = new Node()
+        let secondNode = new Node()
+        firstNode.data = firstResultSet
+        firstNode.entropy = firstResultEntropy
+        secondNode.data = secondResultSet
+        secondNode.entropy = secondResultEntropy
+        node.predicate = resultPredicate
+        node.firstChild = firstNode
+        node.secondChild = secondNode
+        this.buildTree(firstNode)
+        this.buildTree(secondNode)
+    }
+}
+
+function makeClassificatonTree(data,header){
     let amountOfClasses = new Set()
     for(let i = 0;i<data.length;i++) {
         amountOfClasses.add(data[i][header[header.length-1]])
     }
-    let tree = new DecisionTree(data,header,amountOfClasses.size)
+    let tree = new classificationDecisionTree(data,header,amountOfClasses.size)
     return tree
 }
 
-// function passTree(tree, node, object){
-//     let div = document.createElement('div');
-//     if(node.firstChild === null && node.secondChild === null){
-//         console.log(node.data[0][tree.header[tree.header.length-1]])
-//         return
-//     }
-//     if(parseInt(object[node.predicate[0]]) <= parseInt(node.predicate[1])){
-//         passTree(tree,node.firstChild,object)
-//     }
-//     else{
-//         passTree(tree,node.secondChild,object)
-//     }
-// }
+function makeRegressionTree(data,header){
+    let tree = new regressionDecisionTree(data,header)
+    return tree
+}
+
