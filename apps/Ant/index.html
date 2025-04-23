@@ -1,118 +1,236 @@
 <!DOCTYPE html>
-<html lang = "en">
-
+<html lang="en">
 <head>
-    <meta charset = "UTF-8">
-    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
-    <title> Ant colony simulator </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link href="../../css/fonts.css" rel="stylesheet">
+    <title>Ant colony</title>
 </head>
+<body class="text-wrapper">
+<div class="wrapper">
+    <div id="header-templates"></div>
 
-<body>
-
-    <div class = "interface">
-        <h1>Ant Colony Simulator</h1>
-        
-        <canvas id="mapCanvas" width="1000" height="500" style = "cursor: crosshair"></canvas>
-
-        <div class = "buttons">
-            <button id="anthillBtn">Anthill</button>
-            <button id="foodBtn">Food</button>
-            <button id="wallBtn">Wall</button>
-            <button id="eraserBtn">Eraser</button>
-        </div>
-
-        <div>
-            <label for="numberInput">Brush size:</label>
-            <input type="number" id="brushSize" placeholder="Enter a number">
-        </div>
-
-        <h3>Settings</h3>
-        <div class = "settings">
-            <div pheromone>
-                <h4>Pheromone</h4>
-                <div>
-                    <label for="numberInput">Maximum pheromone levels</label>
-                    <input type="number" id="MAX_PH_LVL" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">Sustainability</label>
-                    <input type="number" id="SUSTAINABILITY" placeholder="Enter a number">
-                </div>
-            </div>
-
-            <div evaporation>
-                <h4>Evaporation</h4>
-                <div>
-                    <label for="numberInput">Evaparation rate</label>
-                    <input type="number" id="EVAPARATION_RATE" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">P</label>
-                    <input type="number" id="P" placeholder="Enter a number">
-                </div>
-            </div>
-
-            <div ant_solution>
-                <h4>The Ant's Solution</h4>
-                <div>
-                    <label for="numberInput">ALF</label>
-                    <input type="number" id="ALF" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">Probability of rejection</label>
-                    <input type="number" id="PROBABILITY_OF_REJECTION" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">Deflection force</label>
-                    <input type="number" id="DEFLECTION_FORCE" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">Probability of error</label>
-                    <input type="number" id="PROBABILITY_OF_ERROR" placeholder="Enter a number">
-                </div>
-            </div>
-
-            <div colony>
-                <h4>A colony</h4>
-                <div>
-                    <label for="numberInput">Model size</label>
-                    <input type="number" id="MODEL_SIZE" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">Count ants</label>
-                    <input type="number" id="COUNT_ANTS" placeholder="Enter a number">
-                </div>
-                <div>
-                    <label for="numberInput">Max path</label>
-                    <input type="number" id="MAX_PATH" placeholder="Enter a number">
-                </div>
-            </div>
-
-            <div food>
-                <h4>Food</h4>
-                <div>
-                    <label for="numberInput">Satiety</label>
-                    <input type="number" id="SATIETY" placeholder="Enter a number">
-                </div>
-            </div>
-            <div>
-                <h4>
-                <div>
-                    <label for="numberInput">Speed boost</label>
-                    <input type="number" id="SPEED_BOOST" placeholder="Enter a number">
-                </div>
-                </h4>
+    <div class="text-wrapper">
+        <div class="hero container">
+            <div class="hero-text">
+                <h2>Ant colony</h2>
+                <p>
+                    You create a maze, place an ant colony (the center) and several food sources with adjustable
+                    nutritional values on it, and specify the number of ants that will explore the maze, find food
+                    sources and optimize routes using pheromone trails, taking into account the path length, the
+                    nutritional value of the source and the current load on the route; when you run the model, you will
+                    see an animation demonstrating the movement of ants, the formation and strengthening of pheromone
+                    trails, as well as the adaptation of routes in real time, which will allow you to observe how ants
+                    find a balance between various factors to achieve maximum efficiency.
+                </p>
             </div>
         </div>
-
-        <button id="spawnBtn">Create a colony</button>
     </div>
 
-    <script src = "functions.js"></script>
-    <script src="script.js"></script>
-    <script src = "ant_colony_optimization.js"></script>
+    <div class="algorithms container wrapper">
+        <div id="blockGrid" class="block">
+            <div id="canvas" class="mt-lg-3">
+                <canvas id="mapCanvas" width="1000" height="500" style="cursor: crosshair"></canvas>
+            </div>
+            <div class="mt-3 general-menu">
+                <div class="general-buttons mt-3">
+                    <button type="button" id="anthillBtn" class="btn btn-lg active">Anthill</button>
+                    <button type="button" id="foodBtn" class="btn btn-lg">Food</button>
+                    <button type="button" id="wallBtn" class="btn btn-lg">Wall</button>
+                    <button type="button" id="eraserBtn" class="btn btn-lg">Eraser</button>
+                </div>
 
+                <div id="brush-size-setting" class="range-container">
+                    <label for="brushSize-rangeButton" class="form-label">Brush size: </label>
+                    <input class="form-control custom-range" type="range" id="brushSize-rangeButton" min="3"
+                           value="10"
+                           max="50"
+                           placeholder="Enter a number">
+                    <span id="brushSize-rangeValue">10</span>
+                </div>
+                <div id="gen-btn">
+                    <button id="spawnBtn" class="btn btn-lg">Create a colony</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-2 mt-lg-3 container wrapper">
+        <div class="settings">
+            <div class="hero-text">
+                <h2> Settings </h2>
+            </div>
+            <ul class="nav nav-tabs menu" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pheromone-tab" data-bs-toggle="tab"
+                            data-bs-target="#pheromone-settings" type="button" role="tab"
+                            aria-controls="pheromone-settings" aria-selected="true">Pheromone
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="evaporation-tab" data-bs-toggle="tab"
+                            data-bs-target="#evaporation-settings" type="button" role="tab"
+                            aria-controls="evaporation-settings" aria-selected="false">Evaporation
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="ant_solution-tab" data-bs-toggle="tab"
+                            data-bs-target="#ant_solution-settings" type="button" role="tab"
+                            aria-controls="ant_solution-settings" aria-selected="false">Ant Solution
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="colony-tab" data-bs-toggle="tab" data-bs-target="#colony-settings"
+                            type="button" role="tab" aria-controls="colony-settings" aria-selected="false">Colony
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="food-tab" data-bs-toggle="tab" data-bs-target="#food-settings"
+                            type="button" role="tab" aria-controls="food-settings" aria-selected="false">Food
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="speed-tab" data-bs-toggle="tab" data-bs-target="#speed-settings"
+                            type="button" role="tab" aria-controls="speed-settings" aria-selected="false">Speed
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active tab" id="pheromone-settings" role="tabpanel"
+                     aria-labelledby="pheromone-tab">
+
+                    <div id="MAX_PH_LVL-setting" class="range-container">
+                        <label for="MAX_PH_LVL-rangeButton" class="form-label">Maximum pheromone levels: </label>
+                        <input class="form-control custom-range" type="range" id="MAX_PH_LVL-rangeButton" min="0.1"
+                               value="1"
+                               max="1"
+                               step="0.1"
+                               placeholder="Enter a number">
+                        <span id="MAX_PH_LVL-rangeValue">1</span>
+                    </div>
+                    <div id="SUSTAINABILITY-setting" class="range-container">
+                        <label for="SUSTAINABILITY-rangeButton" class="form-label">Sustainability: </label>
+                        <input class="form-control custom-range" type="range" id="SUSTAINABILITY-rangeButton" min="10"
+                               value="100"
+                               max="1000"
+                               step="1"
+                               placeholder="Enter a number">
+                        <span id="SUSTAINABILITY-rangeValue">100</span>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade tab" id="evaporation-settings" role="tabpanel"
+                     aria-labelledby="evaporation-tab">
+                    <div id="EVAPORATION_RATE-setting" class="range-container">
+                        <label for="EVAPORATION_RATE-rangeButton" class="form-label">Evaporation-rate: </label>
+                        <input class="form-control custom-range" type="range" id="EVAPORATION_RATE-rangeButton" min="1"
+                               value="100"
+                               max="1000"
+                               step="1"
+                               placeholder="Enter a number">
+                        <span id="EVAPORATION_RATE-rangeValue">100</span>
+                    </div>
+                    <div id="P-setting" class="range-container">
+                        <label for="P-rangeButton" class="form-label">P: </label>
+                        <input class="form-control custom-range" type="range" id="P-rangeButton" min="0.01"
+                               value="0.1"
+                               max="1"
+                               step="0.01"
+                               placeholder="Enter a number">
+                        <span id="P-rangeValue">0.1</span>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade tab" id="ant_solution-settings" role="tabpanel"
+                     aria-labelledby="ant_solution-tab">
+                    <div id="ALF-setting" class="range-container">
+                        <label for="ALF-rangeButton" class="form-label">ALF: </label>
+                        <input class="form-control custom-range" type="range" id="ALF-rangeButton" min="1"
+                               value="3"
+                               max="10"
+                               step="1"
+                               placeholder="Enter a number">
+                        <span id="ALF-rangeValue">3</span>
+                    </div>
+                    <div id="PROBABILITY_OF_REJECTION-setting" class="range-container">
+                        <label for="PROBABILITY_OF_REJECTION-rangeButton" class="form-label">Probability of
+                            rejection: </label>
+                        <input class="form-control custom-range" type="range" id="PROBABILITY_OF_REJECTION-rangeButton"
+                               min="0.1"
+                               value="0.1"
+                               max="1"
+                               step="0.01"
+                               placeholder="Enter a number">
+                        <span id="PROBABILITY_OF_REJECTION-rangeValue">0.1</span>
+                    </div>
+                    <div id="DEFLECTION_FORCE-setting" class="range-container">
+                        <label for="DEFLECTION_FORCE-rangeButton" class="form-label">Deflection force: </label>
+                        <input class="form-control custom-range" type="range" id="DEFLECTION_FORCE-rangeButton"
+                               min="10"
+                               value="30"
+                               max="100"
+                               step="1"
+                               placeholder="Enter a number">
+                        <span id="DEFLECTION_FORCE-rangeValue">30</span>
+                    </div>
+                    <div id="PROBABILITY_OF_ERROR-setting" class="range-container">
+                        <label for="PROBABILITY_OF_ERROR-rangeButton" class="form-label">Probability of error: </label>
+                        <input class="form-control custom-range" type="range" id="PROBABILITY_OF_ERROR-rangeButton"
+                               min="0.01"
+                               value="0.1"
+                               max="0.99"
+                               step="0.01"
+                               placeholder="Enter a number">
+                        <span id="PROBABILITY_OF_ERROR-rangeValue">0.1</span>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade tab" id="colony-settings" role="tabpanel" aria-labelledby="colony-tab">
+                    <div class="form-group">
+                        <label for="MODEL_SIZE">Model size</label>
+                        <input type="number" class="form-control" id="MODEL_SIZE" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="COUNT_ANTS">Count ants</label>
+                        <input type="number" class="form-control" id="COUNT_ANTS" placeholder="2000">
+                    </div>
+                    <div class="form-group">
+                        <label for="MAX_PATH">Max path</label>
+                        <input type="number" class="form-control" id="MAX_PATH" placeholder="2000">
+                    </div>
+                </div>
+
+                <div class="tab-pane fade tab" id="food-settings" role="tabpanel" aria-labelledby="food-tab">
+                    <div class="form-group">
+                        <label for="SATIETY">Satiety</label>
+                        <input type="number" class="form-control" id="SATIETY" placeholder="0">
+                    </div>
+                </div>
+                <div class="tab-pane fade tab" id="speed-settings" role="tabpanel" aria-labelledby="speed-tab">
+                    <div id="SPEED_BOOST-setting" class="range-container">
+                        <label for="SPEED_BOOST-rangeButton" class="form-label">Speed boost: </label>
+                        <input class="form-control custom-range" type="range" id="SPEED_BOOST-rangeButton" min="1"
+                               value="10"
+                               max="50"
+                               step="1"
+                               placeholder="Enter a number">
+                        <span id="SPEED_BOOST-rangeValue">10</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-wrapper">
+    <div id="footer-templates">
+
+    </div>
+</div>
+<script src="functions.js"></script>
+<script src="script.js"></script>
+<script src="ant_colony_optimization.js"></script>
+<script src="../../js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

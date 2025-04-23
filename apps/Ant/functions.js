@@ -75,8 +75,8 @@ function drawPixel(e, matrix, size_pixel) {
     
     ctx.fillStyle = toolColors[currentTool];
 
-    ctx.fillRect(x - size_pixel/2 - 3, y - size_pixel/2 - 3, size_pixel, size_pixel);
-    uploadChunk(matrix, anthillPixels, food, createPixelColor(toolColors[currentTool]), size_pixel, size_pixel, x - size_pixel/2 - 3, y - size_pixel/2 - 3);
+    ctx.fillRect(x - size_pixel, y - size_pixel, size_pixel, size_pixel);
+    uploadChunk(matrix, anthillPixels, food, createPixelColor(toolColors[currentTool]), size_pixel, size_pixel, x - size_pixel, y - size_pixel);
 
     return;
 }

@@ -1,3 +1,5 @@
+
+
 let world = [];
 initWorld(world, canvas.height, canvas.width); // Матрица пикселей(rgba) мира
 let anthillPixels = new Set(); // JSON {y, x}
@@ -12,7 +14,7 @@ let SUSTAINABILITY = 100; // Устойчивость феромонов
 let MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY; // Минимальный порог феромонов
 
 // Испарение
-let EVAPARATION_RATE = 100; // Скорость испарения феромонов
+let EVAPORATION_RATE = 100; // Скорость испарения феромонов
 let P = 0.1; // Сила испарения феромонов
 
 // Решение муравья
@@ -27,38 +29,38 @@ let COUNT_ANTS = 2000; // Кол-во муравьёв
 let MAX_PATH = 2000; // Максимально разрешённый пройденный путь муравья
 
 // Еда
-let SATIETY = 0; // Сытноссть еды, 0 - бесконечная еда
+let SATIETY = 0; // Сытность еды, 0 - бесконечная еда
 
 // Анимация
 let SPEED_BOOST = 10; // Частота отрисовки
 
 
 // Обработчики событий
-document.getElementById('MAX_PH_LVL').addEventListener('change', function () {
+document.getElementById('MAX_PH_LVL-rangeButton').addEventListener('change', function () {
     MAX_PH_LVL = parseInt(this.value);
     MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY;
 });
 
-document.getElementById('SUSTAINABILITY').addEventListener('change', function () {
+document.getElementById('SUSTAINABILITY-rangeButton').addEventListener('change', function () {
     SUSTAINABILITY = parseInt(this.value);
     MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY;
 });
-document.getElementById('EVAPARATION_RATE').addEventListener('change', function () {
-    EVAPARATION_RATE = parseInt(this.value);
+document.getElementById('EVAPORATION_RATE-rangeButton').addEventListener('change', function () {
+    EVAPORATION_RATE = parseInt(this.value);
 })
-document.getElementById('P').addEventListener('change', function () {
+document.getElementById('P-rangeButton').addEventListener('change', function () {
     P = parseFloat(this.value);
 })
-document.getElementById('ALF').addEventListener('change', function () {
+document.getElementById('ALF-rangeButton').addEventListener('change', function () {
     ALF = parseInt(this.value);
 })
-document.getElementById('PROBABILITY_OF_REJECTION').addEventListener('change', function () {
+document.getElementById('PROBABILITY_OF_REJECTION-rangeButton').addEventListener('change', function () {
     PROBABILITY_OF_REJECTION = parseFloat(this.value);
 })
-document.getElementById('DEFLECTION_FORCE').addEventListener('change', function () {
+document.getElementById('DEFLECTION_FORCE-rangeButton').addEventListener('change', function () {
     DEFLECTION_FORCE = parseInt(this.value);
 })
-document.getElementById('PROBABILITY_OF_ERROR').addEventListener('change', function () {
+document.getElementById('PROBABILITY_OF_ERROR-rangeButton').addEventListener('change', function () {
     PROBABILITY_OF_ERROR = parseFloat(this.value);
 })
 document.getElementById('MODEL_SIZE').addEventListener('change', function () {
@@ -73,7 +75,7 @@ document.getElementById('MAX_PATH').addEventListener('change', function () {
 document.getElementById('SATIETY').addEventListener('change', function () {
     SATIETY = parseInt(this.value);
 })
-document.getElementById('SPEED_BOOST').addEventListener('change', function () {
+document.getElementById('SPEED_BOOST-rangeButton').addEventListener('change', function () {
     SPEED_BOOST = parseInt(this.value);
 })
 
@@ -364,7 +366,7 @@ function antColonySimulator(canvas) {
             ++count;
         }
 
-        if (count == EVAPARATION_RATE) {
+        if (count == EVAPORATION_RATE) {
             vaporizePheromones(phHome);
             vaporizePheromones(phFood);
             count = 0;
@@ -376,3 +378,118 @@ function antColonySimulator(canvas) {
     simulate();
     return;
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('MAX_PH_LVL-rangeButton');
+    const rangeValue = document.getElementById('MAX_PH_LVL-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        MAX_PH_LVL = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    MAX_PH_LVL = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('SUSTAINABILITY-rangeButton');
+    const rangeValue = document.getElementById('SUSTAINABILITY-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        SUSTAINABILITY = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    SUSTAINABILITY = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('EVAPORATION_RATE-rangeButton');
+    const rangeValue = document.getElementById('EVAPORATION_RATE-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        EVAPORATION_RATE = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    EVAPORATION_RATE = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('P-rangeButton');
+    const rangeValue = document.getElementById('P-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        P = parseFloat(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    P = parseFloat(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('ALF-rangeButton');
+    const rangeValue = document.getElementById('ALF-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        ALF = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    ALF = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('PROBABILITY_OF_REJECTION-rangeButton');
+    const rangeValue = document.getElementById('PROBABILITY_OF_REJECTION-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        PROBABILITY_OF_REJECTION = parseFloat(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    PROBABILITY_OF_REJECTION = parseFloat(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('DEFLECTION_FORCE-rangeButton');
+    const rangeValue = document.getElementById('DEFLECTION_FORCE-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        DEFLECTION_FORCE = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    DEFLECTION_FORCE = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('PROBABILITY_OF_ERROR-rangeButton');
+    const rangeValue = document.getElementById('PROBABILITY_OF_ERROR-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        PROBABILITY_OF_ERROR = parseFloat(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    PROBABILITY_OF_ERROR = parseFloat(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('SPEED_BOOST-rangeButton');
+    const rangeValue = document.getElementById('SPEED_BOOST-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        SPEED_BOOST = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    SPEED_BOOST = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});

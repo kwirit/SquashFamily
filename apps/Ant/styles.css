@@ -1,32 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFF;
+    background: rgb(12, 12, 12);
 }
 
-.interface {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+html {
+    scroll-behavior: smooth;
 }
 
-canvas {
-    border: 3px solid #000;
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+.wrapper {
+    background: rgb(12, 12, 12);
+    width: 100%;
+}
+
+.text-wrapper {
+    background: #1E1E1E;
+    width: 100%
+}
+
+.container {
+    width: 1400px;
+    margin: 0 auto 70px;
+}
+
+
+/* hero */
+.hero {
+    padding-bottom: 50px;
+}
+
+.hero-text {
+    padding-top: 50px;
+    margin-right: 10em;
+    margin-left: 27em;
+}
+
+.hero-text h2 {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 700;
+    margin-left: 1em;
+}
+
+.hero-text p {
+    padding-top: 20px;
+    text-align: justify;
+    color: #F5F5F5;
+    margin-right: -1em;
+    margin-left: -13em;
+    font-size: 24px;
+    font-weight: 400;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/*main block*/
+#mapCanvas {
+    border: 3px solid #7e7e7e;
     background-color: white;
 }
 
-.buttons {
+.algorithms {
+    padding-top: 50px;
+    font-size: 32px;
+    font-weight: 600;
+    padding-bottom: 150px;
+    justify-content: center;
+}
+
+.algorithms .block {
+    background: #1E1E1E;
+    padding: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 #1E1E1E, 0 2px 8px 0 #1E1E1E;
+}
+
+.algorithms .general-buttons {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    gap: 5px;
 }
 
-button {
-    padding: 8px 16px;
-    cursor: pointer;
+.algorithms .general-buttons button {
+    background: #444;
+    border: none;
+    color: #F5F5F5;
+    transition: background-color 0.5s;
+    transition-duration: 0.1s;
 }
 
-button.active {
-    background-color: #4CAF50;
+#gen-btn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+#spawnBtn {
+    padding: 20px;
+    background: #444;
+    font-size: 24px;
+    font-weight: 600;
+    color: #F5F5F5;
+    display: flex;
+    transition: background-color 0.5s;
+    transition-duration: 0.1s;
+}
+
+.algorithms .general-buttons button:hover {
     color: white;
-    border: 1px solid #388E3C;
+    background: #6c6c6c;
+}
+
+.algorithms .general-buttons button:active {
+    color: white;
+    background: #5e5e5e;
+}
+
+.general-buttons .btn.active {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
+}
+
+.range-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center !important;
+    justify-self: center;
+    flex-direction: row;
+    gap: 10px;
+    width: 75%;
+    margin-left: 250px;
+}
+
+.range-container label {
+    margin-right: 10px;
+    display: flex;
+    font-size: 24px;
+    white-space: nowrap;
+}
+
+.range-container input {
+    display: inline-block !important;
+    width: 50%;
+    flex: 1;
+    background-color: #F5F5F5;
+}
+
+.range-container span {
+    display: inline-block !important;
+    width: fit-content;
+    flex: 1;
+}
+
+.custom-range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    background-color: #a3a3a3;
+    border-radius: 3px;
+}
+
+.custom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #007bff;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: -4px;
+}
+
+.settings {
+    height: 550px;
+    background: #1E1E1E;
+    padding: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 #1E1E1E, 0 2px 8px 0 #1E1E1E;
+    margin-bottom: 100px;
+}
+
+.settings .hero-text {
+    display: flex;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 600;
+    padding: 20px 20px 40px;
+    margin-right: 2em;
+    margin-left: 0;
+}
+
+.menu {
+    background: #1E1E1E;
+    font-size: 24px;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+}
+
+.menu button {
+    list-style-type: none;
+    color: #F5F5F5;
+}
+
+.menu button:hover {
+    color: #F5F5F5;
+    border: none;
+}
+
+.menu button:active {
+    border: none;
+}
+
+.tab {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    font-weight: 400;
+    gap: 20px;
+}
+
+.tab .form-group,
+.tab .range-container {
+    margin-top: 20px;
+    display: flex;
+    justify-self: flex-start;
+    gap: 20px;
+    width: 75%;
+    margin-left: 0;
+    white-space: nowrap;
+}
+
+.tab .form-group input{
+    width: 25%;
 }
