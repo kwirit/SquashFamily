@@ -147,7 +147,7 @@ class regressionDecisionTree{
 
     buildTree(node, level){
         let parentEntropy = mse(node.data,this.header)
-        if(parentEntropy === 0 || level === maxDepth || node.data.length === maxSamples){
+        if(parentEntropy === 0 || level === this.maxDepth || node.data.length === this.maxSamples){
             node.firstChild = null
             node.secondChild = null
             return

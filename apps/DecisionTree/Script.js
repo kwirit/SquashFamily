@@ -46,6 +46,7 @@ function getTree(){
     else{
         tree = makeRegressionTree(objects,header, maxDepth, maxSamples)
     }
+    console.log(tree)
     visualizeTree(tree)
 }
 
