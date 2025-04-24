@@ -52,6 +52,34 @@ document.addEventListener('DOMContentLoaded', function () {
     radius = parseInt(rangeInput.value, 10);
     rangeValue.textContent = rangeInput.value;
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('m-rangeButton');
+    const rangeValue = document.getElementById('m-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        m = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    m = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rangeInput = document.getElementById('epsilon-rangeButton');
+    const rangeValue = document.getElementById('epsilon-rangeValue');
+
+    rangeInput.addEventListener('input', function () {
+        epsilon = parseInt(rangeInput.value, 10);
+        rangeValue.textContent = rangeInput.value;
+    });
+
+    epsilon = parseInt(rangeInput.value, 10);
+    rangeValue.textContent = rangeInput.value;
+});
 canv.addEventListener('click', (e) => {
     const rect = canv.getBoundingClientRect();
     const x = e.clientX - rect.left - radius;

@@ -31,8 +31,7 @@ buttonSettingsWalls.addEventListener("click", () => {
 });
 buttonFindPath.addEventListener("click", () => {
     if (!stopVisualization) stopVisualization = true;
-    if (state === "Main")
-        findPathWrapper();
+    if (state === "Main") findPathWrapper();
 });
 buttonVisualizationPath.addEventListener("click", () => {
     if (state === "Main") {
@@ -95,12 +94,10 @@ function createGrid() {
             square.classList.add('square');
             square.classList.add("wall");
             square.addEventListener("click", (event) => {
-                if (state === "EditWalls")
-                    editPassage(event);
+                if (state === "EditWalls") editPassage(event);
             });
             square.addEventListener("click", function (event) {
-                if (state === "Main")
-                    setMain(event);
+                if (state === "Main") setMain(event);
             });
             container.appendChild(square);
             grid[row][col] = square;
@@ -118,10 +115,8 @@ function generateMazeKruskal() {
             grid[row][col].classList.remove('wall');
             grid[row][col].classList.add('passage');
 
-            if (row + 2 < gridSize)
-                walls.push([[row, col], [row + 2, col]]);
-            if (col + 2 < gridSize)
-                walls.push([[row, col], [row, col + 2]]);
+            if (row + 2 < gridSize) walls.push([[row, col], [row + 2, col]]);
+            if (col + 2 < gridSize) walls.push([[row, col], [row, col + 2]]);
         }
         if (gridSize % 2 === 0 && random(0, 1) === 0) {
             grid[row][gridSize - 1].classList.remove('wall');
@@ -174,16 +169,14 @@ function editPassage(event) {
     }
 }
 
+
 function setMain(event) {
     const newSquare = event.target;
     if (newSquare.classList.contains('wall')) return;
 
     if (newSquare.classList.contains('main')) {
         newSquare.classList.remove('main');
-        if (queueMain.peekLeft() === newSquare)
-            queueMain.popLeft();
-        else if (queueMain.peekRight() === newSquare)
-            queueMain.popRight();
+        if (queueMain.peekLeft() === newSquare) queueMain.popLeft(); else if (queueMain.peekRight() === newSquare) queueMain.popRight();
         return;
     }
 
@@ -195,6 +188,7 @@ function setMain(event) {
     queueMain.append(newSquare);
 }
 
+
 function clear(exceptions = new Set([])) {
     let clearsType = new Set(['main', 'path', 'sidePath', 'mainPath', 'pointedPath', 'currentPath']);
     clearsType = clearsType.difference(exceptions);
@@ -202,16 +196,14 @@ function clear(exceptions = new Set([])) {
     for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
 
-            for (let type of clearsType)
-                if (grid[row][col].classList.contains(type))
-                    grid[row][col].classList.remove(type);
+            for (let type of clearsType) if (grid[row][col].classList.contains(type)) grid[row][col].classList.remove(type);
 
         }
     }
-    if (clearsType.has('main'))
-        queueMain.clear();
+    if (clearsType.has('main')) queueMain.clear();
     path.length = 0;
 }
+
 
 function findPathWrapper() {
     if (queueMain.size() !== 2) {
@@ -222,11 +214,12 @@ function findPathWrapper() {
     printPath();
 }
 
+
 function printPath() {
-    for (let square of path)
-        square.classList.add('path');
+    for (let square of path) square.classList.add('path');
 
 }
+
 
 function getPassageNeighbors(square) {
     const neighbors = [];
@@ -237,13 +230,13 @@ function getPassageNeighbors(square) {
         const newCol = col + dCol;
         if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
             const neighbor = grid[newRow][newCol];
-            if (neighbor.classList.contains('passage'))
-                neighbors.push(neighbor);
+            if (neighbor.classList.contains('passage')) neighbors.push(neighbor);
 
         }
     }
     return neighbors;
 }
+
 
 function findPath() {
     clear(new Set(['main']));
@@ -261,12 +254,11 @@ function findPath() {
 
     while (!frontier.isEmpty()) {
         let current = frontier.popLeft();
-        for (let neighbor of getPassageNeighbors(current))
-            if (!visited.has(neighbor)) {
-                frontier.append(neighbor);
-                visited.add(neighbor);
-                parents.set(neighbor, current);
-            }
+        for (let neighbor of getPassageNeighbors(current)) if (!visited.has(neighbor)) {
+            frontier.append(neighbor);
+            visited.add(neighbor);
+            parents.set(neighbor, current);
+        }
     }
 
     if (!visited.has(end)) {
@@ -285,13 +277,13 @@ function findPath() {
     path = path.reverse();
 }
 
+
 async function visualizationPath() {
     if (path.length === 0 && queueMain.size() < 2) {
         alert("Выберите две точки, для нахождения пути между ними");
         return;
     }
-    if (path.length === 0 && queueMain.size() === 2)
-        findPath();
+    if (path.length === 0 && queueMain.size() === 2) findPath();
 
     let visited = new Set();
     let frontier = new Queue();
@@ -303,26 +295,20 @@ async function visualizationPath() {
     frontier.append(start);
 
     while (!frontier.isEmpty() && !stopVisualization) {
-        if (visited.has(end))
-            break;
+        if (visited.has(end)) break;
         let current = frontier.popLeft();
         current.classList.add('currentPath');
-        if (current.classList.contains('pointedPath'))
-            current.classList.add("mainPath");
-        else
-            current.classList.add('sidePath')
+        if (current.classList.contains('pointedPath')) current.classList.add("mainPath"); else current.classList.add('sidePath')
 
         await delay(300);
-        for (let neighbor of getPassageNeighbors(current))
-            if (!visited.has(neighbor)) {
-                frontier.append(neighbor);
-                visited.add(neighbor);
-            }
+        for (let neighbor of getPassageNeighbors(current)) if (!visited.has(neighbor)) {
+            frontier.append(neighbor);
+            visited.add(neighbor);
+        }
         current.classList.remove('currentPath');
     }
 
-    if (visited.has(end))
-        end.classList.add("mainPath");
+    if (visited.has(end)) end.classList.add("mainPath");
 
 }
 
