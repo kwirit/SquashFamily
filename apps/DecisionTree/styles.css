@@ -1,0 +1,166 @@
+.node circle {
+    fill: #fff;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+#tree-container {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    background-color: #5e5e5e;
+}
+
+.node.highlighted circle {
+    fill: green;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFF;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+}
+
+.wrapper {
+    background: rgb(12, 12, 12);
+    width: 100%;
+}
+
+.text-wrapper {
+    background: #1E1E1E;
+    width: 100%
+}
+
+.container {
+    width: 1400px;
+    margin: 0 auto 70px;
+}
+
+
+/* hero */
+
+.hero-text {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-text h2 {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    text-align: justify;
+    color: #F5F5F5;
+    max-width: 80%;
+    font-size: 24px;
+    font-weight: 400;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+
+/*main block*/
+
+.algorithms {
+    display: flex;
+    padding-top: 50px;
+    font-size: 32px;
+    font-weight: 600;
+    justify-content: center;
+    padding-bottom: 150px;
+    align-items: center;
+}
+
+
+.settings {
+    background: #1E1E1E;
+    padding: 50px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 #1E1E1E, 0 2px 8px 0 #1E1E1E;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.settings .form-my,
+.settings .form-group,
+.settings .form-check {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.settings .form-group {
+    width: 30%;
+}
+
+.settings h5 {
+    font-size: 48px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 25px;
+}
+.my-button  {
+    background: #444;
+    border: none;
+    color: #F5F5F5;
+    transition: background-color 0.5s;
+    transition-duration: 0.1s;
+}
+.my-button:hover {
+    color: white;
+    background: #6c6c6c;
+
+}
+.my-button:active {
+    color: white;
+    background: #5e5e5e;
+}
+
+.block {
+    background: #1E1E1E;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 50px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 #1E1E1E, 0 2px 8px 0 #1E1E1E;
+    align-items: center;
+}
+
+
+
+
+
+
+

@@ -381,115 +381,28 @@ function antColonySimulator(canvas) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('MAX_PH_LVL-rangeButton');
-    const rangeValue = document.getElementById('MAX_PH_LVL-rangeValue');
+    function setupRangeInput(inputId, valueId, variableName, parseFunction) {
+        const rangeInput = document.getElementById(inputId);
+        const rangeValue = document.getElementById(valueId);
 
-    rangeInput.addEventListener('input', function () {
-        MAX_PH_LVL = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
+        rangeInput.addEventListener('input', function () {
+            const value = parseFunction(rangeInput.value, 10);
+            window[variableName] = value;
+            rangeValue.textContent = value;
+        });
 
-    MAX_PH_LVL = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
+        const initialValue = parseFunction(rangeInput.value, 10);
+        window[variableName] = initialValue;
+        rangeValue.textContent = initialValue;
+    }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('SUSTAINABILITY-rangeButton');
-    const rangeValue = document.getElementById('SUSTAINABILITY-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        SUSTAINABILITY = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    SUSTAINABILITY = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('EVAPORATION_RATE-rangeButton');
-    const rangeValue = document.getElementById('EVAPORATION_RATE-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        EVAPORATION_RATE = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    EVAPORATION_RATE = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('P-rangeButton');
-    const rangeValue = document.getElementById('P-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        P = parseFloat(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    P = parseFloat(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('ALF-rangeButton');
-    const rangeValue = document.getElementById('ALF-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        ALF = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    ALF = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('PROBABILITY_OF_REJECTION-rangeButton');
-    const rangeValue = document.getElementById('PROBABILITY_OF_REJECTION-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        PROBABILITY_OF_REJECTION = parseFloat(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    PROBABILITY_OF_REJECTION = parseFloat(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('DEFLECTION_FORCE-rangeButton');
-    const rangeValue = document.getElementById('DEFLECTION_FORCE-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        DEFLECTION_FORCE = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    DEFLECTION_FORCE = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('PROBABILITY_OF_ERROR-rangeButton');
-    const rangeValue = document.getElementById('PROBABILITY_OF_ERROR-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        PROBABILITY_OF_ERROR = parseFloat(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    PROBABILITY_OF_ERROR = parseFloat(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('SPEED_BOOST-rangeButton');
-    const rangeValue = document.getElementById('SPEED_BOOST-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        SPEED_BOOST = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    SPEED_BOOST = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
+    setupRangeInput('MAX_PH_LVL-rangeButton', 'MAX_PH_LVL-rangeValue', 'MAX_PH_LVL', parseInt);
+    setupRangeInput('SUSTAINABILITY-rangeButton', 'SUSTAINABILITY-rangeValue', 'SUSTAINABILITY', parseInt);
+    setupRangeInput('EVAPORATION_RATE-rangeButton', 'EVAPORATION_RATE-rangeValue', 'EVAPORATION_RATE', parseInt);
+    setupRangeInput('P-rangeButton', 'P-rangeValue', 'P', parseFloat);
+    setupRangeInput('ALF-rangeButton', 'ALF-rangeValue', 'ALF', parseInt);
+    setupRangeInput('PROBABILITY_OF_REJECTION-rangeButton', 'PROBABILITY_OF_REJECTION-rangeValue', 'PROBABILITY_OF_REJECTION', parseFloat);
+    setupRangeInput('DEFLECTION_FORCE-rangeButton', 'DEFLECTION_FORCE-rangeValue', 'DEFLECTION_FORCE', parseInt);
+    setupRangeInput('PROBABILITY_OF_ERROR-rangeButton', 'PROBABILITY_OF_ERROR-rangeValue', 'PROBABILITY_OF_ERROR', parseFloat);
+    setupRangeInput('SPEED_BOOST-rangeButton', 'SPEED_BOOST-rangeValue', 'SPEED_BOOST', parseInt);
 });

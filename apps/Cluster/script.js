@@ -51,52 +51,35 @@ const buttonStartClustering = document.getElementById('button-start-clustering')
 buttonStartClustering.addEventListener('click', clustering);
 buttonClear.addEventListener('click', clearGrid);
 
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('radius-rangeButton');
-    const rangeValue = document.getElementById('radius-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        radius = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    radius = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('m-rangeButton');
-    const rangeValue = document.getElementById('m-rangeValue');
+    function setupRangeInput(inputId, valueId, variableName, parseFunction) {
+        const rangeInput = document.getElementById(inputId);
+        const rangeValue = document.getElementById(valueId);
 
-    rangeInput.addEventListener('input', function () {
-        m = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
+        rangeInput.addEventListener('input', function () {
+            const value = parseFunction(rangeInput.value, 10);
+            window[variableName] = value;
+            rangeValue.textContent = value;
+        });
 
-    m = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
+        const initialValue = parseFunction(rangeInput.value, 10);
+        window[variableName] = initialValue;
+        rangeValue.textContent = initialValue;
+    }
+
+    setupRangeInput('m-rangeButton', 'm-rangeValue', 'm', parseInt);
+    setupRangeInput('epsilon-rangeButton', 'epsilon-rangeValue', 'epsilon', parseInt);
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const rangeInput = document.getElementById('epsilon-rangeButton');
-    const rangeValue = document.getElementById('epsilon-rangeValue');
-
-    rangeInput.addEventListener('input', function () {
-        epsilon = parseInt(rangeInput.value, 10);
-        rangeValue.textContent = rangeInput.value;
-    });
-
-    epsilon = parseInt(rangeInput.value, 10);
-    rangeValue.textContent = rangeInput.value;
-});
 canv.addEventListener('click', (e) => {
     const rect = canv.getBoundingClientRect();
     const x = e.clientX - rect.left - radius;
     const y = e.clientY - rect.top - radius;
     createPoint(x, y, radius, neutralColor);
 });
+
 function clearGrid() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canv.width, canv.height);
@@ -264,7 +247,6 @@ function DBSCAN(m, epsilon) {
 
     function recursionFindClusters(currPoint) {
         let arrayPointsEpsilon = calcEpsilonLocality(currPoint);
-        console.log(notMarkedPoints);
         if (notMarkedPoints.has(currPoint))
             notMarkedPoints.delete(currPoint);
         currPoint.setNewColor(colors[currColor]);
@@ -276,8 +258,6 @@ function DBSCAN(m, epsilon) {
         }
     }
 
-    m = 5;
-    epsilon = 100;
     clearClusters();
     if (allPoints.length === 0) return;
     let currColor = 0;
@@ -288,6 +268,9 @@ function DBSCAN(m, epsilon) {
     while (notMarkedPoints.size > 0) {
         let currPoint = getRandomElementSet(pointsForFind);
         let arrayPointsEpsilon = calcEpsilonLocality(currPoint);
+        if (arrayPointsEpsilon.length == 0) {
+            notMarkedPoints.add(currPoint);
+        }
         notMarkedPoints.delete(currPoint);
 
         if (arrayPointsEpsilon.length >= m) {

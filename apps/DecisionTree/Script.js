@@ -1,3 +1,8 @@
+import {loadTemplate} from "../Cluster/utilites.js";
+
+loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
+loadTemplate('../../templates/footer.html', 'footer-templates');
+
 let ta1 = document.getElementById("ta1")
 let b1 = document.getElementById("b1")
 let ta2 = document.getElementById("ta2")
@@ -11,19 +16,20 @@ let r = document.getElementById("r")
 c.addEventListener("click", switchesC)
 r.addEventListener("click", switchesR)
 
-function switchesC(){
+function switchesC() {
     r.checked = false
 }
-function switchesR(){
+
+function switchesR() {
     c.checked = false
 }
 
 let tree
 
-function getTree(){
+function getTree() {
     let maxDepth = parseInt(maxDepthValue.value)
     let maxSamples = parseInt(maxSamplesValue.value)
-    if(c.checked ===false && r.checked === false){
+    if (c.checked === false && r.checked === false) {
         alert("Нужно выбрать тип дерева")
         return
     }
@@ -31,19 +37,18 @@ function getTree(){
     let rows = data.split("\n")
     let header = rows[0].split(",")
     let objects = []
-    for(let row of rows.slice(1,rows.length)){
+    for (let row of rows.slice(1, rows.length)) {
         row = row.split(",")
         let user = {}
-        for(let i = 0;i<header.length;i++){
+        for (let i = 0; i < header.length; i++) {
             user[header[i]] = row[i]
         }
         objects.push(user)
     }
-    if(c.checked){
-        tree = makeClassificationTree(objects,header, maxDepth, maxSamples)
-    }
-    else{
-        tree = makeRegressionTree(objects,header, maxDepth, maxSamples)
+    if (c.checked) {
+        tree = makeClassificationTree(objects, header, maxDepth, maxSamples)
+    } else {
+        tree = makeRegressionTree(objects, header, maxDepth, maxSamples)
     }
     console.log(tree)
     visualizeTree(tree)
@@ -101,7 +106,7 @@ function visualizeTree(tree) {
     nodes.append("text")
         .attr("y", 25)
         .style("text-anchor", "middle")
-        .text(d => c.checked ? `Entropy: ${d.data.entropy.toFixed(2)}`:`MSE: ${d.data.entropy.toFixed(2)}`);
+        .text(d => c.checked ? `Entropy: ${d.data.entropy.toFixed(2)}` : `MSE: ${d.data.entropy.toFixed(2)}`);
 
     nodes.append("text")
         .attr("y", 40)
@@ -149,7 +154,7 @@ function passTree(tree, node, object) {
 
     const nodeMap = new Map()
 
-    d3.selectAll(".node").each(function(d) {
+    d3.selectAll(".node").each(function (d) {
         const key = `${d.data.name}_${d.data.entropy}_${d.data.samples}`
         nodeMap.set(key, this)
     });
@@ -173,5 +178,7 @@ function passTree(tree, node, object) {
             }
         }
     }
+
     traverseAndHighlight(node);
 }
+
