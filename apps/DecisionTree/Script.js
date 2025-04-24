@@ -24,8 +24,8 @@ function getTree(){
     let maxDepth = parseInt(maxDepthValue.value)
     let maxSamples = parseInt(maxSamplesValue.value)
     if(c.checked ===false && r.checked === false){
-        alert("тип дерева выбери");
-        return;
+        alert("Нужно выбрать тип дерева")
+        return
     }
     let data = ta1.value
     let rows = data.split("\n")
@@ -39,7 +39,6 @@ function getTree(){
         }
         objects.push(user)
     }
-    console.log(parseInt(maxDepth))
     if(c.checked){
         tree = makeClassificationTree(objects,header, maxDepth, maxSamples)
     }
@@ -93,21 +92,19 @@ function visualizeTree(tree) {
 
     nodes.append("circle")
         .attr("r", 10)
-        .attr("class", d => d.data.highlighted ? "highlighted" : "");
 
     nodes.append("text")
-        .attr("dy", ".35em")
-        .attr("y", -20)
+        .attr("y", -15)
         .style("text-anchor", "middle")
         .text(d => d.data.name);
 
     nodes.append("text")
-        .attr("dy", "1.5em")
+        .attr("y", 25)
         .style("text-anchor", "middle")
         .text(d => c.checked ? `Entropy: ${d.data.entropy.toFixed(2)}`:`MSE: ${d.data.entropy.toFixed(2)}`);
 
     nodes.append("text")
-        .attr("dy", "2.5em")
+        .attr("y", 40)
         .style("text-anchor", "middle")
         .text(d => `Samples: ${d.data.samples}`);
 }
@@ -176,6 +173,5 @@ function passTree(tree, node, object) {
             }
         }
     }
-
     traverseAndHighlight(node);
 }
