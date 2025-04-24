@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .node circle {
+            fill: #fff;
+            stroke: black;
+            stroke-width: 2px;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+
+        #tree-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        .node.highlighted circle {
+            fill: green;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="ta1" style="width: 300px; height: 150px">HouseAge,Population,target
+41.0,322.0,4.526
+21.0,2401.0,3.585
+52.0,496.0,3.521
+52.0,558.0,3.413
+52.0,565.0,3.422</textarea>
+    <textarea id="ta2" style="width: 300px; height: 50px">70,150</textarea>
+    <p>Classification Tree</p>
+    <input type="checkbox" id="c">
+    <p>Regression Tree</p>
+    <input type="checkbox" id="r">
+    <p>Настройки</p>
+    <p>Количество уровней</p>
+    <input type="text" id="maxDepth">
+    <p>количество экхемпляров в листе</p>
+    <input type="text" id="maxSamples">
+    <button id="b1">BUILD</button>
+    <button id="b2">PREDICT</button>
+    <div id="tree-container"></div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="Decision.js "></script>
+    <script src="Script.js" ></script>
+</body>
+</html>
