@@ -28,7 +28,18 @@ canv.height = 500;
 
 let allPoints = [];
 let allCentroids = [];
-const colors = ['red', 'green', 'yellow', 'blue', 'purple', 'pink', 'orange'];
+const colors = [
+    '#FF5733',
+    '#33FF57',
+    '#3357FF',
+    '#F3FF33',
+    '#FF33F6',
+    '#33FFF6',
+    '#F333FF',
+    '#33F6FF',
+    '#F6FF33',
+    '#FF3386'
+];
 const neutralColor = "rgba(65, 137, 255, 0.87)";
 let radius = 3;
 let m = 4;

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../static/icons/favicon.svg"/>
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link href="../../css/fonts.css" rel="stylesheet">
@@ -16,6 +17,15 @@
         <div class="hero container">
             <div class="hero-text">
                 <h2>Clustering algorithm</h2>
+                <p>The feature allows you to interactively place points on a visual plane and automatically group them
+                    into clusters using different clustering algorithms: K-Means, K-Means++ and DBSCAN. To get started,
+                    simply left-click on the desired location on the plane to add points. Then select the clustering
+                    algorithm from the drop-down menu and configure the parameters: for K-Means and K-Means++, specify
+                    the number of clusters (k), and for DBSCAN, specify the maximum distance between neighboring points
+                    (epsilon) and the minimum number of neighbors (MinPts). Once the parameters are configured, click
+                    the "Cluster" button to group the points, which will be highlighted in different colors on the
+                    plane. This is a powerful tool for data analysis and visualization, allowing you to easily
+                    experiment with different clustering methods.</p>
             </div>
         </div>
     </div>
@@ -81,12 +91,12 @@
                     <p class="name-category" id="label-settings-DBSCAN">DBSCAN</p>
                     <div id="settings-DBSCAN" class="block-settings">
                         <div class="range-container">
-                            <label for="m-rangeButton" class="form-label">m</label>
+                            <label for="m-rangeButton" class="form-label">MinPts</label>
                             <input type="range" class="form-control custom-range" value="3" min="3" max="10"
                                    id="m-rangeButton">
                         </div>
                         <p>Current value: <span id="m-rangeValue">3</span></p>
-                        <p class="additional-text">m - number of points in the vicinity of epsilon</p>
+                        <p class="additional-text">MinPts - number of points in the vicinity of epsilon</p>
 
                         <div class="range-container">
                             <label for="epsilon-rangeButton" class="form-label">epsilon</label>

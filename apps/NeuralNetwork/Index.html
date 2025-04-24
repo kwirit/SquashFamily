@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../../static/icons/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -11,27 +12,39 @@
 <body class="text-wrapper">
 <div class="wrapper">
     <div id="header-templates"></div>
+
     <div class="text-wrapper">
-        <div class="hero container">
-            <div class="hero-text">
-                <h2>Neural Network</h2>
-            </div>
+        <div class="hero-text container">
+            <h2>Neural Network</h2>
+            <p>The handwritten digit recognition feature on your website allows users to draw digits using a mouse or
+                touchscreen, and then automatically detects which digit was drawn using a state-of-the-art neural
+                network trained on a large number of handwritten digit examples. Once the drawing is complete, the image
+                is fed to the neural network, which analyzes it and predicts the most likely digit. The recognition
+                result is displayed to the user along with the probabilities for each digit from 0 to 9.</p>
         </div>
     </div>
+
     <div class="algorithms container">
-        <div id="blockGrid" class="block">
-            <canvas style="border: 1px solid black; width: 500px; height: 500px; image-rendering: pixelated" id="c1"
+        <div id="blockGrid" class="block mt-lg-0">
+            <canvas style="border: 1px solid black; width: 500px; height: 500px; image-rendering: pixelated"
+                    id="mainCanvas"
                     height="50px"
                     width="50px"></canvas>
             <canvas style="border: 1px solid black" id="c2" width="28px" height="28px" hidden="hidden"></canvas>
+            <div class="mt-3 general-menu">
+                <div class="general-buttons">
+                    <button id="buttonCheck" class="btn btn-lg">Check</button>
+                    <button id="buttonClear" class="btn btn-lg">Clear</button>
+                </div>
+            </div>
+            <p id="predicted-result">predicted:</p>
         </div>
     </div>
-    <button id="b1" class="btn btn-lg">Check</button>
-    <button id="b2" class="btn btn-lg">Clear</button>
-    <p id="p1">predicted:</p>
+
     <div class="text-wrapper">
         <div id="footer-templates"></div>
     </div>
+
     <script src="Neural.js"></script>
     <script src="Script.js"></script>
     <script src="../../js/bootstrap.bundle.min.js"></script>

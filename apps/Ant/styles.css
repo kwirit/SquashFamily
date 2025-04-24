@@ -46,23 +46,24 @@ img {
 
 .hero-text {
     padding-top: 50px;
-    margin-right: 10em;
-    margin-left: 27em;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .hero-text h2 {
     color: #fff;
     font-size: 48px;
     font-weight: 700;
-    margin-left: 1em;
+    margin-bottom: 20px;
 }
 
 .hero-text p {
-    padding-top: 20px;
     text-align: justify;
     color: #F5F5F5;
-    margin-right: -1em;
-    margin-left: -13em;
+    max-width: 80%;
     font-size: 24px;
     font-weight: 400;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
