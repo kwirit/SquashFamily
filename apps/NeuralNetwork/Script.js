@@ -1,12 +1,12 @@
-let canvas = document.getElementById("mainCanvas")
-let button1 = document.getElementById("buttonCheck")
-let button2 = document.getElementById("buttonClear")
-let predicted = document.getElementById("predicted-result")
-let ctx = canvas.getContext("2d")
-let canvas2 = document.getElementById("c2")
-let ctx2 = canvas2.getContext("2d")
-let width = canvas.width;
-let height = canvas.height;
+const canvas = document.getElementById("mainCanvas")
+const button1 = document.getElementById("buttonCheck")
+const button2 = document.getElementById("buttonClear")
+const predicted = document.getElementById("predicted-result")
+const ctx = canvas.getContext("2d")
+const canvasForResize = document.getElementById("c2")
+const ctx2 = canvasForResize.getContext("2d")
+const width = canvas.width;
+const height = canvas.height;
 
 let isDrawing = false;
 
@@ -37,10 +37,11 @@ function drawEnd() {
 
 function clear() {
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    ctx2.clearRect(0, 0, canvasForResize.width, canvasForResize.height);
 }
 
 async function guess() {
-    ctx2.drawImage(canvas, 0, 0, 50, 50, 0, 0, 28, 28)
+    ctx2.drawImage(canvas, 0, 0, width, height, 0, 0, 28, 28)
     let scannedImage = ctx2.getImageData(0, 0, 28, 28)
     let imageData = scannedImage.data
     let data = []

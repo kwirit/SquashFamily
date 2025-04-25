@@ -1,22 +1,22 @@
-let ta1 = document.getElementById("ta1")
-let b1 = document.getElementById("b1")
-let ta2 = document.getElementById("ta2")
-let b2 = document.getElementById("b2")
-let maxDepthValue = document.getElementById("maxDepth")
-let maxSamplesValue = document.getElementById("maxSamples")
+const ta1 = document.getElementById("ta1")
+const b1 = document.getElementById("b1")
+const ta2 = document.getElementById("ta2")
+const b2 = document.getElementById("b2")
+const maxDepthValue = document.getElementById("maxDepth")
+const maxSamplesValue = document.getElementById("maxSamples")
+const classificationCheckbox = document.getElementById("c")
+const regressionCheckbox = document.getElementById("r")
 b1.addEventListener("click", getTree)
 b2.addEventListener("click", predict)
-let c = document.getElementById("c")
-let r = document.getElementById("r")
-c.addEventListener("click", switchesC)
-r.addEventListener("click", switchesR)
+classificationCheckbox.addEventListener("click", switchesC)
+regressionCheckbox.addEventListener("click", switchesR)
 
 function switchesC() {
-    r.checked = false
+    regressionCheckbox.checked = false
 }
 
 function switchesR() {
-    c.checked = false
+    classificationCheckbox.checked = false
 }
 
 let tree
@@ -24,7 +24,7 @@ let tree
 function getTree() {
     let maxDepth = parseInt(maxDepthValue.value)
     let maxSamples = parseInt(maxSamplesValue.value)
-    if (c.checked === false && r.checked === false) {
+    if (classificationCheckbox.checked === false && regressionCheckbox.checked === false) {
         alert("Нужно выбрать тип дерева")
         return
     }
@@ -40,12 +40,11 @@ function getTree() {
         }
         objects.push(user)
     }
-    if (c.checked) {
-        tree = makeClassificationTree(objects, header, maxDepth, maxSamples)
+    if (classificationCheckbox.checked) {
+        tree = makeTree(objects, header, maxDepth, maxSamples,"classification")
     } else {
-        tree = makeRegressionTree(objects, header, maxDepth, maxSamples)
+        tree = makeTree(objects, header, maxDepth, maxSamples, "regression")
     }
-    console.log(tree)
     visualizeTree(tree)
 }
 
@@ -128,7 +127,7 @@ function transformNode(node) {
 
 function getNodeLabel(node) {
     if (node.firstChild === null && node.secondChild === null) {
-        return c.checked ? "Class: " + node.data[0][Object.keys(node.data[0]).pop()] : "Value: " + node.data[0][Object.keys(node.data[0]).pop()];
+        return classificationCheckbox.checked ? "Class: " + node.data[0][Object.keys(node.data[0]).pop()] : "Value: " + node.data[0][Object.keys(node.data[0]).pop()];
     }
     return node.predicate[0] + "<=" + node.predicate[1]
 }
@@ -154,7 +153,7 @@ function passTree(tree, node, object) {
         nodeMap.set(key, this)
     });
 
-    function traverseAndHighlight(node) {
+    function highlightNodes(node) {
         const key = `${getNodeLabel(node)}_${node.entropy}_${node.data.length}`
 
         const d3Node = nodeMap.get(key)
@@ -167,14 +166,14 @@ function passTree(tree, node, object) {
             const threshold = parseInt(node.predicate[1])
 
             if (value <= threshold) {
-                traverseAndHighlight(node.firstChild)
+                highlightNodes(node.firstChild)
             } else {
-                traverseAndHighlight(node.secondChild)
+                highlightNodes(node.secondChild)
             }
         }
     }
 
-    traverseAndHighlight(node);
+    highlightNodes(node);
 }
 
 async function loadTemplate(url, elementId) {
