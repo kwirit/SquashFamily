@@ -134,5 +134,86 @@ img {
     border: #1E1E1E 1px solid;
 }
 
+.square {
+    background-color: hotpink;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.1s;
+}
 
+.square.wall {
+    background-color: rgb(12,12,12);
+}
 
+.square.passage {
+    background-color: #FFFFFF;
+}
+
+.square.path {
+    background-color: #8e8c8c;
+}
+
+.square.sidePath{
+    background-color: #ff3737;
+}
+
+.square.mainPath {
+    background-color: #18ff18;
+}
+
+.square.main {
+    background-color: rgb(0, 218, 0);
+}
+
+.square.currentPath {
+    border: #FFC0CB 2px solid;
+}
+
+.centered-alert-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Высота 100% от высоты окна */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1050; /* Выше других элементов */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+}
+.alert {
+    width: 50%; /* Ширина алерта */
+    max-width: 500px; /* Максимальная ширина алерта */
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert button.close {
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.alert svg.bi {
+    width: 1em;
+    height: 1em;
+    vertical-align: -.125em;
+    fill: currentColor;
+}
