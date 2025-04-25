@@ -1,3 +1,9 @@
+import {loadTemplate} from '../../js/utilites.js';
+
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgs.html', 'header-templates');
+
+
 const canvas = document.getElementById("mainCanvas")
 const button1 = document.getElementById("buttonCheck")
 const button2 = document.getElementById("buttonClear")
@@ -52,12 +58,3 @@ async function guess() {
     let predict = await Neural(data)
     predicted.textContent = "predicted: " + predict
 }
-
-async function loadTemplate(url, elementId) {
-    const response = await fetch(url);
-    if (!response.ok)
-        return;
-    document.getElementById(elementId).innerHTML = await response.text();
-}
-loadTemplate('../../templates/footer.html', 'footer-templates');
-loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');

@@ -1,3 +1,8 @@
+import {loadTemplate} from '../../js/utilites.js';
+
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgs.html', 'header-templates');
+
 const background_canvas = document.getElementById("backgroundCanvas");
 const dynamic_canvas = document.getElementById("dynamicCanvas");
 const startBtn = document.getElementById("startBtn");

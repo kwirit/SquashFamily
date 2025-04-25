@@ -1,5 +1,11 @@
 import {PriorityQueue, Queue, UnionFind} from "./structures.js";
-import {delay, random, loadTemplate} from "./utilites.js";
+import {delay, random} from "./utilites.js";
+import {loadTemplate} from '../../js/utilites.js';
+
+
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgs.html', 'header-templates');
+
 
 let queueMain = new Queue();
 let stopVisualization = true;
@@ -15,8 +21,6 @@ let buttonFindPath = document.getElementById("buttonFindPath");
 let buttonVisualizationPath = document.getElementById("buttonVisualisationPath");
 let buttonClearPath = document.getElementById("buttonClearPath");
 
-loadTemplate('../../templates/footer.html', 'footer-templates');
-loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
 
 
 buttonCreateGrid.addEventListener("click", function (event) {

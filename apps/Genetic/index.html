@@ -1,27 +1,50 @@
 <!DOCTYPE html>
-<html lang = "en">
+<html lang="en">
 
 <head>
-    <meta charset = "UTF-8">
-    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
-    <title> Genetic Algoritm </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../static/icons/favicon.svg"/>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link href="../../css/fonts.css" rel="stylesheet">
+    <title> Genetic Algorithm </title>
 </head>
-
-<body>
-    <h1> Genetic Algoritm </h1>
-    
-    <div style="position: relative; width: 1000px; height: 500px;">
-        <canvas id="backgroundCanvas" width="1000" height="500"></canvas>
-        <canvas id="dynamicCanvas" width="1000" height="500"></canvas>
+<body class="text-wrapper">
+<div class="wrapper">
+    <div id="header-templates"></div>
+    <div class="text-wrapper">
+        <div class="hero container">
+            <div class="hero-text">
+                <h2>Genetic Algorithm</h2>
+                <p>This feature allows you to find the optimal salesman route among given points on a plane using a
+                    genetic algorithm. First, add points by clicking on a free space on the plane, then click the
+                    "Start" button to let the algorithm find the shortest route that passes through all the points and
+                    returns to the starting point.</p>
+            </div>
+        </div>
     </div>
-    
-    
 
-    <button id = "startBtn">Start</button>
 
-    <script src="script.js"></script>
-    <script src="genetic.js"></script>
+    <div class="algorithms container">
+        <div id="blockGrid" class="block">
+            <div style="position: relative; width: 1000px; height: 500px;">
+                <canvas id="backgroundCanvas" width="1000" height="500"></canvas>
+                <canvas id="dynamicCanvas" width="1000" height="500"></canvas>
+            </div>
+            <div class="general-buttons">
+                <button type="button" id="startBtn" class="btn btn-lg">Start</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="text-wrapper">
+        <div id="footer-templates"></div>
+    </div>
+    <script type="module" src="script.js"></script>
+    <script src="Genetic.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+</div>
 </body>
-
 </html>

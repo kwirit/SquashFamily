@@ -1,3 +1,10 @@
+import {loadTemplate} from '../../js/utilites.js';
+
+
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgs.html', 'header-templates');
+
+
 // Получаем элементы
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
@@ -63,16 +70,6 @@ anthillBtn.click();
 //Активируем функцию при нажатии на кнопку
 spawnBtn.addEventListener('click', () => antColonySimulator(canvas));
 
-async function loadTemplate(url, elementId) {
-    const response = await fetch(url);
-    if (response.ok) {
-        const text = await response.text();
-        document.getElementById(elementId).innerHTML = text;
-    } else console.error('Error load template');
-}
-
-loadTemplate('../../templates/footer.html', 'footer-templates');
-loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
 
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.general-buttons .btn :not(#spawnBtn)');

@@ -1,7 +1,11 @@
 import {
-    loadTemplate, EuclideanDistance,
+     EuclideanDistance,
     random, drawPoints, getRandomElementSet
 } from "./utilites.js";
+import {loadTemplate} from '../../js/utilites.js';
+
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgs.html', 'header-templates');
 
 class Point {
     constructor(x, y, radius, color) {
@@ -17,8 +21,6 @@ class Point {
     }
 }
 
-loadTemplate('../../templates/footer.html', 'footer-templates');
-loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
 
 let canv = document.querySelector('canvas');
 let ctx = canv.getContext('2d');
@@ -52,25 +54,48 @@ buttonStartClustering.addEventListener('click', clustering);
 buttonClear.addEventListener('click', clearGrid);
 
 
-
 document.addEventListener('DOMContentLoaded', function () {
-    function setupRangeInput(inputId, valueId, variableName, parseFunction) {
-        const rangeInput = document.getElementById(inputId);
-        const rangeValue = document.getElementById(valueId);
+    const radiusRangeInput = document.getElementById('radius-rangeButton');
+    const radiusRangeValue = document.getElementById('radius-rangeValue');
+    const mRangeInput = document.getElementById('m-rangeButton');
+    const mRangeValue = document.getElementById('m-rangeValue');
+    const epsilonRangeInput = document.getElementById('epsilon-rangeButton');
+    const epsilonRangeValue = document.getElementById('epsilon-rangeValue');
 
-        rangeInput.addEventListener('input', function () {
-            const value = parseFunction(rangeInput.value, 10);
-            window[variableName] = value;
-            rangeValue.textContent = value;
-        });
-
-        const initialValue = parseFunction(rangeInput.value, 10);
-        window[variableName] = initialValue;
-        rangeValue.textContent = initialValue;
+    if (!radiusRangeValue || !radiusRangeInput) {
+        console.error('Elements with IDs radius-rangeButton or radius-rangeValue not found.');
+    } else {
+        function updateRadiusValue() {
+            const value = parseInt(radiusRangeInput.value, 10);
+            radius = value;
+            radiusRangeValue.textContent = value;
+        }
+        radiusRangeInput.addEventListener('input', updateRadiusValue);
+        updateRadiusValue();
+    }
+    if (!mRangeInput || !mRangeValue) {
+        console.error('Elements with IDs m-rangeButton or m-rangeValue not found.');
+    } else {
+        function updateMValue() {
+            const value = parseInt(mRangeInput.value, 10);
+            m = value;
+            mRangeValue.textContent = value;
+        }
+        mRangeInput.addEventListener('input', updateMValue);
+        updateMValue();
     }
 
-    setupRangeInput('m-rangeButton', 'm-rangeValue', 'm', parseInt);
-    setupRangeInput('epsilon-rangeButton', 'epsilon-rangeValue', 'epsilon', parseInt);
+    if (!epsilonRangeInput || !epsilonRangeValue) {
+        console.error('Elements with IDs epsilon-rangeButton or epsilon-rangeValue not found.');
+    } else {
+        function updateEpsilonValue() {
+            const value = parseInt(epsilonRangeInput.value, 10);
+            epsilon = value;
+            epsilonRangeValue.textContent = value;
+        }
+        epsilonRangeInput.addEventListener('input', updateEpsilonValue);
+        updateEpsilonValue();
+    }
 });
 
 canv.addEventListener('click', (e) => {
@@ -236,7 +261,7 @@ function KMeansPP() {
 
 function DBSCAN(m, epsilon) {
     function calcEpsilonLocality(currPoint) {
-        let arrayPointsEpsilon = new Array(0);
+        let arrayPointsEpsilon = [];
         for (let point of allPoints) {
             let distance = EuclideanDistance(point, currPoint);
             if (distance < epsilon && point !== currPoint && notMarkedPoints.has(point))
@@ -252,34 +277,32 @@ function DBSCAN(m, epsilon) {
         currPoint.setNewColor(colors[currColor]);
 
         if (arrayPointsEpsilon.length >= m) {
-            clusters[currColor].push(currPoint)
-            for (let neighbour of arrayPointsEpsilon)
-                recursionFindClusters(neighbour);
+            for (let neighbour of arrayPointsEpsilon) {
+                if (!clusters[currColor].includes(neighbour)) {
+                    clusters[currColor].push(neighbour);
+                    recursionFindClusters(neighbour);
+                }
+            }
         }
     }
 
     clearClusters();
     if (allPoints.length === 0) return;
+
     let currColor = 0;
     let notMarkedPoints = new Set(allPoints);
-    let pointsForFind = new Set(allPoints);
     let clusters = {};
 
     while (notMarkedPoints.size > 0) {
-        let currPoint = getRandomElementSet(pointsForFind);
+        let currPoint = getRandomElementSet(notMarkedPoints);
         let arrayPointsEpsilon = calcEpsilonLocality(currPoint);
-        if (arrayPointsEpsilon.length == 0) {
-            notMarkedPoints.add(currPoint);
-        }
         notMarkedPoints.delete(currPoint);
 
         if (arrayPointsEpsilon.length >= m) {
-            pointsForFind.delete(currPoint);
-            clusters[currColor] = [];
-            clusters[currColor].push(currPoint)
+            clusters[currColor] = [currPoint];
             currPoint.setNewColor(colors[currColor]);
             for (let neighbour of arrayPointsEpsilon)
-                recursionFindClusters(neighbour)
+                recursionFindClusters(neighbour);
             currColor++;
         }
     }

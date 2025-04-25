@@ -1,10 +1,3 @@
-export async function loadTemplate(url, elementId) {
-    const response = await fetch(url);
-    if (!response.ok)
-        return;
-    document.getElementById(elementId).innerHTML = await response.text();
-}
-
 export function getRandomElementSet(set) {
     let array = [...set];
     return array[random(1, array.length - 1)];

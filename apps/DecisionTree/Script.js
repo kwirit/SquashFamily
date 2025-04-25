@@ -1,3 +1,8 @@
+import {loadTemplate} from '../../js/utilites.js';
+
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgs.html', 'header-templates');
+
 const ta1 = document.getElementById("ta1")
 const b1 = document.getElementById("b1")
 const ta2 = document.getElementById("ta2")
@@ -41,7 +46,7 @@ function getTree() {
         objects.push(user)
     }
     if (classificationCheckbox.checked) {
-        tree = makeTree(objects, header, maxDepth, maxSamples,"classification")
+        tree = makeTree(objects, header, maxDepth, maxSamples, "classification")
     } else {
         tree = makeTree(objects, header, maxDepth, maxSamples, "regression")
     }
@@ -175,12 +180,3 @@ function passTree(tree, node, object) {
 
     highlightNodes(node);
 }
-
-async function loadTemplate(url, elementId) {
-    const response = await fetch(url);
-    if (!response.ok)
-        return;
-    document.getElementById(elementId).innerHTML = await response.text();
-}
-loadTemplate('../../templates/footer.html', 'footer-templates');
-loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');

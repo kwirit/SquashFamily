@@ -1,5 +1,3 @@
-
-
 let world = [];
 initWorld(world, canvas.height, canvas.width); // Матрица пикселей(rgba) мира
 let anthillPixels = new Set(); // JSON {y, x}
