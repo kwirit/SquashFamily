@@ -11,7 +11,34 @@
 </head>
 <body class="text-wrapper">
 <div class="wrapper">
-    <div id="header-templates"></div>
+    <div id="header-templates">
+        <div class="wrapper">
+            <header class="container">
+                <a href="#"><img class="logo" src="../../static/icons/Team608.png" width="128" alt=""> </a>
+                <nav>
+                    <ul>
+                        <li id="homepage-button" class="myBtn-nav"><a href="../../main.html">Home</a></li>
+                        <li id="algorithms-button" class="myBtn-nav nav-item dropdown active">
+                            <a href="#container" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Algorithms
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="../../apps/AStar/index.html">A-Star find Path</a></li>
+                                <li><a class="dropdown-item" href="../../apps/Cluster/index.html">Clustering</a></li>
+                                <li><a class="dropdown-item" href="../../apps/Genetic/index.html">Genetic algorithm</a></li>
+                                <li><a class="dropdown-item" href="../../apps/Ant/index.html">Ant colony Algorithm</a></li>
+                                <li><a class="dropdown-item" href="../../apps/DecisionTree/index.html">Decision Tree</a></li>
+                                <li><a class="dropdown-item" href="../../apps/NeuralNetwork/index.html">Neural Network</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="myBtn-nav"><a href="#footer">Contact</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+    </div>
 
     <div class="text-wrapper">
         <div class="hero container">
@@ -127,20 +154,20 @@
                     <div id="EVAPORATION_RATE-setting" class="range-container">
                         <label for="EVAPORATION_RATE-rangeButton" class="form-label">Evaporation-rate: </label>
                         <input class="form-control custom-range" type="range" id="EVAPORATION_RATE-rangeButton" min="1"
-                               value="100"
+                               value="1000"
                                max="1000"
                                step="1"
                                placeholder="Enter a number">
-                        <span id="EVAPORATION_RATE-rangeValue">100</span>
+                        <span id="EVAPORATION_RATE-rangeValue">1000</span>
                     </div>
                     <div id="P-setting" class="range-container">
                         <label for="P-rangeButton" class="form-label">P: </label>
                         <input class="form-control custom-range" type="range" id="P-rangeButton" min="0.01"
-                               value="0.1"
+                               value="0.05"
                                max="1"
                                step="0.01"
                                placeholder="Enter a number">
-                        <span id="P-rangeValue">0.1</span>
+                        <span id="P-rangeValue">0.05</span>
                     </div>
                 </div>
 
@@ -179,9 +206,9 @@
                     <div id="PROBABILITY_OF_ERROR-setting" class="range-container">
                         <label for="PROBABILITY_OF_ERROR-rangeButton" class="form-label">Probability of error: </label>
                         <input class="form-control custom-range" type="range" id="PROBABILITY_OF_ERROR-rangeButton"
-                               min="0.01"
+                               min="0"
                                value="0.1"
-                               max="0.99"
+                               max="1"
                                step="0.01"
                                placeholder="Enter a number">
                         <span id="PROBABILITY_OF_ERROR-rangeValue">0.1</span>
@@ -199,7 +226,7 @@
                     </div>
                     <div class="form-group">
                         <label for="MAX_PATH">Max path</label>
-                        <input type="number" class="form-control" id="MAX_PATH" placeholder="2000">
+                        <input type="number" class="form-control" id="MAX_PATH" placeholder="10000">
                     </div>
                 </div>
 
@@ -213,11 +240,11 @@
                     <div id="SPEED_BOOST-setting" class="range-container">
                         <label for="SPEED_BOOST-rangeButton" class="form-label">Speed boost: </label>
                         <input class="form-control custom-range" type="range" id="SPEED_BOOST-rangeButton" min="1"
-                               value="10"
-                               max="50"
+                               value="1"
+                               max="10"
                                step="1"
                                placeholder="Enter a number">
-                        <span id="SPEED_BOOST-rangeValue">10</span>
+                        <span id="SPEED_BOOST-rangeValue">1</span>
                     </div>
                 </div>
             </div>
@@ -226,11 +253,61 @@
 </div>
 <div class="text-wrapper">
     <div id="footer-templates">
-
+        <footer id="footer" class="container">
+            <a href="#"><img class="logo" src="/../static/icons/Team608.png" width="128" alt=""> </a>
+            <nav class="social-icons">
+                <ul>
+                    <li><a target="_blank" href="https://instagram.com"><img src="/../static/icons/instagram.png"
+                                                                             alt="Instagram" width="32"></a></li>
+                    <li><a target="_blank" href="https://t.me/tsu_hits"><img src="/../static/icons/telegram.png"
+                                                                             alt="Telegram" width="32"></a></li>
+                    <li><a target="_blank" href="https://vk.com/hits_tsu"><img src="/../static/icons/vk.png" alt="VK"
+                                                                               width="32"></a></li>
+                </ul>
+            </nav>
+            <nav class="information">
+                <ul>
+                    <li aria-haspopup="true" aria-expanded="false">
+                        <nav class="Social-networks">
+                            <a class="title-information">Social networks</a>
+                            <ul>
+                                <li class="myBtn-nav"><a target="_blank" href="https://t.me/tsu_hits">Telegram</a></li>
+                                <li class="myBtn-nav"><a target="_blank" href="https://vk.com/hits_tsu">VK</a></li>
+                                <li class="myBtn-nav"><a target="_blank" href="https://instagram.com">Instagram</a></li>
+                            </ul>
+                        </nav>
+                    </li>
+                    <li aria-haspopup="true" aria-expanded="false">
+                        <nav class="Useful-links">
+                            <a class="title-information">Useful links</a>
+                            <ul>
+                                <li class="myBtn-nav"><a href="#">Privacy Policy</a></li>
+                                <li class="myBtn-nav"><a href="#">Terms of use</a></li>
+                                <li class="myBtn-nav"><a href="#">Questions and Answers (FAQ)</a></li>
+                            </ul>
+                        </nav>
+                    </li>
+                    <li aria-haspopup="true" aria-expanded="false">
+                        <a class="title-information">Contact</a>
+                        <nav class="Contact-information">
+                            <ul>
+                                <li class="myBtn-nav"><a target="_blank"
+                                                         href="https://yandex.ru/maps/geo/posyolok_gorodskogo_tipa_mundybash/53110542/?ll=87.283430%2C53.207664&z=14">Address:
+                                    г. Мундыбаш</a></li>
+                                <li class="myBtn-nav"><a target="_blank" href="mailto:MewMew@domain.com">Email:
+                                    MewMew@domain.com</a></li>
+                                <li class="myBtn-nav"><a target="_blank" href="tel:+1234567890">Support: +7 912 345 67
+                                    89</a></li>
+                            </ul>
+                        </nav>
+                    </li>
+                </ul>
+            </nav>
+        </footer>
     </div>
 </div>
 <script src="functions.js"></script>
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 <script src="ant_colony_optimization.js"></script>
 <script src="../../js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,10 +1,3 @@
-import {loadTemplate} from '../../js/utilites.js';
-
-
-loadTemplate('../../templates/footer.html', 'footer-templates');
-loadTemplate('../../templates/headerAlgs.html', 'header-templates');
-
-
 // Получаем элементы
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');

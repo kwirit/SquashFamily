@@ -1,36 +1,36 @@
-let world = [];
+var world = [];
 initWorld(world, canvas.height, canvas.width); // Матрица пикселей(rgba) мира
-let anthillPixels = new Set(); // JSON {y, x}
-let food = new Map(); // JSON {y, x} - satiety
-let colony = []; // Массив с муравьями
-let phHome = new Map(); // JSON {y, x} - {lvl, direction}
-let phFood = new Map(); // JSON {y, x} - {lvl, direction}
+var anthillPixels = new Set(); // JSON {y, x}
+var food = new Map(); // JSON {y, x} - satiety
+var colony = []; // Массив с муравьями
+var phHome = new Map(); // JSON {y, x} - {lvl, direction}
+var phFood = new Map(); // JSON {y, x} - {lvl, direction}
 
 // Феромоны
-let MAX_PH_LVL = 1; // Максимальный порог феромона
-let SUSTAINABILITY = 100; // Устойчивость феромонов
-let MIN_PH_LVL = MAX_PH_LVL / SUSTAINABILITY; // Минимальный порог феромонов
+var MAX_PH_LVL = 1; // Максимальный порог феромона
+var SUSTAINABILITY = 100; // Устойчивость феромонов
+var MIN_PH_LVL = 1 / SUSTAINABILITY; // Минимальный порог феромонов
 
 // Испарение
-let EVAPORATION_RATE = 100; // Скорость испарения феромонов
-let P = 0.1; // Сила испарения феромонов
+var EVAPORATION_RATE = 1000; // Скорость испарения феромонов
+var P = 0.05; // Сила испарения феромонов
 
 // Решение муравья
-let ALF = 3; // Приоритет нового пути
-let PROBABILITY_OF_REJECTION = 0.1; // Вероятность отклонения
-let DEFLECTION_FORCE = 30; // Сила отклонения
-let PROBABILITY_OF_ERROR = 0.1; // Вероятность ошибки
+var ALF = 3; // Приоритет нового пути
+var PROBABILITY_OF_REJECTION = 0.1; // Вероятность отклонения
+var DEFLECTION_FORCE = 30; // Сила отклонения
+var PROBABILITY_OF_ERROR = 0.1; // Вероятность ошибки
 
 // Колония
-let MODEL_SIZE = 1; // Размер модельки
-let COUNT_ANTS = 2000; // Кол-во муравьёв
-let MAX_PATH = 2000; // Максимально разрешённый пройденный путь муравья
+var MODEL_SIZE = 1; // Размер модельки
+var COUNT_ANTS = 2000; // Кол-во муравьёв
+var MAX_PATH = 10000; // Максимально разрешённый пройденный путь муравья
 
 // Еда
-let SATIETY = 0; // Сытность еды, 0 - бесконечная еда
+var SATIETY = 0; // Сытность еды, 0 - бесконечная еда
 
 // Анимация
-let SPEED_BOOST = 10; // Частота отрисовки
+var SPEED_BOOST = 1; // Частота отрисовки
 
 
 // Обработчики событий
@@ -362,12 +362,12 @@ function antColonySimulator(canvas) {
                 processAnt(canvas, world, anthillPixels, food, phHome, phFood, ant, MODEL_SIZE);
             }
             ++count;
-        }
 
-        if (count == EVAPORATION_RATE) {
-            vaporizePheromones(phHome);
-            vaporizePheromones(phFood);
-            count = 0;
+            if (count >= EVAPORATION_RATE) {
+                vaporizePheromones(phHome);
+                vaporizePheromones(phFood);
+                count = 0;
+            }
         }
 
         requestAnimationFrame(simulate);
@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
         rangeValue.textContent = initialValue;
     }
 
-    setupRangeInput('MAX_PH_LVL-rangeButton', 'MAX_PH_LVL-rangeValue', 'MAX_PH_LVL', parseInt);
+    setupRangeInput('MAX_PH_LVL-rangeButton', 'MAX_PH_LVL-rangeValue', 'MAX_PH_LVL', parseFloat);
     setupRangeInput('SUSTAINABILITY-rangeButton', 'SUSTAINABILITY-rangeValue', 'SUSTAINABILITY', parseInt);
     setupRangeInput('EVAPORATION_RATE-rangeButton', 'EVAPORATION_RATE-rangeValue', 'EVAPORATION_RATE', parseInt);
     setupRangeInput('P-rangeButton', 'P-rangeValue', 'P', parseFloat);
