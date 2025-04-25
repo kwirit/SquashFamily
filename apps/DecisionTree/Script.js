@@ -188,7 +188,6 @@ function passTree(tree, node, object) {
             }
         }
     }
-
     highlightNodes(node);
 }
 

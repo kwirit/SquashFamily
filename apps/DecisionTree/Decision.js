@@ -55,7 +55,7 @@ class DecisionTree{
         return mse
     }
 
-    setPredicates(data,header){
+    setPredicates(data){
         let predicates = []
         for(let key of this.header.slice(0,-1)) {
             let colms = new Set()
