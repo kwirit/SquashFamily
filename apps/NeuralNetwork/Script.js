@@ -36,7 +36,7 @@ function drawEnd() {
 }
 
 function clear() {
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
 async function guess() {

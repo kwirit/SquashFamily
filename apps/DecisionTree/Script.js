@@ -1,8 +1,3 @@
-import {loadTemplate} from "../Cluster/utilites.js";
-
-loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
-loadTemplate('../../templates/footer.html', 'footer-templates');
-
 let ta1 = document.getElementById("ta1")
 let b1 = document.getElementById("b1")
 let ta2 = document.getElementById("ta2")
@@ -182,3 +177,11 @@ function passTree(tree, node, object) {
     traverseAndHighlight(node);
 }
 
+async function loadTemplate(url, elementId) {
+    const response = await fetch(url);
+    if (!response.ok)
+        return;
+    document.getElementById(elementId).innerHTML = await response.text();
+}
+loadTemplate('../../templates/footer.html', 'footer-templates');
+loadTemplate('../../templates/headerAlgorithms.html', 'header-templates');
