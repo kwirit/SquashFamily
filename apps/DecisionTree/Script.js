@@ -9,8 +9,8 @@ const ta2 = document.getElementById("ta2")
 const b2 = document.getElementById("b2")
 const maxDepthValue = document.getElementById("maxDepth")
 const maxSamplesValue = document.getElementById("maxSamples")
-const classificationCheckbox = document.getElementById("c")
-const regressionCheckbox = document.getElementById("r")
+const classificationCheckbox = document.getElementById("classificationCheckbox")
+const regressionCheckbox = document.getElementById("regressionCheckbox")
 b1.addEventListener("click", getTree)
 b2.addEventListener("click", predict)
 classificationCheckbox.addEventListener("click", switchesC)
@@ -24,18 +24,22 @@ function switchesR() {
     classificationCheckbox.checked = false
 }
 
-let tree
+let tree = null
 
 function getTree() {
+    if(ta1.value === ""){
+        alert("Введите выборку")
+        return
+    }
     let maxDepth = parseInt(maxDepthValue.value)
     let maxSamples = parseInt(maxSamplesValue.value)
     if (classificationCheckbox.checked === false && regressionCheckbox.checked === false) {
         alert("Нужно выбрать тип дерева")
         return
     }
-    let data = ta1.value
-    let rows = data.split("\n")
-    let header = rows[0].split(",")
+    const data = ta1.value
+    const rows = data.split("\n")
+    const header = rows[0].split(",")
     let objects = []
     for (let row of rows.slice(1, rows.length)) {
         row = row.split(",")
@@ -50,6 +54,7 @@ function getTree() {
     } else {
         tree = makeTree(objects, header, maxDepth, maxSamples, "regression")
     }
+    console.log(tree)
     visualizeTree(tree)
 }
 
@@ -98,16 +103,19 @@ function visualizeTree(tree) {
         .attr("r", 10)
 
     nodes.append("text")
+        .attr("fill", "white")
         .attr("y", -15)
         .style("text-anchor", "middle")
         .text(d => d.data.name);
 
     nodes.append("text")
+        .attr("fill", "white")
         .attr("y", 25)
         .style("text-anchor", "middle")
-        .text(d => c.checked ? `Entropy: ${d.data.entropy.toFixed(2)}` : `MSE: ${d.data.entropy.toFixed(2)}`);
+        .text(d => classificationCheckbox.checked ? `Entropy: ${d.data.entropy.toFixed(2)}` : `MSE: ${d.data.entropy.toFixed(2)}`);
 
     nodes.append("text")
+        .attr("fill", "white")
         .attr("y", 40)
         .style("text-anchor", "middle")
         .text(d => `Samples: ${d.data.samples}`);
@@ -138,6 +146,14 @@ function getNodeLabel(node) {
 }
 
 function predict() {
+    if(ta2.value === ""){
+        alert("Введите тест")
+        return
+    }
+    if(tree === null){
+        alert("Дерево не построено")
+        return
+    }
     let data = ta2.value
     data = data.split(",")
     let obj = {}
@@ -177,6 +193,5 @@ function passTree(tree, node, object) {
             }
         }
     }
-
     highlightNodes(node);
 }

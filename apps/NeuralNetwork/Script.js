@@ -48,13 +48,24 @@ function clear() {
 
 async function guess() {
     ctx2.drawImage(canvas, 0, 0, width, height, 0, 0, 28, 28)
-    let scannedImage = ctx2.getImageData(0, 0, 28, 28)
-    let imageData = scannedImage.data
+    const scannedImage = ctx2.getImageData(0, 0, 28, 28)
+    const imageData = scannedImage.data
     let data = []
     data[0] = (imageData[3] / 255)
     for (let i = 1; i < 28 * 28; i++) {
         data[i] = (imageData[i * 4 - 1] / 255)
     }
-    let predict = await Neural(data)
+    let isEmpty = true
+    for(let i = 0;i<data.length;i++){
+        if(data[i] !== 0){
+            isEmpty = false
+            break
+        }
+    }
+    if(isEmpty){
+        alert("Пустой холст")
+        return
+    }
+    const predict = await Neural(data)
     predicted.textContent = "predicted: " + predict
 }
