@@ -1,8 +1,7 @@
 class DecisionTree{
     constructor(data,header,amountOfClasses, maxDepth, maxSamples, typeOfTree) {
-        this.root = new treeNode()
+        this.root = new treeNode(data)
         this.typeOfTree = typeOfTree
-        this.root.data = data
         this.header = header
         this.maxDepth = maxDepth
         this.maxSamples = maxSamples
@@ -56,52 +55,33 @@ class DecisionTree{
         return mse
     }
 
-    searchMax(values){
-        let tmp = -1
-        let index
-        for(let i = 0;i<values.length;i++){
-            if(values[i] > tmp){
-                tmp = values[i]
-                index = i;
+    setPredicates(data,header){
+        let predicates = []
+        for(let key of this.header.slice(0,-1)) {
+            let colms = new Set()
+            for (let i = 0; i < data.length; i++) {
+                colms.add(data[i][key])
             }
+            colms = Array.from(colms)
+            predicates.push(colms)
         }
-        return index
+        return predicates
     }
 
-    buildTree(node,amountOfClasses, level, typeOfTree){
-        let parentEntropy
-        if(this.typeOfTree === "classification"){
-            parentEntropy = this.ent(node.data,this.header,amountOfClasses)
-        }
-        else{
-            parentEntropy = this.mse(node.data,this.header)
-        }
-        if(parentEntropy === 0 || level === this.maxDepth || node.data.length === this.maxSamples){
-            node.firstChild = null
-            node.secondChild = null
-            return
-        }
-        let predicates = []
+    findBestInformationGain(data,header,predicates, amountOfClasses, parentEntropy){
         let informationGain = -1
         let firstResultSet
         let secondResultSet
         let firstResultEntropy
         let secondResultEntropy
         let resultPredicate
-        for(let key of this.header.slice(0,-1)) {
-            let colms = new Set()
-            for (let i = 0; i < node.data.length; i++) {
-                colms.add(node.data[i][key])
-            }
-            colms = Array.from(colms)
-            predicates.push(colms)
-        }
+
         for(let i = 0;i<predicates.length;i++){
             for(let j = 0;j<predicates[i].length;j++){
                 let firstSet = []
                 let secondSet = []
                 let predicate = parseInt(predicates[i][j])
-                for(let object of node.data){
+                for(let object of data){
                     if(parseInt(object[this.header[i]]) <= predicate){
                         firstSet.push(object)
                     }
@@ -120,7 +100,7 @@ class DecisionTree{
                         firstSetEntropy = this.mse(firstSet,this.header)
                         secondSetEntropy = this.mse(secondSet,this.header)
                     }
-                    let tempInformationGain = parentEntropy - (firstSet.length / node.data.length)*firstSetEntropy - (secondSet.length / node.data.length)*secondSetEntropy
+                    let tempInformationGain = parentEntropy - (firstSet.length / data.length)*firstSetEntropy - (secondSet.length / data.length)*secondSetEntropy
                     if(tempInformationGain > informationGain){
                         informationGain = tempInformationGain
                         firstResultSet = firstSet
@@ -132,21 +112,46 @@ class DecisionTree{
                 }
             }
         }
-        const firstNode = new treeNode()
-        const secondNode = new treeNode()
-        firstNode.data = firstResultSet
-        firstNode.entropy = firstResultEntropy
-        secondNode.data = secondResultSet
-        secondNode.entropy = secondResultEntropy
-        node.predicate = resultPredicate
+        return [firstResultSet, secondResultSet,firstResultEntropy, secondResultEntropy,resultPredicate]
+    }
+
+    buildTree(node,amountOfClasses, level, typeOfTree){
+        let parentEntropy
+        if(this.typeOfTree === "classification"){
+            parentEntropy = this.ent(node.data,this.header,amountOfClasses)
+        }
+        else{
+            parentEntropy = this.mse(node.data,this.header)
+        }
+        if(parentEntropy === 0 || level === this.maxDepth || node.data.length === this.maxSamples){
+            node.firstChild = null
+            node.secondChild = null
+            return
+        }
+
+        let predicates = this.setPredicates(node.data,this.header)
+
+        const resultData = this.findBestInformationGain(node.data,this.header,predicates,amountOfClasses,parentEntropy)
+
+        const firstNode = new treeNode(resultData[0])
+        const secondNode = new treeNode(resultData[1])
+
+        firstNode.entropy = resultData[2]
+        secondNode.entropy = resultData[3]
+        node.predicate = resultData[4]
         node.firstChild = firstNode
         node.secondChild = secondNode
+
         this.buildTree(firstNode,amountOfClasses, level + 1, typeOfTree)
         this.buildTree(secondNode,amountOfClasses, level + 1,typeOfTree)
     }
 }
 
-class treeNode{}
+class treeNode{
+    constructor(data) {
+        this.data = data
+    }
+}
 
 function makeTree(data,header, maxDepth, maxSamples, typeOfTree){
     let amountOfClasses

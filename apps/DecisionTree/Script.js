@@ -4,8 +4,8 @@ const ta2 = document.getElementById("ta2")
 const b2 = document.getElementById("b2")
 const maxDepthValue = document.getElementById("maxDepth")
 const maxSamplesValue = document.getElementById("maxSamples")
-const classificationCheckbox = document.getElementById("c")
-const regressionCheckbox = document.getElementById("r")
+const classificationCheckbox = document.getElementById("classificationCheckbox")
+const regressionCheckbox = document.getElementById("regressionCheckbox")
 b1.addEventListener("click", getTree)
 b2.addEventListener("click", predict)
 classificationCheckbox.addEventListener("click", switchesC)
@@ -49,6 +49,7 @@ function getTree() {
     } else {
         tree = makeTree(objects, header, maxDepth, maxSamples, "regression")
     }
+    console.log(tree)
     visualizeTree(tree)
 }
 
