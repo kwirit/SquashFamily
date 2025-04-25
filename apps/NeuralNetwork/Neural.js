@@ -38,6 +38,7 @@ function feedForward(data, weights1, weights2, neurons2, neurons3) {
     activateFunc(neurons2);
     multi(weights2, neurons2, neurons3);
     const output = softmax(neurons3);
+    console.log(neurons3)
     return searchMax(output);
 }
 
@@ -48,7 +49,5 @@ async function Neural(data) {
     let weights2 = weights.weights_1_2;
     let neurons2 = Array(500).fill(0);
     let neurons3 = Array(10).fill(0);
-    let S1 = Array(100)
-    let S2 = Array(10)
     return feedForward(data, weights1, weights2, neurons2, neurons3)
 }
