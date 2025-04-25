@@ -81,3 +81,39 @@ export class Queue {
         this.front = 0;
     }
 }
+
+export class PriorityQueue {
+    constructor() {
+        this.collection = [];
+    }
+
+    append(element, priority) {
+        const queueElement = { element, priority };
+        let added = false;
+
+        for (let i = 0; i < this.collection.length; i++) {
+            if (this.collection[i].priority > queueElement.priority) {
+                this.collection.splice(i, 0, queueElement);
+                added = true;
+                break;
+            }
+        }
+
+        if (!added) {
+            this.collection.push(queueElement);
+        }
+    }
+
+    pop() {
+        return this.collection.shift().element;
+    }
+
+    size() {
+        return this.collection.length;
+    }
+
+    isEmpty() {
+        return this.collection.length === 0;
+    }
+
+}
