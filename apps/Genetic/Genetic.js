@@ -1,246 +1,279 @@
+const POPULATION_SIZE = 10; // Размем популяции
+const MUTATION_PROB_BASE = 0.05; // Начальная вероятность мутации
+const ELITE_RATE = 0.05; // Доля элиты
+const TOURNAMENT_SIZE = 5; // Размер турнира
 
-let POPULATION_SIZE = 300;
-
-
-function getLineLength(point_a, point_b)
+class Chromosome
 {
-    let a = point_a.x - point_b.x;
-    let b = point_a.y - point_b.y;
-    
-    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-}
+    genes;
+    fitness;
 
-function createNewMatrix(points)
-{
-    let new_matrix = [];
-    for(let i = 0; i < points.length; ++i) {
-        let row = [];
-        for(let j = 0; j < points.length; ++j) {
-            let line_length = getLineLength(points[i], points[j]);
-            row.push(line_length);
-        }
-        new_matrix.push(row);
+    constructor(genes, fitness)
+    {
+        this.genes = genes;
+        this.fitness = fitness;
     }
+};
 
-    return new_matrix;
-}
 
-function getRandomInt(min, max) {
-    if (min > max) [min, max] = [max, min]; // Меняем местами, если нужно
+function getRandomInt(min, max)
+{
+    if (min > max) [min, max] = [max, min];
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createNewChromosome(points)
+function shuffle(ar)
 {
-    let result = []; //{x, y}
-    for(let i = 0; i < points.length; ++i) {
-        result.push(points[i]);
-    }
-
-    return result;
-}
-
-// Алгоритм Фишера-Йетса
-function shuffling(ar)
-{
-    for(let i = ar.length - 1; i > 0; --i) {
-        let j = getRandomInt(0, i - 1);
+    for(let i = ar.length - 1; i > -1; --i) {
+        let j = getRandomInt(0, i);
         [ar[i], ar[j]] = [ar[j], ar[i]];
     }
 
     return;
 }
 
-function createNewPopulation(points, population_size)
+function getNewGenes(points)
 {
-    let population = [];
-    for(let i = 0; i < population_size; ++i) {
-        let chromosome = createNewChromosome(points)
-        shuffling(chromosome);
-        population.push(chromosome);
-    }
+    let genes = structuredClone(points);
+    shuffle(genes);
 
-    return population;
+    return genes;
 }
 
-function fitness(chromosome_ar)
+function getNewPopulation(points)
 {
-    let result = 0;
-
-    for(let i = 0; i < chromosome_ar.length - 1; ++i) {
-        let current = chromosome_ar[i];
-        let next = chromosome_ar[i+1];
-        result += getLineLength(current, next);
+    let new_population = [];
+    for(let i = 0; i < POPULATION_SIZE; ++i) {
+        let genes = getNewGenes(points);
+        let fitness = getFitness(genes);
+        
+        let new_chromosome = new Chromosome(genes, fitness);
+        
+        new_population.push(new_chromosome);
     }
-    result += getLineLength(chromosome_ar[chromosome_ar.length - 1], chromosome_ar[0]);
 
-    return result;
+    return new_population;
 }
 
-function FPS(population, size_claster, start)
+function getLineLength(point_a, point_b)
 {
-    let ar_fit = [];
-    let sum = 0;
-    for(let i = start; i < start + size_claster; ++i) {
-        let fit = 1 / fitness(population[i]);
-        ar_fit.push(fit);
-        sum += fit;
-    }
+    let dx = point_b.x - point_a.x;
+    let dy = point_b.y - point_a.y;
 
-    let p = Math.random();
-    let parent_index = start;
-    for(let i = 0, roulette_sum = 0; i < size_claster; ++i) {
-        roulette_sum += ar_fit[i] / sum;
-        if(p <= roulette_sum) {
-            parent_index += i;
-            break;
+    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+}
+
+function getFitness(genes)
+{
+    let fitness = 0;
+    for(let i = 0; i + 1 < genes.length; ++i) {
+        let current = genes[i];
+        let next = genes[i + 1];
+        fitness += getLineLength(current, next);
+    }
+    fitness += getLineLength(genes[genes.length - 1], genes[0]);
+
+    return fitness;
+}
+
+function tournamentSelection(population)
+{
+    let best = population[getRandomInt(0, population.length - 1)];
+    for(let i = 0; i < TOURNAMENT_SIZE; ++i) {
+        let other = population[getRandomInt(0, population.length - 1)];
+        if(other.fitness < best.fitness) {
+            best = other;
         }
     }
-    
-    return parent_index;
+
+    return best;
 }
 
-function getParentIndexes(population, count_parents, size_claster)
+function crossover(parent1, parent2)
 {
-    let parent_indexes = [];
-
-    // Если популяция меньше, чем размер нашей выборки
-    for(let i = 0; (population.length < count_parents * size_claster) && (i < count_parents); ++i) {
-        if(i >= population.length) {
-            return parent_indexes;
-        }
-        parent_indexes.push(i);
+    const len = parent1.length;
+    const child = new Array(len);
+    const left = getRandomInt(0, len - 2);
+    const right = getRandomInt(left + 1, len - 1);
+  
+    const used = new Set();
+    for (let i = left; i <= right; i++) {
+      child[i] = parent1[i];
+      used.add(JSON.stringify(parent1[i]));
     }
-    
-    // Если у нас есть место для нашей выборки
-    for(let i = 0; parent_indexes.length < count_parents; i += size_claster) {
-        let parent_index = FPS(population, size_claster, i);
-        parent_indexes.push(parent_index);
-    }
-
-    return parent_indexes;
-}
-
-// OMP
-function getChild(parent1, parent2) {
-    const length = parent1.length;
-    const child = structuredClone(parent1);
-
-    // Выбираем отрезок [left, right], оба включительно
-    const left = getRandomInt(0, length - 2);
-    const right = getRandomInt(left + 1, length - 1);
-
-    const set = new Set();
-
-    // Копируем отрезок из parent1
-    for (let i = left; i <= right; ++i) {
-        child[i] = parent1[i];
-        set.add(JSON.stringify(parent1[i]));
-    }
-
-    // Заполняем остальные позиции из parent2 по порядку
+  
     let ptr = 0;
-    for (let i = 0; i < length; ++i) {
+    for (let i = 0; i < len; i++) {
         if (i >= left && i <= right) continue;
-
-        // Пропускаем элементы, которые уже скопированы
-        while (set.has(JSON.stringify(parent2[ptr]))) {
-            ++ptr;
+        
+        while (ptr < len && used.has(JSON.stringify(parent2[ptr]))) {
+            ptr++;
         }
 
-        child[i] = parent2[ptr];
-        ++ptr;
+        if(ptr < len) {
+            child[i] = parent2[ptr++];
+        }
+        else {
+            child[i] = parent1[i];
+        }
     }
-
+  
     return child;
 }
 
-function mutation(child, probability)
+
+STAGNATION = 0;
+LAST_BEST_FITNESS = Infinity;
+function adjustMutationProbability(current_best_fitness)
 {
-    if (Math.random() > probability) {
+    if(current_best_fitness < LAST_BEST_FITNESS) {
+        STAGNATION = 0;
+    }
+    else {
+        ++STAGNATION;
+    }
+
+    LAST_BEST_FITNESS = current_best_fitness;
+
+    return Math.min(0.7, MUTATION_PROB_BASE + STAGNATION * 0.005);
+}
+
+function mutation(genes, probability)
+{
+    if(Math.random() > probability) {
         return;
     }
 
-    let first_index = getRandomInt(0, child.length - 1);
-    let second_index = getRandomInt(0, child.length - 1);
+    let i = getRandomInt(0, genes.length - 1);
+    let j = getRandomInt(0, genes.length - 1);
 
-    [child[first_index], child[second_index]] = [child[second_index], child[first_index]];
+    [genes[i], genes[j]] = [genes[j], genes[i]];
 
     return;
 }
 
-function breeding(population, parent_indexes, probability_mutation)
+function reverseSwap(ar, left, right)
 {
-    for(let i = 0; i + 1 < parent_indexes.length; ++i) {
-        let child = getChild(population[parent_indexes[i]], population[parent_indexes[i+1]]);
-        mutation(child, probability_mutation);
-        population[parent_indexes[i]] = child;
+    while(left < right) {
+        const temp = ar[left];
+        ar[left] = ar[right];
+        ar[right] = temp;
+
+        ++left;
+        --right;
     }
 
     return;
 }
 
-function draw(dynamic_canvas, chromosome, color, size)
+function twoOpt(genes)
 {
-    const ctx = dynamic_canvas.getContext("2d");
+    let improvement_found = true;
+    while(improvement_found) {
+        improvement_found = false;
+        for(let i = 1; i < genes.length - 2; ++i) {
+            for(let j = i + 1; j < genes.length - 1; ++j) {
+                let A = genes[i - 1];
+                let B = genes[i];
+                let C = genes[j];
+                let D = genes[j + 1];
+
+                if(getLineLength(A, C) + getLineLength(B, D) < getLineLength(A, B) + getLineLength(C, D)) {
+                    reverseSwap(genes, i, j);
+                    improvement_found = true;
+                    break;
+                }
+            }
+
+            if(improvement_found) break;
+        }
+    }
+}
+
+function updatePopulation(population)
+{
+    population.sort((a, b) => a.fitness - b.fitness);
+
+    let size_elite = Math.max(1, Math.floor(POPULATION_SIZE * ELITE_RATE));
+    
+    let new_population = []; // {Chromosome}
+    for(let i = 0; i < size_elite; ++i) {
+        new_population.push(population[i]);
+    }
+
+    while(new_population.length < population.length) {
+        let parent1 = tournamentSelection(population);
+        let parent2 = tournamentSelection(population);
+        
+        let child_genes = crossover(parent1.genes, parent2.genes);
+
+        let mutation_probability = adjustMutationProbability(new_population[0].fitness);
+        mutation(child_genes, mutation_probability);
+        twoOpt(child_genes);
+
+        let child_fitness = getFitness(child_genes);
+
+        let child_chromosome = new Chromosome(child_genes, child_fitness);
+
+        new_population.push(child_chromosome);
+    }
+
+    return new_population;
+}
+
+function draw(canvas, genes, color, size)
+{
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
-
+    
     ctx.beginPath();
-    ctx.moveTo(chromosome[0].x, chromosome[0].y);
-    for(let i = 1; i < chromosome.length; ++i) {
-        ctx.lineTo(chromosome[i].x, chromosome[i].y);
+    ctx.moveTo(genes[0].x, genes[0].y);
+    for (let i = 1; i < genes.length; i++) {
+      ctx.lineTo(genes[i].x, genes[i].y);
     }
-    ctx.lineTo(chromosome[0].x, chromosome[0].y);
+    ctx.lineTo(genes[0].x, genes[0].y);
+    ctx.closePath();
     ctx.stroke();
 
     return;
 }
 
-function processChromosomes(dynamic_canvas, population, best)
+function start(dynamic_canvas, points)
 {
-    const ctx = dynamic_canvas.getContext("2d");
-    ctx.clearRect(0, 0, dynamic_canvas.width, dynamic_canvas.height);
-
-    for(let i = 0; i < population.length; ++i) {
-        let chromosome = population[i];
-        let chromosome_fit = fitness(chromosome);
-        // draw(dynamic_canvas, chromosome, "black", 1);
-
-        if(chromosome_fit < best.best_fitness) {
-            best.best_fitness = chromosome_fit;
-            best.best_chromosome = chromosome;
-            console.log(chromosome_fit);
-        }
-    }
-
-    return;
-}
-
-function start(dynamic_canvas, points) {
-    if (points.length < 2) {
-        alert("Добавьте хотя бы 2 точки");
+    if(points.length < 2) {
+        alert("Minimum of 2 vertexes");
         return;
     }
 
-    let population = createNewPopulation(points, POPULATION_SIZE);
-    let best = {
-        best_chromosome: population[0],
-        best_fitness: fitness(population[0])
-    }
-    // let best_chromosome_index = 0;
-    // let best_fitness = fitness(population[best_chromosome_index]);
+    CAN_DRAW = false;
 
-    function generation() {
-        let parent_indexes = getParentIndexes(population, 20, 10); // {parent, i}
-        breeding(population, parent_indexes, 0.1);
-        processChromosomes(dynamic_canvas, population, best);
-        draw(dynamic_canvas, best.best_chromosome, "red", 2);
-        shuffling(population);
-        
-        requestAnimationFrame(generation);
+    let population = getNewPopulation(points); // {Chromosome}
+    let best_chromosome = population[0];
+    draw(dynamic_canvas, best_chromosome.genes, "red", 3);
+
+    function animation()
+    {
+        population =  updatePopulation(population);
+
+        for(let i = 0; i < population.length; ++i) {
+            if(population[i].fitness < best_chromosome.fitness) {
+                best_chromosome = population[i];
+            }
+        }
+
+        draw(dynamic_canvas, best_chromosome.genes, (STAGNATION >= 3000 ? "green" : "red"), 3);
+
+        if(STAGNATION >= 3000) {
+            STAGNATION = 0;
+            CAN_DRAW = true;
+            return;
+        }
+
+        requestAnimationFrame(animation);
     }
 
-    generation();
+    animation();
 }
