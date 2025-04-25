@@ -1,4 +1,4 @@
-import {Queue, UnionFind} from "./structures.js";
+import {PriorityQueue, Queue, UnionFind} from "./structures.js";
 import {delay, random, loadTemplate} from "./utilites.js";
 
 let queueMain = new Queue();
@@ -242,20 +242,21 @@ function findPath() {
     clear(new Set(['main']));
     path.length = 0;
 
-    let frontier = new Queue();
+    let frontier = new PriorityQueue();
     let visited = new Set();
     let parents = new Map();
 
     let start = queueMain.peekLeft();
     let end = queueMain.peekRight();
+    let [endRow, endCol] = [parseInt(end.dataset.row), parseInt(end.dataset.col)];
 
-    frontier.append(start);
+    frontier.append(start, endRow - start.dataset.row + endCol - start.dataset.col);
     visited.add(start);
 
     while (!frontier.isEmpty()) {
-        let current = frontier.popLeft();
+        let current = frontier.pop();
         for (let neighbor of getPassageNeighbors(current)) if (!visited.has(neighbor)) {
-            frontier.append(neighbor);
+            frontier.append(neighbor, endRow - neighbor.dataset.row + endCol - neighbor.dataset.col);
             visited.add(neighbor);
             parents.set(neighbor, current);
         }
@@ -286,23 +287,24 @@ async function visualizationPath() {
     if (path.length === 0 && queueMain.size() === 2) findPath();
 
     let visited = new Set();
-    let frontier = new Queue();
+    let frontier = new PriorityQueue();
 
     let start = queueMain.peekLeft();
     let end = queueMain.peekRight();
+    let [endRow, endCol] = [parseInt(end.dataset.row), parseInt(end.dataset.col)];
 
     visited.add(start);
     frontier.append(start);
 
     while (!frontier.isEmpty() && !stopVisualization) {
         if (visited.has(end)) break;
-        let current = frontier.popLeft();
+        let current = frontier.pop();
         current.classList.add('currentPath');
         if (current.classList.contains('pointedPath')) current.classList.add("mainPath"); else current.classList.add('sidePath')
 
         await delay(300);
         for (let neighbor of getPassageNeighbors(current)) if (!visited.has(neighbor)) {
-            frontier.append(neighbor);
+            frontier.append(neighbor, endRow - neighbor.dataset.row + endCol - neighbor.dataset.col);
             visited.add(neighbor);
         }
         current.classList.remove('currentPath');

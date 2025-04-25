@@ -1,20 +1,69 @@
+@import url('../../css/general.css');
+@import url('../../css/hero.css');
+@import url('../../css/header.css');
+@import url('../../css/footer.css');
+
+
+/*main block*/
+
+.algorithms {
+    padding-top: 50px;
+    font-size: 32px;
+    font-weight: 600;
+    padding-bottom: 150px;
+    justify-content: center;
+}
+
+.algorithms .block {
+    background: #1E1E1E;
+    padding: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 #1E1E1E, 0 2px 8px 0 #1E1E1E;
+}
+
+.algorithms .general-buttons {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+#startBtn {
+    background: #444;
+    color: #F5F5F5;
+    transition: background-color 0.5s;
+    transition-duration: 0.1s;
+    padding: 30px 10%;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.algorithms .general-buttons button:hover {
+    color: white;
+    background: #6c6c6c;
+}
+
+.algorithms .general-buttons button:active {
+    color: white;
+    background: #5e5e5e;
+}
+
+
 canvas {
     border: 3px solid #000;
     background-color: white;
 }
 
-button {
-    padding: 8px 16px;
-    cursor: pointer;
-}
 
 #backgroundCanvas {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
-  }
-  
+}
+
 #dynamicCanvas {
     position: absolute;
     top: 0;

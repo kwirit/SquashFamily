@@ -1,73 +1,10 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    color: #FFF;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-a {
-    text-decoration: none;
-}
-
-img {
-    max-width: 100%;
-}
-
-.wrapper {
-    background: rgb(12, 12, 12);
-    width: 100%;
-}
-
-.text-wrapper {
-    background: #1E1E1E;
-    width: 100%
-}
-
-.container {
-    width: 1400px;
-    margin: 0 auto 70px;
-}
+@import url('../../css/general.css');
+@import url('../../css/hero.css');
+@import url('../../css/header.css');
+@import url('../../css/footer.css');
 
 
-/* hero */
-.hero {
-    padding-bottom: 50px;
-}
 
-.hero-text {
-    padding-top: 50px;
-    margin-right: 10em;
-    margin-left: 27em;
-}
-
-.hero-text h2 {
-    color: #fff;
-    font-size: 48px;
-    font-weight: 700;
-
-}
-
-.hero-text p {
-    padding-top: 20px;
-    text-align: justify;
-    color: #F5F5F5;
-    margin-right: -1em;
-    margin-left: -13em;
-    font-size: 24px;
-    font-weight: 400;
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-/*main block*/
 .algorithms {
     display: flex;
     padding-top: 50px;
@@ -134,6 +71,8 @@ img {
     border: #1E1E1E 1px solid;
 }
 
+/*square*/
+
 .square {
     background-color: hotpink;
     width: 100%;
@@ -169,22 +108,23 @@ img {
     border: #FFC0CB 2px solid;
 }
 
+
 .centered-alert-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Высота 100% от высоты окна */
+    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1050; /* Выше других элементов */
-    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 1050;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 .alert {
-    width: 50%; /* Ширина алерта */
-    max-width: 500px; /* Максимальная ширина алерта */
+    width: 50%;
+    max-width: 500px;
     padding: 1rem 1.25rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
