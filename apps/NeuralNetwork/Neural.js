@@ -47,7 +47,7 @@ async function Neural(data) {
     let weights = await response.json();
     let weights1 = weights.weights_0_1;
     let weights2 = weights.weights_1_2;
-    let neurons2 = Array(500).fill(0);
+    let neurons2 = Array(512).fill(0);
     let neurons3 = Array(10).fill(0);
     return feedForward(data, weights1, weights2, neurons2, neurons3)
 }

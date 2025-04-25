@@ -28,16 +28,20 @@
             <div class="row">
                 <div class="col-md-6 form-my">
                     <label for="ta1">Data:</label>
-                    <textarea id="ta1" class="form-control" rows="10">HouseAge,Population,target
-41.0,322.0,4.526
-21.0,2401.0,3.585
-52.0,496.0,3.521
-52.0,558.0,3.413
-52.0,565.0,3.422</textarea>
+                    <textarea id="ta1" class="form-control" rows="10"  placeholder="parameter1,parameter2,parameter3,...,label
+attribute1,attribute2,attribute3,...,target1
+attribute1,attribute2,attribute3,...,target2
+attribute1,attribute2,attribute3,...,target3
+attribute1,attribute2,attribute3,...,target4
+attribute1,attribute2,attribute3,...,target5
+attribute1,attribute2,attribute3,...,target6
+attribute1,attribute2,attribute3,...,target7
+attribute1,attribute2,attribute3,...,target8
+attribute1,attribute2,attribute3,...,target9"></textarea>
                 </div>
                 <div class="col-md-6 form-my">
                     <label for="ta2">Predict:</label>
-                    <textarea id="ta2" class="form-control" rows="2">70,150</textarea>
+                    <textarea id="ta2" class="form-control" rows="2" placeholder="attribute1,attribute2,..."></textarea>
                 </div>
             </div>
 
@@ -45,20 +49,20 @@
                 <div class="col-md-12">
                     <h5>Settings</h5>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="c">
-                        <label class="form-check-label" for="c">Classification tree</label>
+                        <input class="form-check-input" type="checkbox" id="classificationCheckbox">
+                        <label class="form-check-label" for="classificationCheckbox">Classification tree</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="r">
-                        <label class="form-check-label" for="r">Regression tree</label>
+                        <input class="form-check-input" type="checkbox" id="regressionCheckbox">
+                        <label class="form-check-label" for="regressionCheckbox">Regression tree</label>
                     </div>
                     <div class="form-group">
                         <label for="maxDepth">Number of levels</label>
-                        <input type="text" class="form-control" id="maxDepth" placeholder="10">
+                        <input type="number" class="form-control" id="maxDepth">
                     </div>
                     <div class="form-group">
-                        <label for="maxSamples">Number of copies per sheet</label>
-                        <input type="text" class="form-control" id="maxSamples" placeholder="10">
+                        <label for="maxSamples">Number of samples in leaf</label>
+                        <input type="number" class="form-control" id="maxSamples">
                     </div>
                 </div>
             </div>

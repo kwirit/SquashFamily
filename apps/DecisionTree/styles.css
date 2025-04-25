@@ -6,7 +6,7 @@
 
 .link {
     fill: none;
-    stroke: #ccc;
+    stroke: #6f6f6f;
     stroke-width: 2px;
 }
 
@@ -15,7 +15,7 @@
     height: 500px;
     border: 1px solid #ccc;
     overflow: hidden;
-    background-color: #5e5e5e;
+    background-color: #000000;
 }
 
 .node.highlighted circle {
