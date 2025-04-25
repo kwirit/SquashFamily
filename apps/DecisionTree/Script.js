@@ -28,13 +28,13 @@ let tree = null
 
 function getTree() {
     if(ta1.value === ""){
-        alert("Введите выборку")
+        alert("Enter sample")
         return
     }
     let maxDepth = parseInt(maxDepthValue.value)
     let maxSamples = parseInt(maxSamplesValue.value)
     if (classificationCheckbox.checked === false && regressionCheckbox.checked === false) {
-        alert("Нужно выбрать тип дерева")
+        alert("You need to choose the type of tree")
         return
     }
     const data = ta1.value
@@ -147,11 +147,11 @@ function getNodeLabel(node) {
 
 function predict() {
     if(ta2.value === ""){
-        alert("Введите тест")
+        alert("Enter test")
         return
     }
     if(tree === null){
-        alert("Дерево не построено")
+        alert("Tree not built")
         return
     }
     let data = ta2.value
