@@ -1,11 +1,3 @@
-class Node{
-    entropy
-    predicate
-    data
-    firstChild
-    secondChild
-}
-
 function searchMax(values){
     let tmp = -1
     let index
@@ -59,9 +51,9 @@ function ent(data,header, amountOfClasses){
     return s
 }
 
-class classificationDecisionTree{
+class ClassificationDecisionTree{
     constructor(data,header,amountOfClasses, maxDepth, maxSamples) {
-        this.root = new Node()
+        this.root = new treeNode()
         this.root.data = data
         this.header = header
         this.maxDepth = maxDepth
@@ -72,7 +64,7 @@ class classificationDecisionTree{
 
     buildTree(node,amountOfClasses, level){
         let parentEntropy = ent(node.data,this.header,amountOfClasses)
-        if(parentEntropy === 0 || level === maxDepth || node.data.length === maxSamples){
+        if(parentEntropy === 0 || level === this.maxDepth || node.data.length === this.maxSamples){
             node.firstChild = null
             node.secondChild = null
             return
@@ -120,8 +112,8 @@ class classificationDecisionTree{
                 }
             }
         }
-        let firstNode = new Node()
-        let secondNode = new Node()
+        let firstNode = new treeNode()
+        let secondNode = new treeNode()
         firstNode.data = firstResultSet
         firstNode.entropy = firstResultEntropy
         secondNode.data = secondResultSet
@@ -134,9 +126,9 @@ class classificationDecisionTree{
     }
 }
 
-class regressionDecisionTree{
+class RegressionDecisionTree{
     constructor(data,header, maxDepth, maxSamples) {
-        this.root = new Node()
+        this.root = new treeNode()
         this.root.data = data
         this.header = header
         this.maxDepth = maxDepth
@@ -195,8 +187,8 @@ class regressionDecisionTree{
                 }
             }
         }
-        let firstNode = new Node()
-        let secondNode = new Node()
+        let firstNode = new treeNode()
+        let secondNode = new treeNode()
         firstNode.data = firstResultSet
         firstNode.entropy = firstResultEntropy
         secondNode.data = secondResultSet
@@ -209,17 +201,17 @@ class regressionDecisionTree{
     }
 }
 
+class treeNode{
+}
+
 function makeClassificationTree(data,header, maxDepth, maxSamples){
     let amountOfClasses = new Set()
     for(let i = 0;i<data.length;i++) {
         amountOfClasses.add(data[i][header[header.length-1]])
     }
-    let tree = new classificationDecisionTree(data,header,amountOfClasses.size, maxDepth, maxSamples)
-    return tree
+    return new ClassificationDecisionTree(data, header, amountOfClasses.size, maxDepth, maxSamples)
 }
 
 function makeRegressionTree(data,header, maxDepth, maxSamples){
-    let tree = new regressionDecisionTree(data,header, maxDepth, maxSamples)
-    return tree
+    return new RegressionDecisionTree(data, header, maxDepth, maxSamples)
 }
-
