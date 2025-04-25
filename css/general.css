@@ -34,6 +34,7 @@ img {
 }
 
 .container {
-    width: 1400px;
+    max-width: 80%;
+    align-content: center;
     margin: 0 auto 70px;
 }
